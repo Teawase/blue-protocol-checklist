@@ -5,6 +5,19 @@ body {
   padding: 20px;
   margin: 0;
   user-select: none;
+  position: relative;
+}
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(2px 2px at 20px 30px, #eee 100%, transparent 0), radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8) 100%, transparent 0), linear-gradient(90deg, transparent 99%, rgba(255,255,255,0.1) 0);
+  background-size: 60px 80px, 80px 100px, 100% 100%;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: -1;
 }
 #page-title {
   font-weight: 900;
@@ -83,7 +96,7 @@ h2 {
   width: 0;
   border-radius: 6px 0 0 6px;
   background: linear-gradient(90deg, #506aff, #ffb800);
-  box-shadow: 0 0 8px #ffb80066 inset, 0 2px 6px #3049ccaa;
+  box-shadow: 0 0 12px currentColor inset;
   transition: width 0.5s, background 0.5s;
   display: flex;
   align-items: center;
@@ -92,6 +105,23 @@ h2 {
   font-weight: 600;
   font-size: 0.75rem;
   user-select: none;
+  position: relative;
+}
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.progress-bar:hover .progress-fill::after {
+  opacity: 1;
+  animation: sparkle 2s infinite;
+}
+@keyframes sparkle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 .container {
   display: flex;
@@ -102,10 +132,11 @@ h2 {
 }
 .section {
   flex: 1 1 45%;
-  background: #1a1a1a;
+  background: linear-gradient(145deg, #1a1a1a, #222);
   border-radius: 10px;
+  border: 1px solid rgba(80, 106, 255, 0.1);
   padding: 1.25rem;
-  box-shadow: 0 0 12px rgba(0,0,0,0.7);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
   min-width: 20rem;
   min-height: 37.5rem;
   max-height: 43.75rem;
@@ -145,6 +176,9 @@ h2 {
   flex-grow: 1;
   overflow-y: auto;
   transition: all 0.3s;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.1);
+  border-radius: 8px;
 }
 .tasks.filtering {
   flex-wrap: nowrap !important;
@@ -152,45 +186,108 @@ h2 {
   gap: 0.375rem !important;
 }
 .task {
-  background: #333;
+  background: linear-gradient(135deg, var(--base1, #333) 0%, var(--base2, #2a2a2a) 100%);
   padding: 0.75rem 1.125rem;
   border-radius: 10px;
   display: flex;
   align-items: center;
   flex-basis: calc(50% - 0.875rem);
   flex-grow: 1;
-  transition: background-color 0.3s, opacity 0.3s;
+  transition: background-color 0.3s, opacity 0.3s, transform 0.2s ease-out;
   cursor: pointer;
   max-height: 5.5rem;
   overflow: hidden;
   opacity: 1;
   outline: none;
+  border: 1px solid rgba(80, 106, 255, 0.2);
+  transform: translateY(0);
 }
 .task.filtering {
   flex-basis: auto !important;
   width: 100% !important;
   max-height: none !important;
 }
+.task:not(.completed) {
+  transform: translateY(0);
+  transition: transform 0.2s ease-out;
+}
 .task.completed {
-  opacity: 0.6;
+  opacity: 0.7;
   text-decoration: line-through;
+  filter: grayscale(50%) brightness(0.9);
+  animation: completeBounce 0.4s ease-out;
+}
+@keyframes completeBounce {
+  0% { transform: scale(1) translateY(0); }
+  50% { transform: scale(0.95) translateY(2px); }
+  100% { transform: scale(1) translateY(0); }
 }
 .task:hover,
 .task:focus {
-  background: #444;
+  background: linear-gradient(135deg, var(--hover1, #444) 0%, var(--hover2, #3a3a3a) 100%);
   color: #fafafa;
   outline: none;
-  box-shadow: 0 0 0 2px #506aff;
+  box-shadow: 0 4px 12px rgba(80, 106, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
-.red { background: #850a13; }
-.purple { background: #4b4bb6; }
-.dark_purple { background: #4b2250; }
-.silver { background: #afafaf; color: #222; }
-.green { background: #5a8757; }
-.orange { background: #ff8c00; }
-.yellow { background: #bea63b; }
-.grey { background: #7b746a; }
-.blue { background: #1e6bb8; }
+.red {
+  --base1: #850a13;
+  --base2: #a5101a;
+  --hover1: #b5101a;
+  --hover2: #d52025;
+}
+.purple {
+  --base1: #4b4bb6;
+  --base2: #5a5ec6;
+  --hover1: #5a5ec6;
+  --hover2: #6a6ed6;
+}
+.dark_purple {
+  --base1: #4b2250;
+  --base2: #5a2a60;
+  --hover1: #5a2a60;
+  --hover2: #6a3a70;
+}
+.silver {
+  --base1: #afafaf;
+  --base2: #c0c0c0;
+  --hover1: #c0c0c0;
+  --hover2: #d0d0d0;
+  color: #222;
+}
+.green {
+  --base1: #5a8757;
+  --base2: #6a9767;
+  --hover1: #6a9767;
+  --hover2: #7aa777;
+}
+.orange {
+  --base1: #ff8c00;
+  --base2: #ff9a1a;
+  --hover1: #ff9a1a;
+  --hover2: #ffaa2a;
+}
+.yellow {
+  --base1: #bea63b;
+  --base2: #ceb04b;
+  --hover1: #ceb04b;
+  --hover2: #deb65b;
+}
+.grey {
+  --base1: #7b746a;
+  --base2: #8b837a;
+  --hover1: #8b837a;
+  --hover2: #9b928a;
+}
+.blue {
+  --base1: #1e6bb8;
+  --base2: #2e7bc8;
+  --hover1: #2e7bc8;
+  --hover2: #3e8bd8;
+}
+.task label {
+  font-weight: 500;
+  line-height: 1.3;
+}
 button {
   font-size: 0.875rem;
   padding: 0.5rem 1.375rem;
@@ -228,6 +325,13 @@ button:focus {
   align-items: center;
   position: relative;
 }
+.event-timer.active {
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(80, 106, 255, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(80, 106, 255, 0.6); }
+}
 .event-timer .name {
   font-weight: 700;
   font-size: 0.95rem;
@@ -240,6 +344,7 @@ button:focus {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+  text-shadow: 0 0 4px #506aff66;
 }
 .event-timer .notify-icon {
   position: absolute;
@@ -286,6 +391,12 @@ button:focus {
   color: transparent;
   line-height: 1.2;
   margin: 0;
+  text-shadow: 0 0 4px #506aff66;
+  animation: countdownFade 1s ease-in-out infinite alternate;
+}
+@keyframes countdownFade {
+  from { opacity: 0.9; }
+  to { opacity: 1; text-shadow: 0 0 8px #506aff; }
 }
 .event-timer .name:hover {
   background: linear-gradient(90deg, #3b59dc, #6a8aff, #8ab8ff);
@@ -332,7 +443,7 @@ footer a:focus {
   font-size: 1rem;
   color: #ffd700;
   text-align: center;
-  text-shadow: 0 0 8px #ffd700aa;
+  text-shadow: 0 0 12px #ffd700aa, 0 0 24px #ffd70044;
   user-select: none;
 }
 .streak {
@@ -408,5 +519,22 @@ footer a:focus {
   .task {
     flex-basis: 100%;
     max-height: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .event-timers {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .event-timer {
+    min-width: auto;
+  }
+  .action-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .filter-input {
+    max-width: none;
   }
 }
