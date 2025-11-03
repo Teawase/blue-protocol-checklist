@@ -29,6 +29,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
   - Guild Dance (Fri 3:30 PM - 3:30 AM next day).
   - Stimen Vaults (Bi-weekly reset).
 - **Smart Updates:** Refreshes every second when visible, every 5 seconds when tabbed away.
+- **Timer pulse:** Active timers have a glowing effect.
 - **Clickable Refresh:** Click any timer name to force-update all of them.
 
 ## User Experience & Accessibility
