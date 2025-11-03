@@ -17,7 +17,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 - **Keyboard Navigation:** Arrow keys (Up/Down/Left/Right) to move focus between visible tasks; Enter/Space for toggling.
 
 ## Streak & History Tracking
-- **Daily Streak Counter:** Automatically calculates and displays consecutive days of full daily completion (up to 30 days back, capped at 60-day history).
+- **Daily Streak Counter:** Automatically calculates and displays consecutive days of full daily completion.
 - **Persistent Storage:** Uses localStorage to save task states across sessions. Daily progress resets at (5:00 AM Noronha timezone); Weekly persists until weekly reset.
 
 ## Event Timers
