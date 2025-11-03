@@ -64,6 +64,32 @@
 
   let hideCompletedState = { daily: false, weekly: false };
 
+  // New function for daily date key (based on start of current daily period in Noronha TZ)
+  const getCurrentDailyDate = (now = parseNoronha()) => {
+    const nextReset = getDailyReset(now);
+    const dailyStart = new Date(nextReset.getTime() - 86400000); // Start = end of period - 24h
+    // Use toISOString for UTC date, but since times are set relative to Noronha-parsed now, it aligns
+    return dailyStart.toISOString().split('T')[0];
+  };
+
+  // Helper to get/update daily storage object
+  const getDailyStorage = () => {
+    const currentDate = getCurrentDailyDate();
+    let stored = JSON.parse(localStorage.getItem('daily_tasks') || '{}');
+    if (stored.date !== currentDate) {
+      // Reset if date changed (new day after 5 AM Noronha)
+      stored = { date: currentDate, tasks: {} };
+      localStorage.setItem('daily_tasks', JSON.stringify(stored));
+    }
+    return stored;
+  };
+
+  const updateDailyStorage = (taskId, completed) => {
+    const stored = getDailyStorage(); // Ensures reset if needed
+    stored.tasks[taskId] = completed;
+    localStorage.setItem('daily_tasks', JSON.stringify(stored));
+  };
+
   // Create task element with event listeners
   function createTaskElement(task, section) {
     const div = document.createElement('div');
@@ -76,6 +102,11 @@
     div.appendChild(lbl);
     if (section === 'weekly' && localStorage.getItem(task.id) === 'true') {
       div.classList.add('completed');
+    } else if (section === 'daily') {
+      const stored = getDailyStorage();
+      if (stored.tasks && stored.tasks[task.id]) {
+        div.classList.add('completed');
+      }
     }
     div.addEventListener('click', () => toggleTask(div, section));
     div.addEventListener('keydown', (e) => {
@@ -90,8 +121,11 @@
   // Toggle task completion
   function toggleTask(element, section) {
     const completed = element.classList.toggle('completed');
+    const taskId = element.getAttribute('data-id');
     if (section === 'weekly') {
-      localStorage.setItem(element.getAttribute('data-id'), completed);
+      localStorage.setItem(taskId, completed);
+    } else if (section === 'daily') {
+      updateDailyStorage(taskId, completed);
     }
     updateCounter(section);
     applyCompletedFilter(section);
@@ -186,8 +220,11 @@
     const tasks = container.querySelectorAll('.task');
     tasks.forEach(t => {
       t.classList.add('completed');
+      const taskId = t.getAttribute('data-id');
       if (section === 'weekly') {
-        localStorage.setItem(t.getAttribute('data-id'), 'true');
+        localStorage.setItem(taskId, 'true');
+      } else if (section === 'daily') {
+        updateDailyStorage(taskId, true);
       }
     });
     updateCounter(section);
@@ -199,8 +236,11 @@
     const tasks = container.querySelectorAll('.task');
     tasks.forEach(t => {
       t.classList.remove('completed');
+      const taskId = t.getAttribute('data-id');
       if (section === 'weekly') {
-        localStorage.setItem(t.getAttribute('data-id'), 'false');
+        localStorage.setItem(taskId, 'false');
+      } else if (section === 'daily') {
+        updateDailyStorage(taskId, false);
       }
     });
     updateCounter(section);
