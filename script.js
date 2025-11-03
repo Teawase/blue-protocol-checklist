@@ -298,7 +298,7 @@
     const total = tasks.length;
     const pct = total ? (done / total) * 100 : 0;
 
-    // FIXED: Track previous completion count for confetti trigger
+    // Track previous completion count for confetti trigger
     const prevDone = section === 'daily' ? prevDailyCompleted : prevWeeklyCompleted;
     const justCompleted = done === total && prevDone < total;
 
@@ -322,7 +322,7 @@
 
     if (done === total && total > 0) {
       completionMsg.style.display = 'block';
-      // FIXED: Only trigger confetti when transitioning from incomplete -> complete
+      // Only trigger confetti when transitioning from incomplete -> complete
       if (justCompleted) {
         confetti({
           particleCount: 1000,
@@ -636,3 +636,4 @@
     init();
   }
 })();
+
