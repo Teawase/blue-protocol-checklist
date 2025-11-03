@@ -57,7 +57,7 @@ h2 {
 }
 .progress-bar {
   position: relative;
-  width: 200px;
+  width: 150px;
   height: 14px;
   background: #444;
   border-radius: 6px;
@@ -179,6 +179,8 @@ h2 {
 .task:focus {
   background: #444;
   color: #fafafa;
+  outline: none;
+  box-shadow: 0 0 0 2px #506aff;
 }
 .red { background: #850a13; }
 .purple { background: #4b4bb6; }
@@ -224,28 +226,66 @@ button:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.event-timer .name,
-.event-timer .countdown {
-  background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  font-weight: 600;
-  line-height: 1.2;
-  margin: 0;
+  position: relative;
 }
 .event-timer .name {
   font-weight: 700;
   font-size: 0.95rem;
   margin-bottom: 3px;
   cursor: pointer;
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.event-timer .notify-icon {
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  color: #a6a6a6;
+  transition: color 0.3s;
+}
+.event-timer .notify-icon:hover {
+  color: #ffd700;
+}
+.event-timer .notify-icon.enabled {
+  color: #ffd700;
+}
+.event-timer .notify-icon::after {
+  content: "Receive Notifications for this Event";
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #222;
+  color: #eee;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 10;
+}
+.event-timer .notify-icon:hover::after {
+  opacity: 0.95;
 }
 .event-timer .countdown {
   font-weight: 500;
   font-size: 0.9rem;
   opacity: 0.9;
+  background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  line-height: 1.2;
+  margin: 0;
 }
 .event-timer .name:hover {
   background: linear-gradient(90deg, #3b59dc, #6a8aff, #8ab8ff);
@@ -258,6 +298,24 @@ footer {
   text-align: center;
   font-size: 0.9rem;
   color: #888;
+  position: relative;
+}
+.test-notif-btn {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  background: #506aff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin: 0 0.4rem;
+}
+.test-notif-btn:hover {
+  background: #3b59dc;
 }
 footer a {
   color: #809bff;
@@ -277,6 +335,47 @@ footer a:focus {
   text-shadow: 0 0 8px #ffd700aa;
   user-select: none;
 }
+.streak {
+  font-weight: 600;
+  color: #ffd700;
+  text-shadow: 0 0 4px #ffd700aa;
+  margin-left: 0.5rem;
+  font-size: 0.95rem;
+}
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+  text-align: center;
+  max-width: 400px;
+}
+.modal-content h3 {
+  margin-top: 0;
+  color: #eee;
+}
+.modal-content button {
+  margin: 10px;
+  padding: 10px 20px;
+}
+#reject-gdpr {
+  background: #666;
+}
+#reject-gdpr:hover {
+  background: #555;
+}
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
@@ -290,14 +389,5 @@ footer a:focus {
   .task {
     flex-basis: 100%;
     max-height: none;
-  }
-  .filter-input {
-    min-width: auto;
-    flex-grow: 1;
-  }
-  .counter-container {
-    float: none;
-    margin-top: 0.5rem;
-    justify-content: flex-start;
   }
 }
