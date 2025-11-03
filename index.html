@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Blue Protocol: Star Resonance Checklist</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">  <!-- Emoji favicon -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -40,6 +41,7 @@
     <div class="section" id="daily_section">
       <h2>
         Daily Tasks
+        <span id="daily_streak" class="streak" style="display: none;"></span>
         <span class="counter-container">
           <span class="counter" id="daily_counter">0 / 9 complete</span>
           <div class="progress-bar" id="daily_progress_bar" data-tooltip="">
@@ -107,6 +109,15 @@
       >
         All weekly tasks completed! You're amazing! 🔥
       </div>
+    </div>
+  </div>
+
+  <div id="gdpr-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Privacy Notice</h3>
+      <p>This site uses localStorage cookies to save your progress across sessions. We respect your privacy and do not share data.</p>
+      <button id="accept-gdpr">Accept</button>
+      <button id="reject-gdpr">Opt Out</button>
     </div>
   </div>
 
