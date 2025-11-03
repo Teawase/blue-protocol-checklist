@@ -186,7 +186,7 @@
         const prevDateStr = prevDate.toISOString().split('T')[0];
         if (!stored.history) stored.history = [];
         stored.history.push({ date: prevDateStr, completed: stored.currentCompleted });
-        if (stored.history.length > 60) stored.history = stored.history.slice(-60);
+        if (stored.history.length > 3650) stored.history = stored.history.slice(-3650);
       }
       stored = { date: currentDate, tasks: {}, history: stored.history || [], currentCompleted: 0 };
       localStorage.setItem('daily_tasks', JSON.stringify(stored));
@@ -216,7 +216,7 @@
       const histDate = new Date(history[i].date);
       const daysAgo = Math.floor((today - histDate) / 86400000);
       if (daysAgo === 0) continue;
-      if (daysAgo > 30) break;
+      if (daysAgo > 3650) break;
       if (history[i].completed === TOTAL_DAILIES) {
         streak++;
       } else {
@@ -633,3 +633,4 @@
     init();
   }
 })();
+
