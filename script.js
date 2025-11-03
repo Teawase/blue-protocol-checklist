@@ -162,7 +162,7 @@
       });
       localStorage.setItem('weekly_reset_date', currentWeeklyDate);
 
-      // Optional: Visual feedback for weekly reset
+      // Visual feedback for weekly reset
       if (storedWeeklyDate) {
         setTimeout(() => {
           alert("Weekly reset! All weekly tasks have been cleared.");
@@ -226,7 +226,6 @@
     return streak + (isTodayFull ? 1 : 0);
   };
 
-  // Task creation and toggling logic remains unchanged
   function createTaskElement(task, section) {
     const div = document.createElement('div');
     div.className = `task ${task.color}`;
@@ -393,7 +392,7 @@
     applyCompletedFilter(section);
   }
 
-  // Keyboard navigation unchanged
+  // Keyboard Navigation
   document.addEventListener('keydown', (e) => {
     if (!e.target.classList?.contains('task')) return;
     const section = e.target.closest('.section').id === 'daily_section' ? 'daily' : 'weekly';
@@ -434,7 +433,7 @@
     $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
   }
 
-  // Timer functions unchanged
+  // Timer functions
   const noronhaNow = () => new Date().toLocaleString('en-US', { timeZone: 'America/Noronha' });
   const parseNoronha = () => new Date(noronhaNow());
 
@@ -592,7 +591,7 @@
 
     renderTasks(dailyContainer, dailyTaskData, 'daily');
 
-    resetWeeklyStorageIfNeeded();  // Add this line BEFORE rendering weeklies
+    resetWeeklyStorageIfNeeded();
     renderTasks(weeklyContainer, weeklyTaskData, 'weekly');
 
     setupFilter('daily');
