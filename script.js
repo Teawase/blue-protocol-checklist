@@ -320,13 +320,6 @@
           origin: { x: 0.5, y: -0.5 },
           ticks: 100,
         });
-        // Enhanced confetti with game-themed colors
-        confetti({
-          particleCount: 150,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#506aff', '#ffb800', '#ff6b6b', '#4ecdc4'],
-        });
       }
     } else {
       completionMsg.style.display = 'none';
@@ -633,4 +626,3 @@
     init();
   }
 })();
-
