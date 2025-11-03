@@ -61,13 +61,13 @@
   const btnDeselectAllDaily = $('btnDeselectAllDaily');
   const btnSelectAllWeekly = $('btnSelectAllWeekly');
   const btnDeselectAllWeekly = $('btnDeselectAllWeekly');
-  const dailyStreakEl = $('daily_streak'); // New: for streak display
+  const dailyStreakEl = $('daily_streak');
   const gdprModal = $('gdpr-modal');
   const acceptBtn = $('accept-gdpr');
   const rejectBtn = $('reject-gdpr');
 
   let hideCompletedState = { daily: false, weekly: false };
-  const TOTAL_DAILIES = 9; // Hardcode for streak calc
+  const TOTAL_DAILIES = 9;
   let isStorageAllowed = localStorage.getItem('gdpr_optout') !== 'true';
 
   // GDPR functions
@@ -96,12 +96,9 @@
 
   rejectBtn.addEventListener('click', () => {
     localStorage.setItem('gdpr_optout', 'true');
-    localStorage.clear(); // Clear existing data
+    localStorage.clear();
     isStorageAllowed = false;
     hideGDPRModal();
-    // Close the website
-    window.close();
-    // Fallback: If window.close() doesn't work (e.g., not script-opened), show a blocking message
     setTimeout(() => {
       if (!document.hidden) {
         document.body.innerHTML = `
@@ -116,7 +113,7 @@
     }, 100);
   });
 
-  // Incognito detection and unload handler
+  // Incognito detection
   async function isIncognito() {
     try {
       const fs = window.webkitRequestFileSystem || window.RequestFileSystem;
@@ -138,15 +135,43 @@
     location.reload();
   }
 
-  // New function for daily date key (based on start of current daily period in Noronha TZ)
+  // Daily date key (Noronha TZ)
   const getCurrentDailyDate = (now = parseNoronha()) => {
     const nextReset = getDailyReset(now);
-    const dailyStart = new Date(nextReset.getTime() - 86400000); // Start = end of period - 24h
-    // Use toISOString for UTC date, but since times are set relative to Noronha-parsed now, it aligns
+    const dailyStart = new Date(nextReset.getTime() - 86400000);
     return dailyStart.toISOString().split('T')[0];
   };
 
-  // Helper to get/update daily storage object
+  // Get current weekly reset date key (Monday 5 AM Noronha)
+  const getCurrentWeeklyDate = (now = parseNoronha()) => {
+    const reset = getWeeklyReset(now);
+    return reset.toISOString().split('T')[0]; // e.g., "2025-11-03"
+  };
+
+  // Clear all weekly tasks on weekly reset if needed
+  const resetWeeklyStorageIfNeeded = () => {
+    if (!isStorageAllowed) return;
+
+    const currentWeeklyDate = getCurrentWeeklyDate();
+    const storedWeeklyDate = localStorage.getItem('weekly_reset_date');
+
+    if (storedWeeklyDate !== currentWeeklyDate) {
+      // Clear ALL weekly task progress
+      weeklyTaskData.forEach(task => {
+        localStorage.removeItem(task.id);
+      });
+      localStorage.setItem('weekly_reset_date', currentWeeklyDate);
+
+      // Optional: Visual feedback for weekly reset
+      if (storedWeeklyDate) {
+        setTimeout(() => {
+          alert("Weekly reset! All weekly tasks have been cleared.");
+        }, 500);
+      }
+    }
+  };
+
+  // getDailyStorage resets tasks exactly at 5 AM Noronha and preserves history
   const getDailyStorage = () => {
     if (!isStorageAllowed) {
       return { date: getCurrentDailyDate(), tasks: {}, history: [], currentCompleted: 0 };
@@ -154,15 +179,13 @@
     const currentDate = getCurrentDailyDate();
     let stored = JSON.parse(localStorage.getItem('daily_tasks') || '{}');
     if (stored.date !== currentDate) {
-      // Reset if date changed (new day after 5 AM Noronha)
-      // Log previous day's completion to history
+      // DAILY RESET: New day → clear tasks, log history
       if (stored.currentCompleted !== undefined) {
         const prevDate = new Date(stored.date || currentDate);
         prevDate.setDate(prevDate.getDate() - 1);
         const prevDateStr = prevDate.toISOString().split('T')[0];
         if (!stored.history) stored.history = [];
         stored.history.push({ date: prevDateStr, completed: stored.currentCompleted });
-        // Prune history to last 60 days
         if (stored.history.length > 60) stored.history = stored.history.slice(-60);
       }
       stored = { date: currentDate, tasks: {}, history: stored.history || [], currentCompleted: 0 };
@@ -173,39 +196,37 @@
 
   const updateDailyStorage = (taskId, completed) => {
     if (!isStorageAllowed) return;
-    const stored = getDailyStorage(); // Ensures reset if needed
+    const stored = getDailyStorage();
     const prevState = !!stored.tasks[taskId];
-    if (prevState !== completed) { // Only update if state changed
+    if (prevState !== completed) {
       stored.tasks[taskId] = completed;
       stored.currentCompleted = Object.values(stored.tasks).filter(Boolean).length;
       localStorage.setItem('daily_tasks', JSON.stringify(stored));
     }
   };
 
-  // New: Calculate current streak from history (consecutive full completions)
   const calculateDailyStreak = () => {
     if (!isStorageAllowed) return 0;
     const stored = getDailyStorage();
     const history = stored.history || [];
     let streak = 0;
     const today = new Date(getCurrentDailyDate());
-    // Check if today is full (but don't count today for streak until reset)
     const isTodayFull = stored.currentCompleted === TOTAL_DAILIES;
     for (let i = history.length - 1; i >= 0; i--) {
       const histDate = new Date(history[i].date);
       const daysAgo = Math.floor((today - histDate) / 86400000);
-      if (daysAgo === 0) continue; // Skip today
-      if (daysAgo > 30) break; // Cap at 30 days back
+      if (daysAgo === 0) continue;
+      if (daysAgo > 30) break;
       if (history[i].completed === TOTAL_DAILIES) {
         streak++;
       } else {
         break;
       }
     }
-    return streak + (isTodayFull ? 1 : 0); // Include today if full
+    return streak + (isTodayFull ? 1 : 0);
   };
 
-  // Create task element with event listeners
+  // Task creation and toggling logic remains unchanged
   function createTaskElement(task, section) {
     const div = document.createElement('div');
     div.className = `task ${task.color}`;
@@ -215,6 +236,7 @@
     const lbl = document.createElement('label');
     lbl.textContent = task.label;
     div.appendChild(lbl);
+
     if (section === 'weekly') {
       if (isStorageAllowed && localStorage.getItem(task.id) === 'true') {
         div.classList.add('completed');
@@ -225,6 +247,7 @@
         div.classList.add('completed');
       }
     }
+
     div.addEventListener('click', () => toggleTask(div, section));
     div.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -235,7 +258,6 @@
     return div;
   }
 
-  // Toggle task completion
   function toggleTask(element, section) {
     const completed = element.classList.toggle('completed');
     const taskId = element.getAttribute('data-id');
@@ -248,7 +270,6 @@
     applyCompletedFilter(section);
   }
 
-  // Batch render tasks
   function renderTasks(container, tasks, section) {
     const fragment = document.createDocumentFragment();
     tasks.forEach(task => fragment.appendChild(createTaskElement(task, section)));
@@ -261,7 +282,6 @@
     updateCounter(section);
   }
 
-  // Update counters and progress
   function updateCounter(section) {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     const counter = section === 'daily' ? dailyCounter : weeklyCounter;
@@ -306,7 +326,6 @@
       progress.dataset.confettiDone = '';
     }
 
-    // New: Update daily streak display
     if (section === 'daily') {
       const streak = calculateDailyStreak();
       if (dailyStreakEl) {
@@ -316,7 +335,6 @@
     }
   }
 
-  // Hide/show completed toggle
   function toggleCompleted(section) {
     hideCompletedState[section] = !hideCompletedState[section];
     const button = section === 'daily' ? toggleDailyBtn : toggleWeeklyBtn;
@@ -325,7 +343,6 @@
     applyCompletedFilter(section);
   }
 
-  // Apply filtering and hide completed logic
   function applyCompletedFilter(section) {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     const filterInput = section === 'daily' ? dailyFilterInput : weeklyFilterInput;
@@ -344,7 +361,6 @@
     });
   }
 
-  // Select/deselect all tasks
   function selectAll(section) {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     const tasks = container.querySelectorAll('.task');
@@ -377,7 +393,7 @@
     applyCompletedFilter(section);
   }
 
-  // Keyboard navigation
+  // Keyboard navigation unchanged
   document.addEventListener('keydown', (e) => {
     if (!e.target.classList?.contains('task')) return;
     const section = e.target.closest('.section').id === 'daily_section' ? 'daily' : 'weekly';
@@ -398,7 +414,6 @@
     allTasks[newIndex].focus();
   });
 
-  // Debounce utility
   function debounce(fn, delay) {
     let timeout;
     return function (...args) {
@@ -407,13 +422,11 @@
     };
   }
 
-  // Set up input filtering
   function setupFilter(section) {
     const input = section === 'daily' ? dailyFilterInput : weeklyFilterInput;
     input.addEventListener('input', debounce(() => applyCompletedFilter(section), 150));
   }
 
-  // Update page title with day number
   function updateTitle() {
     const start = new Date('2025-10-09');
     const now = new Date();
@@ -421,7 +434,7 @@
     $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
   }
 
-  // Timer-related functions and class
+  // Timer functions unchanged
   const noronhaNow = () => new Date().toLocaleString('en-US', { timeZone: 'America/Noronha' });
   const parseNoronha = () => new Date(noronhaNow());
 
@@ -452,6 +465,7 @@
   const getWeeklyReset = now => {
     const r = new Date(now);
     r.setHours(5, 0, 0, 0);
+    // Calculate days until next Monday 5 AM Noronha
     const diff = ((1 - r.getDay() + 7) % 7) || (now.getHours() >= 5 ? 7 : 0);
     r.setDate(r.getDate() + diff);
     return r;
@@ -551,7 +565,6 @@
     new EventTimer('stimen_vaults_timer', getStimenVaults, 'Stimen Vaults'),
   ];
 
-  // Lazy loading for timers
   let updateInterval;
   function startTimerUpdates() {
     function updateAll() {
@@ -570,23 +583,24 @@
     }
     updateInterval = setInterval(updateAll, 1000);
     document.addEventListener('visibilitychange', handleVisibility);
-    handleVisibility(); // Initial check
+    handleVisibility();
   }
 
-  // Init on load
   async function init() {
     updateTitle();
     await checkGDPR();
+
     renderTasks(dailyContainer, dailyTaskData, 'daily');
+
+    resetWeeklyStorageIfNeeded();  // Add this line BEFORE rendering weeklies
     renderTasks(weeklyContainer, weeklyTaskData, 'weekly');
+
     setupFilter('daily');
     setupFilter('weekly');
     startTimerUpdates();
-    // Initial counter update
     updateCounter('daily');
     updateCounter('weekly');
 
-    // Incognito handling
     const isIncog = await isIncognito();
     window.addEventListener('beforeunload', (e) => {
       if (isIncog) {
@@ -599,7 +613,6 @@
     });
   }
 
-  // Event listeners
   toggleDailyBtn.addEventListener('click', () => toggleCompleted('daily'));
   toggleWeeklyBtn.addEventListener('click', () => toggleCompleted('weekly'));
   btnSelectAllDaily.addEventListener('click', () => selectAll('daily'));
