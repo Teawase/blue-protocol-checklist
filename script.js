@@ -1,0 +1,385 @@
+(() => {
+  const dailyTaskData = [
+    { id: "daily_guild_checkin", label: "Guild Check-In & Cargo (Guild Administrator & Cargo Administrator in Guild Center)", color: "orange" },
+    { id: "daily_unstable_space_dungeon", label: "Clear Unstable Space Dungeon (2x Daily)", color: "purple" },
+    { id: "daily_season_activity_goals", label: "Season Pass Activity (Earn 500 Activity Merits in the Season Pass)", color: "yellow" },
+    { id: "daily_commissions", label: "Bureau Commissions (3x Daily | You can skip this daily for up to 2 days | Commissions Cap: 9)", color: "green" },
+    { id: "daily_mystery_shop", label: "Mystery Shop (Buy Starforge Crystals & Advanced Books & Moss/Burl Shards if available)", color: "grey" },
+    { id: "daily_world_boss_keys", label: "World Boss Keys (2x Daily | You can skip this daily for up to 2 days | Keys Cap: 6)", color: "red" },
+    { id: "daily_elite_boss_keys", label: "Elite Boss Keys (2x Daily | You can skip this daily for up to 2 days | Keys Cap: 6)", color: "red" },
+    { id: "daily_focus", label: "Life Skill Focus (Spend 400 Focus Daily | This daily can be skipped for up to 4 days | Focus Cap: 2000)", color: "yellow" },
+    { id: "daily_homestead_commissions", label: "Homestead Commissions (You can skip this daily for up to 2 days)", color: "green" }
+  ];
+
+  const weeklyTaskData = [
+    { id: "weekly_pioneer_rewards", label: "Pioneer Awards (Pioneer NPC in town)", color: "yellow" },
+    { id: "weekly_reclaim_hub", label: "Reclaim Hub (If missed a daily/weekly)", color: "grey" },
+    { id: "weekly_guild_activity_rewards", label: "Guild Activity Rewards (7000/7000 Points)", color: "orange" },
+    { id: "weekly_guild_hunt_extended", label: "Guild Hunt (Available only on Friday, Saturday, Sunday)", color: "orange" },
+    { id: "weekly_guild_dance", label: "Guild Dance (Available only on Friday)", color: "orange" },
+    { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Available Daily | Earn 1200 Points)", color: "red" },
+    { id: "weekly_clear_dungeons_normal", label: "Clear Dungeons (Normal/Difficult - 20 runs for weekly cap of Reforge Stones)", color: "purple" },
+    { id: "weekly_clear_dungeons_master_1_5", label: "Clear Dungeons (Master 1-5 - 20 runs for weekly cap of Reforge Stones)", color: "purple" },
+    { id: "weekly_clear_dungeons_master_6_20", label: "Clear Dungeons (Master 6-20 - 20 runs for weekly cap of Reforge Stones)", color: "purple" },
+    { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Encounter when clearing dungeons | Max 5 times a week for Legendary Select Boxes)", color: "red" },
+    { id: "weekly_gear_exchange_store", label: "Gear Exchange Store (Buy Luno Pouches & Allow Shards from all the gear exchange stores)", color: "grey" },
+    { id: "weekly_honor_shop", label: "Honor Shop (10000 Honor Points weekly)", color: "grey" },
+    { id: "weekly_friendship_shop", label: "Friendship Shop (2000 Friendship Points weekly)", color: "grey" },
+    { id: "weekly_reputation_shop", label: 'Reputation Shop (Buy Will Wish Coin & "Revive" Candy & Healing Aromatic Lv.1)', color: "grey" },
+    { id: "weekly_event_shop", label: "Event Shop (if its available)", color: "grey" },
+    { id: "weekly_life_skill_quests", label: "Life Skill Quests (12 Exchange Quests)", color: "green" },
+    { id: "weekly_stimen_vaults", label: "Stimen Vaults (Resets every 2 weeks)", color: "silver" },
+    { id: "weekly_ice_dragon_normal", label: "Ice Dragon Raid - Normal (12710+ Ability Score)", color: "blue" },
+    { id: "weekly_ice_dragon_hard", label: "Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue" },
+    { id: "weekly_ice_dragon_nightmare", label: "Ice Dragon Raid - Nightmare (22300+ Ability Score)", color: "blue" },
+    { id: "weekly_dark_dragon_normal", label: "Dark Dragon Raid - Normal (15210+ Ability Score)", color: "dark_purple" },
+    { id: "weekly_dark_dragon_hard", label: "Dark Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple" },
+    { id: "weekly_dark_dragon_nightmare", label: "Dark Dragon Raid - Nightmare (24180+ Ability Score)", color: "dark_purple" },
+    { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Normal (UNKNOWN Ability Score)", color: "yellow" },
+    { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (UNKNOWN Ability Score)", color: "yellow" },
+    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (UNKNOWN Ability Score)", color: "yellow" }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+
+  // Cache DOM elements
+  const dailyContainer = $('daily_tasks_container');
+  const weeklyContainer = $('weekly_tasks_container');
+  const dailyCounter = $('daily_counter');
+  const weeklyCounter = $('weekly_counter');
+  const dailyProgress = $('daily_progress');
+  const weeklyProgress = $('weekly_progress');
+  const dailyProgressBar = $('daily_progress_bar');
+  const weeklyProgressBar = $('weekly_progress_bar');
+  const dailyCompletionMsg = $('daily_completion_message');
+  const weeklyCompletionMsg = $('weekly_completion_message');
+  const toggleDailyBtn = $('toggleDaily');
+  const toggleWeeklyBtn = $('toggleWeekly');
+  const dailyFilterInput = $('daily_filter');
+  const weeklyFilterInput = $('weekly_filter');
+  const btnSelectAllDaily = $('btnSelectAllDaily');
+  const btnDeselectAllDaily = $('btnDeselectAllDaily');
+  const btnSelectAllWeekly = $('btnSelectAllWeekly');
+  const btnDeselectAllWeekly = $('btnDeselectAllWeekly');
+
+  let hideCompletedState = { daily: false, weekly: false };
+
+  // Create task element with event listeners
+  function createTaskElement(task, section) {
+    const div = document.createElement('div');
+    div.className = `task ${task.color}`;
+    div.tabIndex = 0;
+    div.setAttribute('data-id', task.id);
+    div.setAttribute('role', 'listitem');
+    const lbl = document.createElement('label');
+    lbl.textContent = task.label;
+    div.appendChild(lbl);
+    if (section === 'weekly' && localStorage.getItem(task.id) === 'true') {
+      div.classList.add('completed');
+    }
+    div.addEventListener('click', () => toggleTask(div, section));
+    div.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleTask(div, section);
+      }
+    });
+    return div;
+  }
+
+  // Toggle task completion
+  function toggleTask(element, section) {
+    const completed = element.classList.toggle('completed');
+    if (section === 'weekly') {
+      localStorage.setItem(element.getAttribute('data-id'), completed);
+    }
+    updateCounter(section);
+    applyCompletedFilter(section);
+  }
+
+  // Batch render tasks
+  function renderTasks(container, tasks, section) {
+    const fragment = document.createDocumentFragment();
+    tasks.forEach(task => fragment.appendChild(createTaskElement(task, section)));
+    container.innerHTML = '';
+    container.appendChild(fragment);
+    updateCounter(section);
+  }
+
+  // Update counters and progress
+  function updateCounter(section) {
+    const container = section === 'daily' ? dailyContainer : weeklyContainer;
+    const counter = section === 'daily' ? dailyCounter : weeklyCounter;
+    const progress = section === 'daily' ? dailyProgress : weeklyProgress;
+    const progressBar = section === 'daily' ? dailyProgressBar : weeklyProgressBar;
+    const completionMsg = section === 'daily' ? dailyCompletionMsg : weeklyCompletionMsg;
+
+    const tasks = container.querySelectorAll('.task');
+    let done = 0;
+    tasks.forEach(t => { if (t.classList.contains('completed')) done++; });
+    const total = tasks.length;
+    const pct = total ? (done / total) * 100 : 0;
+
+    counter.textContent = `${done} / ${total} complete`;
+    counter.classList.remove('animate');
+    void counter.offsetWidth;
+    counter.classList.add('animate');
+
+    progress.style.width = `${pct}%`;
+    progress.textContent = `${pct.toFixed(0)}%`;
+    progressBar.dataset.tooltip = `${done} of ${total} (${pct.toFixed(1)}%)`;
+
+    const blue = [80, 106, 255];
+    const gold = [255, 184, 0];
+    const lerpedRGB = blue.map((b, i) => Math.round(b + (gold[i] - b) * (pct / 100)));
+    progress.style.background = `linear-gradient(90deg, rgb(${lerpedRGB.join(',')}), rgb(${lerpedRGB.join(',')}))`;
+
+    if (done === total && total > 0) {
+      completionMsg.style.display = 'block';
+      if (!progress.dataset.confettiDone) {
+        progress.dataset.confettiDone = 'true';
+        confetti({
+          particleCount: 1000,
+          angle: 180,
+          spread: 360,
+          origin: { x: 0.5, y: -0.5 },
+          ticks: 100,
+        });
+      }
+    } else {
+      completionMsg.style.display = 'none';
+      progress.dataset.confettiDone = '';
+    }
+  }
+
+  // Hide/show completed toggle
+  function toggleCompleted(section) {
+    hideCompletedState[section] = !hideCompletedState[section];
+    const button = section === 'daily' ? toggleDailyBtn : toggleWeeklyBtn;
+    button.textContent = hideCompletedState[section] ? 'Show Completed' : 'Hide Completed';
+    button.setAttribute('aria-pressed', hideCompletedState[section]);
+    applyCompletedFilter(section);
+  }
+
+  // Apply filtering and hide completed logic
+  function applyCompletedFilter(section) {
+    const container = section === 'daily' ? dailyContainer : weeklyContainer;
+    const filterInput = section === 'daily' ? dailyFilterInput : weeklyFilterInput;
+    const tasks = container.querySelectorAll('.task');
+    const hideCompleted = hideCompletedState[section];
+    const filterText = filterInput.value.toLowerCase();
+
+    tasks.forEach(t => {
+      const isCompleted = t.classList.contains('completed');
+      const matchesFilter = t.textContent.toLowerCase().includes(filterText);
+      if (!matchesFilter || (isCompleted && hideCompleted)) {
+        t.style.display = 'none';
+      } else {
+        t.style.display = '';
+      }
+    });
+  }
+
+  // Select/deselect all tasks
+  function selectAll(section) {
+    const container = section === 'daily' ? dailyContainer : weeklyContainer;
+    const tasks = container.querySelectorAll('.task');
+    tasks.forEach(t => {
+      t.classList.add('completed');
+      if (section === 'weekly') {
+        localStorage.setItem(t.getAttribute('data-id'), 'true');
+      }
+    });
+    updateCounter(section);
+    applyCompletedFilter(section);
+  }
+
+  function deselectAll(section) {
+    const container = section === 'daily' ? dailyContainer : weeklyContainer;
+    const tasks = container.querySelectorAll('.task');
+    tasks.forEach(t => {
+      t.classList.remove('completed');
+      if (section === 'weekly') {
+        localStorage.setItem(t.getAttribute('data-id'), 'false');
+      }
+    });
+    updateCounter(section);
+    applyCompletedFilter(section);
+  }
+
+  // Debounce utility
+  function debounce(fn, delay) {
+    let timeout;
+    return function (...args) {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
+
+  // Set up input filtering
+  function setupFilter(section) {
+    const input = section === 'daily' ? dailyFilterInput : weeklyFilterInput;
+    input.addEventListener('input', debounce(() => applyCompletedFilter(section), 150));
+  }
+
+  // Update page title with day number
+  function updateTitle() {
+    const start = new Date('2025-10-09');
+    const now = new Date();
+    const day = Math.floor((now - start) / 864e5) + 1;
+    $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
+  }
+
+  // Timer-related functions and class
+  const noronhaNow = () => new Date().toLocaleString('en-US', { timeZone: 'America/Noronha' });
+  const parseNoronha = () => new Date(noronhaNow());
+
+  const diffSec = (future, now = parseNoronha()) => Math.max(0, Math.floor((future - now) / 1000));
+  const format = ({ d, h, m, s }) => {
+    const parts = [];
+    if (d) parts.push(`${d}d`);
+    if (h || parts.length) parts.push(`${h}h`);
+    if (m || parts.length) parts.push(`${m}m`);
+    if (!parts.length) parts.push(`${s}s`);
+    return parts.join(' ');
+  };
+
+  const cloneSet = (base, day, h, m) => {
+    const d = new Date(base);
+    d.setHours(0, 0, 0, 0);
+    while (d.getDay() !== day) d.setDate(d.getDate() + 1);
+    d.setHours(h, m, 0, 0);
+    return d;
+  };
+
+  const getDailyReset = now => {
+    const r = new Date(now);
+    r.setHours(5, 0, 0, 0);
+    return now >= r ? new Date(r.getTime() + 864e5) : r;
+  };
+
+  const getWeeklyReset = now => {
+    const r = new Date(now);
+    r.setHours(5, 0, 0, 0);
+    const diff = ((1 - r.getDay() + 7) % 7) || (now.getHours() >= 5 ? 7 : 0);
+    r.setDate(r.getDate() + diff);
+    return r;
+  };
+
+  const getStimenVaults = now => {
+    let r = new Date('2025-11-03T02:00:00');
+    while (r < now) r.setDate(r.getDate() + 14);
+    return r;
+  };
+
+  const getGuildHuntPeriod = now => {
+    const days = [5, 6, 0];
+    for (const day of days) {
+      const start = cloneSet(now, day, 14, 0);
+      const end = new Date(start);
+      end.setDate(end.getDate() + 1);
+      end.setHours(4, 0, 0, 0);
+      if (now >= start && now < end) return { start, end };
+    }
+    const next = days
+      .map(d => cloneSet(now, d, 14, 0))
+      .map(dt => (dt <= now ? new Date(dt.getTime() + 7 * 864e5) : dt))
+      .sort((a, b) => a - b)[0];
+    const end = new Date(next);
+    end.setDate(end.getDate() + 1);
+    end.setHours(4, 0, 0, 0);
+    return { start: next, end };
+  };
+
+  const getGuildDancePeriod = now => {
+    const start = cloneSet(now, 5, 15, 30);
+    const end = new Date(start);
+    end.setDate(end.getDate() + 1);
+    end.setHours(3, 30, 0, 0);
+    if (now >= start && now < end) return { start, end };
+    const next = new Date(start.getTime() + (start <= now ? 7 * 864e5 : 0));
+    const nextEnd = new Date(next);
+    nextEnd.setDate(nextEnd.getDate() + 1);
+    nextEnd.setHours(3, 30, 0, 0);
+    return { start, end: nextEnd };
+  };
+
+  const getWorldBossCrusadePeriod = now => {
+    const start = new Date(now);
+    start.setHours(16, 0, 0, 0);
+    const end = new Date(now);
+    end.setHours(22, 0, 0, 0);
+    if (now >= start && now < end) return { start, end };
+    if (now < start) return { start, end };
+    start.setDate(start.getDate() + 1);
+    end.setDate(end.getDate() + 1);
+    return { start, end };
+  };
+
+  class EventTimer {
+    constructor(id, getPeriod, label) {
+      this.el = $(id);
+      this.getPeriod = getPeriod;
+      this.label = label;
+      this.name = this.el.querySelector('.name');
+      this.cnt = this.el.querySelector('.countdown');
+      this.name.onclick = () => timers.forEach(t => t.update());
+    }
+    update(now = parseNoronha()) {
+      let period;
+      try {
+        period = this.getPeriod(now);
+      } catch {
+        this.cnt.textContent = 'Error';
+        return;
+      }
+      const { start, end } = period.start === undefined ? { start: null, end: period } : period;
+      const target = now >= start && now < end ? end : start || end;
+      if (!target) return;
+      const diff = diffSec(target, now);
+      const d = Math.floor(diff / 86400),
+        h = Math.floor((diff % 86400) / 3600),
+        m = Math.floor((diff % 3600) / 60),
+        s = diff % 60;
+      const active = now >= start && now < end;
+      const txt = active
+        ? `${format({ d, h, m, s })} left`
+        : `${format({ d, h, m, s })} until ${this.label.includes('Reset') || this.label.includes('Vaults') ? 'reset' : 'start'}`;
+      this.cnt.textContent = txt;
+
+      this.el.classList.toggle('active', active);
+    }
+  }
+
+  const timers = [
+    new EventTimer('daily_reset_timer', getDailyReset, 'Daily Reset'),
+    new EventTimer('wb_crusade_timer', getWorldBossCrusadePeriod, 'World Boss Crusade'),
+    new EventTimer('weekly_reset_timer', getWeeklyReset, 'Weekly Reset'),
+    new EventTimer('guild_hunt_timer', getGuildHuntPeriod, 'Guild Hunt'),
+    new EventTimer('guild_dance_timer', getGuildDancePeriod, 'Guild Dance'),
+    new EventTimer('stimen_vaults_timer', getStimenVaults, 'Stimen Vaults'),
+  ];
+
+  window.onload = () => {
+    updateTitle();
+    renderTasks(dailyContainer, dailyTaskData, 'daily');
+    renderTasks(weeklyContainer, weeklyTaskData, 'weekly');
+    setupFilter('daily');
+    setupFilter('weekly');
+    // Initial timer update
+    timers.forEach(t => t.update());
+    // Update timers once every second to reduce CPU usage
+    setInterval(() => timers.forEach(t => t.update()), 1000);
+    // Also update timers on tab visibility change
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) timers.forEach(t => t.update());
+    });
+  };
+
+  toggleDailyBtn.addEventListener('click', () => toggleCompleted('daily'));
+  toggleWeeklyBtn.addEventListener('click', () => toggleCompleted('weekly'));
+  btnSelectAllDaily.addEventListener('click', () => selectAll('daily'));
+  btnDeselectAllDaily.addEventListener('click', () => deselectAll('daily'));
+  btnSelectAllWeekly.addEventListener('click', () => selectAll('weekly'));
+  btnDeselectAllWeekly.addEventListener('click', () => deselectAll('weekly'));
+})();

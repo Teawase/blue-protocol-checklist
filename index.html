@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blue Protocol: Star Resonance Checklist</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1 id="page-title">Blue Protocol: Star Resonance Checklist</h1>
+
+  <div id="event_timers" class="event-timers" aria-live="polite">
+    <div id="daily_reset_timer" class="event-timer">
+      <div class="name">Daily Reset</div>
+      <div class="countdown">Loading…</div>
+    </div>
+    <div id="wb_crusade_timer" class="event-timer">
+      <div class="name">World Boss Crusade</div>
+      <div class="countdown">Loading…</div>
+    </div>
+    <div id="weekly_reset_timer" class="event-timer">
+      <div class="name">Weekly Reset</div>
+      <div class="countdown">Loading…</div>
+    </div>
+    <div id="guild_hunt_timer" class="event-timer">
+      <div class="name">Guild Hunt</div>
+      <div class="countdown">Loading…</div>
+    </div>
+    <div id="guild_dance_timer" class="event-timer">
+      <div class="name">Guild Dance</div>
+      <div class="countdown">Loading…</div>
+    </div>
+    <div id="stimen_vaults_timer" class="event-timer">
+      <div class="name">Stimen Vaults</div>
+      <div class="countdown">Loading…</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section" id="daily_section">
+      <h2>
+        Daily Tasks
+        <span class="counter-container">
+          <span class="counter" id="daily_counter">0 / 9 complete</span>
+          <div class="progress-bar" id="daily_progress_bar" data-tooltip="">
+            <div class="progress-fill" id="daily_progress">0%</div>
+          </div>
+        </span>
+      </h2>
+      <div class="action-filter-row">
+        <div class="action-buttons">
+          <button id="btnSelectAllDaily">Select All</button>
+          <button id="btnDeselectAllDaily">Deselect All</button>
+          <button id="toggleDaily" aria-pressed="false">Hide Completed</button>
+        </div>
+        <input
+          type="text"
+          placeholder="Search Daily Tasks…"
+          id="daily_filter"
+          class="filter-input"
+          aria-label="Search Daily Tasks"
+        />
+      </div>
+      <div class="tasks" id="daily_tasks_container" role="list"></div>
+      <div
+        id="daily_completion_message"
+        class="completion-message"
+        aria-live="polite"
+        role="status"
+        style="display: none"
+      >
+        All daily tasks completed! Great job! 🌟
+      </div>
+    </div>
+
+    <div class="section" id="weekly_section">
+      <h2>
+        Weekly Tasks
+        <span class="counter-container">
+          <span class="counter" id="weekly_counter">0 / 24 complete</span>
+          <div class="progress-bar" id="weekly_progress_bar" data-tooltip="">
+            <div class="progress-fill" id="weekly_progress">0%</div>
+          </div>
+        </span>
+      </h2>
+      <div class="action-filter-row">
+        <div class="action-buttons">
+          <button id="btnSelectAllWeekly">Select All</button>
+          <button id="btnDeselectAllWeekly">Deselect All</button>
+          <button id="toggleWeekly" aria-pressed="false">Hide Completed</button>
+        </div>
+        <input
+          type="text"
+          placeholder="Search Weekly Tasks…"
+          id="weekly_filter"
+          class="filter-input"
+          aria-label="Search Weekly Tasks"
+        />
+      </div>
+      <div class="tasks" id="weekly_tasks_container" role="list"></div>
+      <div
+        id="weekly_completion_message"
+        class="completion-message"
+        aria-live="polite"
+        role="status"
+        style="display: none"
+      >
+        All weekly tasks completed! You're amazing! 🔥
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Resources:
+    <a href="https://blueprotocol.lunixx.de/" target="_blank" rel="noopener noreferrer">Database</a> |
+    <a href="https://natsume.io/bpsr/" target="_blank" rel="noopener noreferrer">Events Schedule</a> |
+    <a href="https://bptimer.com/" target="_blank" rel="noopener noreferrer">Boss Timers</a> |
+    <a href="https://maxroll.gg/blue-protocol" target="_blank" rel="noopener noreferrer">Maxroll</a> |
+    <a href="https://prydwen.gg/blue-protocol/" target="_blank" rel="noopener noreferrer">Prydwen</a> |
+    <a href="https://blueprotocol.interactivemap.app/" target="_blank" rel="noopener noreferrer">Interactive Map</a>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
