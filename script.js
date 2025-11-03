@@ -61,8 +61,82 @@
   const btnDeselectAllDaily = $('btnDeselectAllDaily');
   const btnSelectAllWeekly = $('btnSelectAllWeekly');
   const btnDeselectAllWeekly = $('btnDeselectAllWeekly');
+  const dailyStreakEl = $('daily_streak'); // New: for streak display
+  const gdprModal = $('gdpr-modal');
+  const acceptBtn = $('accept-gdpr');
+  const rejectBtn = $('reject-gdpr');
 
   let hideCompletedState = { daily: false, weekly: false };
+  const TOTAL_DAILIES = 9; // Hardcode for streak calc
+  let isStorageAllowed = localStorage.getItem('gdpr_optout') !== 'true';
+
+  // GDPR functions
+  async function checkGDPR() {
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+        gdprModal.style.display = 'flex';
+      }
+    } catch (e) {
+      console.log('GDPR check skipped:', e);
+    }
+  }
+
+  function hideGDPRModal() {
+    gdprModal.style.display = 'none';
+  }
+
+  acceptBtn.addEventListener('click', () => {
+    localStorage.setItem('gdpr_consent', 'true');
+    isStorageAllowed = true;
+    hideGDPRModal();
+  });
+
+  rejectBtn.addEventListener('click', () => {
+    localStorage.setItem('gdpr_optout', 'true');
+    localStorage.clear(); // Clear existing data
+    isStorageAllowed = false;
+    hideGDPRModal();
+    // Close the website
+    window.close();
+    // Fallback: If window.close() doesn't work (e.g., not script-opened), show a blocking message
+    setTimeout(() => {
+      if (!document.hidden) {
+        document.body.innerHTML = `
+          <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #fff; display: flex; align-items: center; justify-content: center; flex-direction: column; font-family: sans-serif; text-align: center; z-index: 9999;">
+            <h1>Session Closed</h1>
+            <p>Due to privacy opt-out, this session has ended. Please enable cookies/localStorage to use the checklist.</p>
+            <button onclick="window.close()" style="margin-top: 20px; padding: 10px 20px; background: #506aff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Close Tab</button>
+          </div>
+        `;
+        document.documentElement.style.overflow = 'hidden';
+      }
+    }, 100);
+  });
+
+  // Incognito detection and unload handler
+  async function isIncognito() {
+    try {
+      const fs = window.webkitRequestFileSystem || window.RequestFileSystem;
+      if (!fs) return false;
+      return new Promise((resolve) => {
+        fs(window.TEMPORARY, 1, () => resolve(false), () => resolve(true));
+      });
+    } catch {
+      return false;
+    }
+  }
+
+  function clearAllProgress() {
+    if (!isStorageAllowed) return;
+    localStorage.removeItem('daily_tasks');
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('weekly_')) localStorage.removeItem(key);
+    });
+    location.reload();
+  }
 
   // New function for daily date key (based on start of current daily period in Noronha TZ)
   const getCurrentDailyDate = (now = parseNoronha()) => {
@@ -74,20 +148,61 @@
 
   // Helper to get/update daily storage object
   const getDailyStorage = () => {
+    if (!isStorageAllowed) {
+      return { date: getCurrentDailyDate(), tasks: {}, history: [], currentCompleted: 0 };
+    }
     const currentDate = getCurrentDailyDate();
     let stored = JSON.parse(localStorage.getItem('daily_tasks') || '{}');
     if (stored.date !== currentDate) {
       // Reset if date changed (new day after 5 AM Noronha)
-      stored = { date: currentDate, tasks: {} };
+      // Log previous day's completion to history
+      if (stored.currentCompleted !== undefined) {
+        const prevDate = new Date(stored.date || currentDate);
+        prevDate.setDate(prevDate.getDate() - 1);
+        const prevDateStr = prevDate.toISOString().split('T')[0];
+        if (!stored.history) stored.history = [];
+        stored.history.push({ date: prevDateStr, completed: stored.currentCompleted });
+        // Prune history to last 60 days
+        if (stored.history.length > 60) stored.history = stored.history.slice(-60);
+      }
+      stored = { date: currentDate, tasks: {}, history: stored.history || [], currentCompleted: 0 };
       localStorage.setItem('daily_tasks', JSON.stringify(stored));
     }
     return stored;
   };
 
   const updateDailyStorage = (taskId, completed) => {
+    if (!isStorageAllowed) return;
     const stored = getDailyStorage(); // Ensures reset if needed
-    stored.tasks[taskId] = completed;
-    localStorage.setItem('daily_tasks', JSON.stringify(stored));
+    const prevState = !!stored.tasks[taskId];
+    if (prevState !== completed) { // Only update if state changed
+      stored.tasks[taskId] = completed;
+      stored.currentCompleted = Object.values(stored.tasks).filter(Boolean).length;
+      localStorage.setItem('daily_tasks', JSON.stringify(stored));
+    }
+  };
+
+  // New: Calculate current streak from history (consecutive full completions)
+  const calculateDailyStreak = () => {
+    if (!isStorageAllowed) return 0;
+    const stored = getDailyStorage();
+    const history = stored.history || [];
+    let streak = 0;
+    const today = new Date(getCurrentDailyDate());
+    // Check if today is full (but don't count today for streak until reset)
+    const isTodayFull = stored.currentCompleted === TOTAL_DAILIES;
+    for (let i = history.length - 1; i >= 0; i--) {
+      const histDate = new Date(history[i].date);
+      const daysAgo = Math.floor((today - histDate) / 86400000);
+      if (daysAgo === 0) continue; // Skip today
+      if (daysAgo > 30) break; // Cap at 30 days back
+      if (history[i].completed === TOTAL_DAILIES) {
+        streak++;
+      } else {
+        break;
+      }
+    }
+    return streak + (isTodayFull ? 1 : 0); // Include today if full
   };
 
   // Create task element with event listeners
@@ -100,8 +215,10 @@
     const lbl = document.createElement('label');
     lbl.textContent = task.label;
     div.appendChild(lbl);
-    if (section === 'weekly' && localStorage.getItem(task.id) === 'true') {
-      div.classList.add('completed');
+    if (section === 'weekly') {
+      if (isStorageAllowed && localStorage.getItem(task.id) === 'true') {
+        div.classList.add('completed');
+      }
     } else if (section === 'daily') {
       const stored = getDailyStorage();
       if (stored.tasks && stored.tasks[task.id]) {
@@ -123,7 +240,7 @@
     const completed = element.classList.toggle('completed');
     const taskId = element.getAttribute('data-id');
     if (section === 'weekly') {
-      localStorage.setItem(taskId, completed);
+      if (isStorageAllowed) localStorage.setItem(taskId, completed);
     } else if (section === 'daily') {
       updateDailyStorage(taskId, completed);
     }
@@ -137,6 +254,10 @@
     tasks.forEach(task => fragment.appendChild(createTaskElement(task, section)));
     container.innerHTML = '';
     container.appendChild(fragment);
+    const renderedTasks = container.querySelectorAll('.task');
+    renderedTasks.forEach((task, index) => {
+      task.dataset.index = index;
+    });
     updateCounter(section);
   }
 
@@ -184,6 +305,15 @@
       completionMsg.style.display = 'none';
       progress.dataset.confettiDone = '';
     }
+
+    // New: Update daily streak display
+    if (section === 'daily') {
+      const streak = calculateDailyStreak();
+      if (dailyStreakEl) {
+        dailyStreakEl.textContent = streak > 0 ? ` (🔥 ${streak}-day streak)` : ' (No streak yet)';
+        dailyStreakEl.style.display = isStorageAllowed ? 'inline' : 'none';
+      }
+    }
   }
 
   // Hide/show completed toggle
@@ -221,7 +351,7 @@
     tasks.forEach(t => {
       t.classList.add('completed');
       const taskId = t.getAttribute('data-id');
-      if (section === 'weekly') {
+      if (section === 'weekly' && isStorageAllowed) {
         localStorage.setItem(taskId, 'true');
       } else if (section === 'daily') {
         updateDailyStorage(taskId, true);
@@ -237,7 +367,7 @@
     tasks.forEach(t => {
       t.classList.remove('completed');
       const taskId = t.getAttribute('data-id');
-      if (section === 'weekly') {
+      if (section === 'weekly' && isStorageAllowed) {
         localStorage.setItem(taskId, 'false');
       } else if (section === 'daily') {
         updateDailyStorage(taskId, false);
@@ -246,6 +376,27 @@
     updateCounter(section);
     applyCompletedFilter(section);
   }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (!e.target.classList?.contains('task')) return;
+    const section = e.target.closest('.section').id === 'daily_section' ? 'daily' : 'weekly';
+    const container = section === 'daily' ? dailyContainer : weeklyContainer;
+    const allTasks = Array.from(container.querySelectorAll('.task:not([style*="display: none"])'));
+    if (allTasks.length < 2) return;
+    const currentIndex = allTasks.findIndex(task => task === e.target);
+    if (currentIndex === -1) return;
+    let newIndex = currentIndex;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+      newIndex = Math.min(allTasks.length - 1, currentIndex + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      newIndex = Math.max(0, currentIndex - 1);
+    } else {
+      return;
+    }
+    e.preventDefault();
+    allTasks[newIndex].focus();
+  });
 
   // Debounce utility
   function debounce(fn, delay) {
@@ -341,7 +492,7 @@
     const nextEnd = new Date(next);
     nextEnd.setDate(nextEnd.getDate() + 1);
     nextEnd.setHours(3, 30, 0, 0);
-    return { start, end: nextEnd };
+    return { start: next, end: nextEnd };
   };
 
   const getWorldBossCrusadePeriod = now => {
@@ -400,26 +551,65 @@
     new EventTimer('stimen_vaults_timer', getStimenVaults, 'Stimen Vaults'),
   ];
 
-  window.onload = () => {
+  // Lazy loading for timers
+  let updateInterval;
+  function startTimerUpdates() {
+    function updateAll() {
+      timers.forEach(t => t.update());
+    }
+    updateAll();
+    let isVisible = !document.hidden;
+    function handleVisibility() {
+      const nowVisible = !document.hidden;
+      if (nowVisible !== isVisible) {
+        isVisible = nowVisible;
+        clearInterval(updateInterval);
+        const delay = isVisible ? 1000 : 5000;
+        updateInterval = setInterval(updateAll, delay);
+      }
+    }
+    updateInterval = setInterval(updateAll, 1000);
+    document.addEventListener('visibilitychange', handleVisibility);
+    handleVisibility(); // Initial check
+  }
+
+  // Init on load
+  async function init() {
     updateTitle();
+    await checkGDPR();
     renderTasks(dailyContainer, dailyTaskData, 'daily');
     renderTasks(weeklyContainer, weeklyTaskData, 'weekly');
     setupFilter('daily');
     setupFilter('weekly');
-    // Initial timer update
-    timers.forEach(t => t.update());
-    // Update timers once every second to reduce CPU usage
-    setInterval(() => timers.forEach(t => t.update()), 1000);
-    // Also update timers on tab visibility change
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) timers.forEach(t => t.update());
-    });
-  };
+    startTimerUpdates();
+    // Initial counter update
+    updateCounter('daily');
+    updateCounter('weekly');
 
+    // Incognito handling
+    const isIncog = await isIncognito();
+    window.addEventListener('beforeunload', (e) => {
+      if (isIncog) {
+        clearAllProgress();
+        return;
+      }
+      if (confirm('Clear unsaved progress? (Otherwise, it will be saved automatically.)')) {
+        clearAllProgress();
+      }
+    });
+  }
+
+  // Event listeners
   toggleDailyBtn.addEventListener('click', () => toggleCompleted('daily'));
   toggleWeeklyBtn.addEventListener('click', () => toggleCompleted('weekly'));
   btnSelectAllDaily.addEventListener('click', () => selectAll('daily'));
   btnDeselectAllDaily.addEventListener('click', () => deselectAll('daily'));
   btnSelectAllWeekly.addEventListener('click', () => selectAll('weekly'));
   btnDeselectAllWeekly.addEventListener('click', () => deselectAll('weekly'));
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
