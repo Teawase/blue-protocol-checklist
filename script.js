@@ -69,6 +69,9 @@
   let hideCompletedState = { daily: false, weekly: false };
   const TOTAL_DAILIES = 9;
   let isStorageAllowed = localStorage.getItem('gdpr_optout') !== 'true';
+  // Track previous completion counts for confetti trigger
+  let prevDailyCompleted = 0;
+  let prevWeeklyCompleted = 0;
 
   // GDPR functions
   async function checkGDPR() {
@@ -295,6 +298,14 @@
     const total = tasks.length;
     const pct = total ? (done / total) * 100 : 0;
 
+    // FIXED: Track previous completion count for confetti trigger
+    const prevDone = section === 'daily' ? prevDailyCompleted : prevWeeklyCompleted;
+    const justCompleted = done === total && prevDone < total;
+
+    // Update previous count for next call
+    if (section === 'daily') prevDailyCompleted = done;
+    else prevWeeklyCompleted = done;
+
     counter.textContent = `${done} / ${total} complete`;
     counter.classList.remove('animate');
     void counter.offsetWidth;
@@ -311,8 +322,8 @@
 
     if (done === total && total > 0) {
       completionMsg.style.display = 'block';
-      if (!progress.dataset.confettiDone) {
-        progress.dataset.confettiDone = 'true';
+      // FIXED: Only trigger confetti when transitioning from incomplete -> complete
+      if (justCompleted) {
         confetti({
           particleCount: 1000,
           angle: 180,
@@ -323,7 +334,6 @@
       }
     } else {
       completionMsg.style.display = 'none';
-      progress.dataset.confettiDone = '';
     }
 
     if (section === 'daily') {
