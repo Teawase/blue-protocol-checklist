@@ -307,26 +307,30 @@ const calculateDailyStreak = () => {
   const TOTAL_DAILIES = 9;
 
   let streak = 0;
-  const today = new Date(getCurrentDailyDate());
+  const todayStr = getCurrentDailyDate();
   const completedToday = stored.currentCompleted === TOTAL_DAILIES;
 
-  // Create a map of date => completed count for quick lookup
+  // Map history for quick lookup by date string
   const historyMap = new Map(history.map(h => [h.date, h.completed]));
 
-  // Start streak count from yesterday backward
-  let dayIterator = new Date(today);
-  dayIterator.setDate(dayIterator.getDate() - 1);
+  // Start from yesterday
+  let checkDate = new Date(todayStr);
+  checkDate.setDate(checkDate.getDate() - 1);
 
-  while (true) {
-    const dateStr = dayIterator.toISOString().split('T')[0];
-    const completed = historyMap.get(dateStr) || 0;
-    if (completed === TOTAL_DAILIES) {
+  while(true) {
+    const dateKey = checkDate.toISOString().split('T')[0];
+    if (historyMap.get(dateKey) === TOTAL_DAILIES) {
       streak++;
-      dayIterator.setDate(dayIterator.getDate() - 1);
+      checkDate.setDate(checkDate.getDate() - 1);
     } else {
       break;
     }
   }
+
+  if (completedToday) streak++;
+
+  return streak;
+};
 
   // Add today if fully completed to streak
   if (completedToday) streak++;
