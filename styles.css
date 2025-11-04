@@ -351,7 +351,7 @@ button:focus {
   position: absolute;
   top: -2px;
   right: -8px;
-  font-size: 0.7rem;
+  font-size: 0.7rem,0.7rem;
   cursor: pointer;
   color: #a6a6a6;
   transition: color 0.3s;
@@ -446,13 +446,6 @@ footer a:focus {
   text-align: center;
   text-shadow: 0 0 12px #ffd700aa, 0 0 24px #ffd70044;
   user-select: none;
-}
-.streak {
-  font-weight: 600;
-  color: #ffd700;
-  text-shadow: 0 0 4px #ffd700aa;
-  margin-left: 0.5rem;
-  font-size: 0.95rem;
 }
 .modal {
   position: fixed;
