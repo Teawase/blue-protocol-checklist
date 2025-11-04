@@ -11,6 +11,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
   - Animated progress bars with percentage display and gradient fills.
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
 - **Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
+- **Import/export:** Backup and restore daily/weekly checklist progress via a JSON file, with instant UI updates.
 
 ## Search & Navigation
 - **Live Search:** Text input filters tasks by label in daily and weekly sections, switching to a vertical list for easier reading.
