@@ -72,7 +72,7 @@
   const exportProgressBtn = $('exportProgressBtn');
   const cancelImportExport = $('cancelImportExport');
 
-  let hideCompletedState = { daily: false, weekly: false };
+  let hideCompletedState = { daily: true, weekly: true };
   const TOTAL_DAILIES = 9;
   let isStorageAllowed = localStorage.getItem('gdpr_optout') !== 'true';
 
@@ -643,6 +643,8 @@
     startTimerUpdates();
     updateCounter('daily');
     updateCounter('weekly');
+    applyCompletedFilter('daily');
+    applyCompletedFilter('weekly');
 
     importExportBtn.addEventListener('click', () => {
       importExportModal.style.display = 'flex';
