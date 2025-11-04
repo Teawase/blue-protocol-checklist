@@ -7,7 +7,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 - **Weekly Tasks:** Track your weekly activities with similar color-coding and organization.
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; supports line-through styling and opacity fade for completed items.
 - **Progress Tracking:**
-  - Real-time counters (e.g., "6/ 9 complete").
+  - Real-time counters (e.g., "6 / 9 complete").
   - Animated progress bars with percentage display and gradient fills.
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
 - **Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
