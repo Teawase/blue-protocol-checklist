@@ -3,6 +3,8 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 
 ### https://teawase.github.io/blue-protocol-checklist/
 
+>  Note: Some code in this project was generated with AI assistance and subsequently reviewed and refined by the developer.
+
 # Features
 ## Core Functionality
 - **Daily Tasks:** Track your daily activities with color-coded categories.
