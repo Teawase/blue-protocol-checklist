@@ -320,7 +320,7 @@
           origin: { x: 0.5, y: -0.5 },
           ticks: 100,
         });
-
+      }
     } else {
       completionMsg.style.display = 'none';
       progress.dataset.confettiDone = '';
@@ -625,7 +625,6 @@
   } else {
     init();
   }
-  
-})();
 
+})();
 
