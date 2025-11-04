@@ -9,12 +9,12 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 ## Core Functionality
 - **Daily Tasks:** Track your daily activities with color-coded categories.
 - **Weekly Tasks:** Track your weekly activities with similar color-coding and organization.
-- **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; supports line-through styling and opacity fade for completed items.
+- **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
 - **Progress Tracking:**
   - Real-time counters (e.g., "6 / 9 complete").
   - Animated progress bars with percentage display and gradient fills.
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
-- **Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
+- **Show/Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
 - **Import/export:** Backup and restore daily/weekly checklist progress via a JSON file with instant UI updates.
 
 ## Search & Navigation
@@ -22,7 +22,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 - **Keyboard Navigation:** Arrow keys (Up/Down/Left/Right) to move focus between visible tasks; Enter/Space for toggling.
 
 ## History Tracking
-- **Persistent Storage:** Uses localStorage to save task states across sessions. Daily progress resets at (5:00 AM Noronha timezone); Weekly persists until weekly reset.
+- **Persistent Storage:** Uses localStorage to save task states across sessions. Daily progress resets at (5:00 AM Noronha timezone); Weekly progress resets every Monday at (5:00 AM Noronha timezone).
 
 ## Event Timers
 - **Real-Time Countdowns:** Dynamic timers for key game events, all timezone-aware (America/Noronha):
@@ -48,7 +48,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 ## Privacy & Edge Cases
 - **Data Privacy:** Auto-detects EU visitors via IP API; shows a modal for consent. Opting out deletes all data and closes the tab.
 - **Incognito Mode Support:** Detects private browsing and prompts to clear unsaved progress on unload; auto-clears if confirmed.
-- **Error Handling:** Graceful fallbacks for storage failures, timezone parsing, or API errors.
+- **Error Handling:** Fallback for storage failures, timezone parsing, or API errors.
 
 ## Resources & Extras
 - **Footer Links:** Quick access to community resources.
