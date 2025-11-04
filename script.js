@@ -300,26 +300,39 @@
     }
   };
 
-  const calculateDailyStreak = () => {
-    if (!isStorageAllowed) return 0;
-    const stored = getDailyStorage();
-    const history = stored.history || [];
-    let streak = 0;
-    const today = new Date(getCurrentDailyDate());
-    const isTodayFull = stored.currentCompleted === TOTAL_DAILIES;
-    for (let i = history.length - 1; i >= 0; i--) {
-      const histDate = new Date(history[i].date);
-      const daysAgo = Math.floor((today - histDate) / 86400000);
-      if (daysAgo === 0) continue;
-      if (daysAgo > 3650) break;
-      if (history[i].completed === TOTAL_DAILIES) {
-        streak++;
-      } else {
-        break;
-      }
+const calculateDailyStreak = () => {
+  if (!isStorageAllowed) return 0;
+  const stored = getDailyStorage();
+  const history = stored.history || [];
+  const TOTAL_DAILIES = 9;
+
+  let streak = 0;
+  const today = new Date(getCurrentDailyDate());
+  const completedToday = stored.currentCompleted === TOTAL_DAILIES;
+
+  // Create a map of date => completed count for quick lookup
+  const historyMap = new Map(history.map(h => [h.date, h.completed]));
+
+  // Start streak count from yesterday backward
+  let dayIterator = new Date(today);
+  dayIterator.setDate(dayIterator.getDate() - 1);
+
+  while (true) {
+    const dateStr = dayIterator.toISOString().split('T')[0];
+    const completed = historyMap.get(dateStr) || 0;
+    if (completed === TOTAL_DAILIES) {
+      streak++;
+      dayIterator.setDate(dayIterator.getDate() - 1);
+    } else {
+      break;
     }
-    return streak + (isTodayFull ? 1 : 0);
-  };
+  }
+
+  // Add today if fully completed to streak
+  if (completedToday) streak++;
+
+  return streak;
+};
 
   function createTaskElement(task, section) {
     const div = document.createElement('div');
