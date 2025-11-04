@@ -65,6 +65,12 @@
   const gdprModal = $('gdpr-modal');
   const acceptBtn = $('accept-gdpr');
   const rejectBtn = $('reject-gdpr');
+  const importExportBtn = $('importExportBtn');
+  const importFile = $('importFile');
+  const importExportModal = $('import-export-modal');
+  const importProgressBtn = $('importProgressBtn');
+  const exportProgressBtn = $('exportProgressBtn');
+  const cancelImportExport = $('cancelImportExport');
 
   let hideCompletedState = { daily: false, weekly: false };
   const TOTAL_DAILIES = 9;
@@ -132,7 +138,95 @@
     Object.keys(localStorage).forEach(key => {
       if (key.startsWith('weekly_')) localStorage.removeItem(key);
     });
+    localStorage.removeItem('weekly_reset_date');
     location.reload();
+  }
+
+  // Export functionality
+  function exportProgress() {
+    if (!isStorageAllowed) {
+      alert('Storage is disabled. Cannot export progress.');
+      return;
+    }
+
+    const data = {
+      daily_tasks: localStorage.getItem('daily_tasks'),
+      weekly_reset_date: localStorage.getItem('weekly_reset_date'),
+      weekly_tasks: {}
+    };
+
+    // Collect all weekly task states
+    weeklyTaskData.forEach(task => {
+      data.weekly_tasks[task.id] = localStorage.getItem(task.id);
+    });
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `blue-protocol-checklist-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Import functionality
+  function handleImport(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const imported = JSON.parse(ev.target.result);
+
+        if (!isStorageAllowed) {
+          alert('Storage is disabled. Please enable it in settings to import progress.');
+          return;
+        }
+
+        // Restore daily tasks
+        if (imported.daily_tasks) {
+          localStorage.setItem('daily_tasks', imported.daily_tasks);
+        }
+
+        // Restore weekly reset date
+        if (imported.weekly_reset_date) {
+          localStorage.setItem('weekly_reset_date', imported.weekly_reset_date);
+        }
+
+        // Restore weekly tasks
+        if (imported.weekly_tasks) {
+          Object.entries(imported.weekly_tasks).forEach(([key, value]) => {
+            if (value !== null) {
+              localStorage.setItem(key, value);
+            } else {
+              localStorage.removeItem(key);
+            }
+          });
+        }
+
+        // Update UI without reload
+        resetWeeklyStorageIfNeeded();
+        renderTasks(dailyContainer, dailyTaskData, 'daily');
+        renderTasks(weeklyContainer, weeklyTaskData, 'weekly');
+        updateCounter('daily');
+        updateCounter('weekly');
+        applyCompletedFilter('daily');
+        applyCompletedFilter('weekly');
+
+        alert('Progress imported successfully!');
+      } catch (err) {
+        console.error('Import error:', err);
+        alert('Invalid file format. Please ensure it\'s a valid JSON backup file.');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function hideImportExportModal() {
+    importExportModal.style.display = 'none';
   }
 
   // Daily date key (Noronha TZ)
@@ -226,7 +320,6 @@
     return streak + (isTodayFull ? 1 : 0);
   };
 
-  // Task creation and toggling logic remains unchanged
   function createTaskElement(task, section) {
     const div = document.createElement('div');
     div.className = `task ${task.color}`;
@@ -393,7 +486,7 @@
     applyCompletedFilter(section);
   }
 
-  // Keyboard navigation unchanged
+  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (!e.target.classList?.contains('task')) return;
     const section = e.target.closest('.section').id === 'daily_section' ? 'daily' : 'weekly';
@@ -434,7 +527,7 @@
     $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
   }
 
-  // Timer functions unchanged
+  // Timer functions
   const noronhaNow = () => new Date().toLocaleString('en-US', { timeZone: 'America/Noronha' });
   const parseNoronha = () => new Date(noronhaNow());
 
@@ -592,7 +685,7 @@
 
     renderTasks(dailyContainer, dailyTaskData, 'daily');
 
-    resetWeeklyStorageIfNeeded();  // Add this line BEFORE rendering weeklies
+    resetWeeklyStorageIfNeeded();
     renderTasks(weeklyContainer, weeklyTaskData, 'weekly');
 
     setupFilter('daily');
@@ -600,6 +693,21 @@
     startTimerUpdates();
     updateCounter('daily');
     updateCounter('weekly');
+
+    // Import/Export event listeners
+    importExportBtn.addEventListener('click', () => {
+      importExportModal.style.display = 'flex';
+    });
+    importProgressBtn.addEventListener('click', () => {
+      hideImportExportModal();
+      importFile.click();
+    });
+    exportProgressBtn.addEventListener('click', () => {
+      hideImportExportModal();
+      exportProgress();
+    });
+    cancelImportExport.addEventListener('click', hideImportExportModal);
+    importFile.addEventListener('change', handleImport);
 
     const isIncog = await isIncognito();
     window.addEventListener('beforeunload', (e) => {
@@ -627,4 +735,3 @@
   }
 
 })();
-
