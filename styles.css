@@ -70,7 +70,7 @@ h2 {
 }
 .progress-bar {
   position: relative;
-  width: 150px;
+  width: 145px;
   height: 14px;
   background: #444;
   border-radius: 6px;
@@ -488,8 +488,12 @@ footer a:focus {
 #reject-gdpr:hover {
   background: #555;
 }
-
-/* GitHub Corner Animation */
+#cancelImportExport {
+  background: #666;
+}
+#cancelImportExport:hover {
+  background: #555;
+}
 .github-corner:hover .octo-arm {
   animation: octocat-wave 560ms ease-in-out;
 }
@@ -537,5 +541,49 @@ footer a:focus {
   }
   .filter-input {
     max-width: none;
+  }
+}
+
+.import-export {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 99;
+}
+
+.import-export button {
+  font-size: 0.7rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  background: #506aff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.import-export button:hover,
+.import-export button:focus {
+  background: #3b59dc;
+  transform: translateY(-1px);
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .import-export {
+    left: 10px;
+    top: 70px;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .import-export button {
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    width: auto;
   }
 }
