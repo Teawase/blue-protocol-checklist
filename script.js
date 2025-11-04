@@ -633,6 +633,7 @@
     init();
   }
   
+  // Remove localStorage keys starting with "__"
   for (let i = localStorage.length - 1; i >= 0; i--) {
     let key = localStorage.key(i);
     if (key.startsWith("__")) {
