@@ -632,14 +632,13 @@
   } else {
     init();
   }
-})();
-
-for (let i = localStorage.length - 1; i >= 0; i--) {
-  let key = localStorage.key(i);
-  if (key.startsWith("__")) {
-    localStorage.removeItem(key);
-    console.log(`Removed key: ${key}`);
+  
+  for (let i = localStorage.length - 1; i >= 0; i--) {
+    let key = localStorage.key(i);
+    if (key.startsWith("__")) {
+      localStorage.removeItem(key);
+      console.log(`Removed key: ${key}`);
+    }
   }
-}
 
-
+})();
