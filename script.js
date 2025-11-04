@@ -636,8 +636,9 @@
 
 for (let i = localStorage.length - 1; i >= 0; i--) {
   let key = localStorage.key(i);
-  if (key.startsWith("__test_")) {
+  if (key.startsWith("test")) {
     localStorage.removeItem(key);
     console.log(`Removed key: ${key}`);
   }
 }
+
