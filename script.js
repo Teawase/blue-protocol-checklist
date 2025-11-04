@@ -322,10 +322,10 @@
         });
         // Enhanced confetti with game-themed colors
         confetti({
-          particleCount: 150,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#506aff', '#ffb800', '#ff6b6b', '#4ecdc4'],
+          particleCount: 1000,
+          angle: 180,
+          spread: 360,
+          origin: { x: 0.5, y: 1 },
         });
       }
     } else {
