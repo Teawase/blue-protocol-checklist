@@ -318,7 +318,7 @@
           angle: 180,
           spread: 360,
           origin: { x: 0.5, y: -0.5 },
-          ticks: 100,
+          ticks: 100
         });
       }
     } else {
