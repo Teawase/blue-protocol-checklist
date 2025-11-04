@@ -314,18 +314,32 @@
       if (!progress.dataset.confettiDone) {
         progress.dataset.confettiDone = 'true';
         confetti({
-          particleCount: 1000,
+          particleCount: 500,
           angle: 180,
           spread: 360,
           origin: { x: 0.5, y: -0.5 },
           ticks: 100,
         });
-        // Enhanced confetti with game-themed colors
+
         confetti({
-          particleCount: 1000,
+          particleCount: 500,
           angle: 180,
           spread: 360,
           origin: { x: 0.5, y: 1 },
+        });
+
+        confetti({
+          particleCount: 500,
+          angle: 180,
+          spread: 360,
+          origin: { x: 1, y: 0.5 },
+        });
+
+        confetti({
+          particleCount: 500,
+          angle: 180,
+          spread: 360,
+          origin: { x: 0, y: 0.5 },
         });
       }
     } else {
