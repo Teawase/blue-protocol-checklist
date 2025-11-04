@@ -1,6 +1,8 @@
 # Blue Protocol: Star Resonance Checklist
 A simple, responsive web-based checklist for tracking daily and weekly tasks for Blue Protocol: Star Resonance. Built with HTML, CSS, and JavaScript. No external dependencies beyond confetti.js for celebrations. Progress is saved locally in your browser.
 
+### https://teawase.github.io/blue-protocol-checklist/
+
 # Features
 ## Core Functionality
 - **Daily Tasks:** Track your daily activities with color-coded categories.
@@ -11,7 +13,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
   - Animated progress bars with percentage display and gradient fills.
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
 - **Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
-- **Import/export:** Backup and restore daily/weekly checklist progress via a JSON file, with instant UI updates.
+- **Import/export:** Backup and restore daily/weekly checklist progress via a JSON file with instant UI updates.
 
 ## Search & Navigation
 - **Live Search:** Text input filters tasks by label in daily and weekly sections, switching to a vertical list for easier reading.
