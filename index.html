@@ -20,6 +20,11 @@
     </svg>
   </a>
 
+  <div class="import-export">
+    <button id="importExportBtn">Import/Export</button>
+    <input type="file" id="importFile" accept=".json" style="display: none;">
+  </div>
+
   <div id="event_timers" class="event-timers" aria-live="polite">
     <div id="daily_reset_timer" class="event-timer">
       <div class="name">Daily Reset</div>
@@ -127,7 +132,17 @@
       <h3>Privacy Notice</h3>
       <p>This site uses localStorage cookies to save your progress across sessions. We respect your privacy and do not share data.</p>
       <button id="accept-gdpr">Accept</button>
-      <button id="reject-gdpr">Opt Out</button>
+      <button id="reject-gdpr">Decline (Exit)</button>
+    </div>
+  </div>
+
+  <div id="import-export-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Import/Export</h3>
+      <p>Would you like to import or export your progress?</p>
+      <button id="importProgressBtn">Import Progress</button>
+      <button id="exportProgressBtn">Export Progress</button>
+      <button id="cancelImportExport">Cancel</button>
     </div>
   </div>
 
