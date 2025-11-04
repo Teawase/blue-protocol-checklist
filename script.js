@@ -27,7 +27,7 @@
     { id: "weekly_friendship_store", label: "Friendship Store (2000 Friendship Points weekly)", color: "grey" },
     { id: "weekly_reputation_store", label: 'Reputation Store (Buy Will Wish Coin & "Revive" Candy & Healing Aromatic Lv.1)', color: "grey" },
     { id: "weekly_guild_store", label: "Guild Store (Buy Focus Potions & Guild Supply Chests & Burl Shards)", color: "grey" },
-	{ id: "weekly_event_store", label: "Event Store (if its available)", color: "grey" },
+    { id: "weekly_event_store", label: "Event Store (if its available)", color: "grey" },
     { id: "weekly_life_skill_quests", label: "Life Skill Quests (12 Exchange Quests)", color: "green" },
     { id: "weekly_stimen_vaults", label: "Stimen Vaults (Resets every 2 weeks)", color: "silver" },
     { id: "weekly_ice_dragon_normal", label: "Ice Dragon Raid - Normal (12710+ Ability Score)", color: "blue" },
@@ -62,7 +62,6 @@
   const btnDeselectAllDaily = $('btnDeselectAllDaily');
   const btnSelectAllWeekly = $('btnSelectAllWeekly');
   const btnDeselectAllWeekly = $('btnDeselectAllWeekly');
-  const dailyStreakEl = $('daily_streak');
   const gdprModal = $('gdpr-modal');
   const acceptBtn = $('accept-gdpr');
   const rejectBtn = $('reject-gdpr');
@@ -156,7 +155,6 @@
       weekly_tasks: {}
     };
 
-    // Collect all weekly task states
     weeklyTaskData.forEach(task => {
       data.weekly_tasks[task.id] = localStorage.getItem(task.id);
     });
@@ -187,17 +185,14 @@
           return;
         }
 
-        // Restore daily tasks
         if (imported.daily_tasks) {
           localStorage.setItem('daily_tasks', imported.daily_tasks);
         }
 
-        // Restore weekly reset date
         if (imported.weekly_reset_date) {
           localStorage.setItem('weekly_reset_date', imported.weekly_reset_date);
         }
 
-        // Restore weekly tasks
         if (imported.weekly_tasks) {
           Object.entries(imported.weekly_tasks).forEach(([key, value]) => {
             if (value !== null) {
@@ -208,7 +203,6 @@
           });
         }
 
-        // Update UI without reload
         resetWeeklyStorageIfNeeded();
         renderTasks(dailyContainer, dailyTaskData, 'daily');
         renderTasks(weeklyContainer, weeklyTaskData, 'weekly');
@@ -237,13 +231,11 @@
     return dailyStart.toISOString().split('T')[0];
   };
 
-  // Get current weekly reset date key (Monday 5 AM Noronha)
   const getCurrentWeeklyDate = (now = parseNoronha()) => {
     const reset = getWeeklyReset(now);
-    return reset.toISOString().split('T')[0]; // e.g., "2025-11-03"
+    return reset.toISOString().split('T')[0];
   };
 
-  // Clear all weekly tasks on weekly reset if needed
   const resetWeeklyStorageIfNeeded = () => {
     if (!isStorageAllowed) return;
 
@@ -251,13 +243,11 @@
     const storedWeeklyDate = localStorage.getItem('weekly_reset_date');
 
     if (storedWeeklyDate !== currentWeeklyDate) {
-      // Clear ALL weekly task progress
       weeklyTaskData.forEach(task => {
         localStorage.removeItem(task.id);
       });
       localStorage.setItem('weekly_reset_date', currentWeeklyDate);
 
-      // Optional: Visual feedback for weekly reset
       if (storedWeeklyDate) {
         setTimeout(() => {
           alert("Weekly reset! All weekly tasks have been cleared.");
@@ -266,24 +256,14 @@
     }
   };
 
-  // getDailyStorage resets tasks exactly at 5 AM Noronha and preserves history
   const getDailyStorage = () => {
     if (!isStorageAllowed) {
-      return { date: getCurrentDailyDate(), tasks: {}, history: [], currentCompleted: 0 };
+      return { date: getCurrentDailyDate(), tasks: {}, currentCompleted: 0 };
     }
     const currentDate = getCurrentDailyDate();
     let stored = JSON.parse(localStorage.getItem('daily_tasks') || '{}');
     if (stored.date !== currentDate) {
-      // DAILY RESET: New day → clear tasks, log history
-      if (stored.currentCompleted !== undefined) {
-        const prevDate = new Date(stored.date || currentDate);
-        prevDate.setDate(prevDate.getDate() - 1);
-        const prevDateStr = prevDate.toISOString().split('T')[0];
-        if (!stored.history) stored.history = [];
-        stored.history.push({ date: prevDateStr, completed: stored.currentCompleted });
-        if (stored.history.length > 3650) stored.history = stored.history.slice(-3650);
-      }
-      stored = { date: currentDate, tasks: {}, history: stored.history || [], currentCompleted: 0 };
+      stored = { date: currentDate, tasks: {}, currentCompleted: 0 };
       localStorage.setItem('daily_tasks', JSON.stringify(stored));
     }
     return stored;
@@ -299,44 +279,6 @@
       localStorage.setItem('daily_tasks', JSON.stringify(stored));
     }
   };
-
-const calculateDailyStreak = () => {
-  if (!isStorageAllowed) return 0;
-  const stored = getDailyStorage();
-  const history = stored.history || [];
-  const TOTAL_DAILIES = 9;
-
-  let streak = 0;
-  const todayStr = getCurrentDailyDate();
-  const completedToday = stored.currentCompleted === TOTAL_DAILIES;
-
-  // Map history for quick lookup by date string
-  const historyMap = new Map(history.map(h => [h.date, h.completed]));
-
-  // Start from yesterday
-  let checkDate = new Date(todayStr);
-  checkDate.setDate(checkDate.getDate() - 1);
-
-  while(true) {
-    const dateKey = checkDate.toISOString().split('T')[0];
-    if (historyMap.get(dateKey) === TOTAL_DAILIES) {
-      streak++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    } else {
-      break;
-    }
-  }
-
-  if (completedToday) streak++;
-
-  return streak;
-};
-
-  // Add today if fully completed to streak
-  if (completedToday) streak++;
-
-  return streak;
-};
 
   function createTaskElement(task, section) {
     const div = document.createElement('div');
@@ -436,14 +378,6 @@ const calculateDailyStreak = () => {
       completionMsg.style.display = 'none';
       progress.dataset.confettiDone = '';
     }
-
-    if (section === 'daily') {
-      const streak = calculateDailyStreak();
-      if (dailyStreakEl) {
-        dailyStreakEl.textContent = streak > 0 ? ` (🔥 ${streak}-day streak)` : ' (No streak yet)';
-        dailyStreakEl.style.display = isStorageAllowed ? 'inline' : 'none';
-      }
-    }
   }
 
   function toggleCompleted(section) {
@@ -504,7 +438,6 @@ const calculateDailyStreak = () => {
     applyCompletedFilter(section);
   }
 
-  // Keyboard navigation
   document.addEventListener('keydown', (e) => {
     if (!e.target.classList?.contains('task')) return;
     const section = e.target.closest('.section').id === 'daily_section' ? 'daily' : 'weekly';
@@ -576,7 +509,6 @@ const calculateDailyStreak = () => {
   const getWeeklyReset = now => {
     const r = new Date(now);
     r.setHours(5, 0, 0, 0);
-    // Calculate days until next Monday 5 AM Noronha
     const diff = ((1 - r.getDay() + 7) % 7) || (now.getHours() >= 5 ? 7 : 0);
     r.setDate(r.getDate() + diff);
     return r;
@@ -712,7 +644,6 @@ const calculateDailyStreak = () => {
     updateCounter('daily');
     updateCounter('weekly');
 
-    // Import/Export event listeners
     importExportBtn.addEventListener('click', () => {
       importExportModal.style.display = 'flex';
     });
