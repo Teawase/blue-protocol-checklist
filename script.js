@@ -13,7 +13,7 @@
 
   const weeklyTaskData = [
     { id: "weekly_pioneer_rewards", label: "Pioneer Awards (Pioneer NPC in town)", color: "yellow" },
-    { id: "weekly_reclaim_hub", label: "Reclaim Hub (If missed a daily/weekly)", color: "grey" },
+    { id: "weekly_reclaim_hub", label: "Reclaim Hub (If you missed a daily/weekly)", color: "grey" },
     { id: "weekly_guild_activity_rewards", label: "Guild Activity Rewards (7000/7000 Points)", color: "orange" },
     { id: "weekly_guild_hunt_extended", label: "Guild Hunt (Available only on Friday, Saturday, Sunday)", color: "orange" },
     { id: "weekly_guild_dance", label: "Guild Dance (Available only on Friday)", color: "orange" },
@@ -686,3 +686,4 @@
   }
 
 })();
+
