@@ -61,4 +61,4 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 - **External:** Only canvas-confetti for celebrations.
 
 ## Contact
-- **Discord:** teawase
+- **Discord:** [Teawase](https://discordredirect.discordsafe.com/users/96620826689822720)
