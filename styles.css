@@ -2,10 +2,13 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #242424;
   color: #eee;
-  padding: 20px;
   margin: 0;
+  padding: 20px 20px 20px !important;
   user-select: none;
   position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-top: 0 !important;
 }
 
 .stars {
@@ -19,9 +22,55 @@ body {
     radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8) 100%, transparent 0),
     linear-gradient(90deg, transparent 99%, rgba(255,255,255,0.1) 0);
   background-size: 60px 80px, 80px 100px, 100% 100%;
-  opacity: 0.1;
+  opacity:  0.1;
   pointer-events: none;
   z-index: -1;
+}
+
+/* Top-Left Buttons */
+.import-export {
+  position: fixed !important;
+  top: 8px !important;
+  left: 8px !important;
+  display: flex;
+  gap: 7px;
+  z-index: 9999;
+  background: rgba(26, 26, 26, 0.92);
+  padding: 7px 9px;
+  border-radius: 9px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(80, 106, 255, 0.2);
+  font-size: 0.68rem;
+}
+
+.import-export button {
+  font-size: 0.68rem !important;
+  padding: 0.4rem 0.7rem !important;
+  min-width: 78px !important;
+  background: #506aff;
+  border-radius: 7px;
+}
+
+.import-export button:hover {
+  background: #3b59dc;
+  transform: translateY(-1px);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  body { padding-top: 90px !important; }
+  .import-export {
+    top: 5px !important;
+    left: 5px !important;
+    padding: 5px;
+    gap: 5px;
+  }
+  .import-export button {
+    font-size: 0.73rem !important;
+    padding: 0.45rem 0.65rem !important;
+    min-width: 72px !important;
+  }
 }
 
 #page-title {
@@ -45,9 +94,7 @@ h2 {
   color: #ccc;
 }
 
-/* ========================================
-   Counters & Progress Bars
-   ======================================== */
+/* Counters & Progress Bars */
 .counter-container {
   display: flex;
   align-items: center;
@@ -106,7 +153,7 @@ h2 {
   border-radius: 6px 0 0 6px;
   background: linear-gradient(90deg, #506aff, #ffb800);
   box-shadow: 0 0 12px currentColor inset;
-  transition: width 0.5s, background 0.5s;
+  transition: background 0.5s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -134,9 +181,7 @@ h2 {
   50%      { transform: scale(1.05); }
 }
 
-/* ========================================
-   Layout
-   ======================================== */
+/* Layout Containers */
 .container {
   display: flex;
   gap: 1.5rem;
@@ -187,9 +232,7 @@ h2 {
 }
 .filter-input::placeholder { color: #bbb; }
 
-/* ========================================
-   Tasks Grid
-   ======================================== */
+/* Tasks Grid */
 .tasks {
   display: flex;
   flex-wrap: wrap;
@@ -254,9 +297,8 @@ h2 {
 .grey        { --base1:#7b746a; --base2:#8b837a; --hover1:#8b837a; --hover2:#9b928a; }
 .blue        { --base1:#1e6bb8; --base2:#2e7bc8; --hover1:#2e7bc8; --hover2:#3e8bd8; }
 
-/* ========================================
-   Buttons
-   ======================================== */
+
+/* Buttons */
 button {
   font-size: 0.75rem;
   padding: 0.5rem 1.375rem;
@@ -274,9 +316,8 @@ button:focus {
   outline: none;
 }
 
-/* ========================================
-   Timers
-   ======================================== */
+
+/* Timers */
 .event-timers {
   display: flex;
   justify-content: space-between;
@@ -334,9 +375,8 @@ button:focus {
   to   { opacity: 1; text-shadow: 0 0 8px #506aff; }
 }
 
-/* ========================================
-   Footer & Completion Message
-   ======================================== */
+
+/* Footer & Completion */
 footer {
   margin-top: 1.2rem;
   text-align: center;
@@ -358,9 +398,8 @@ footer a:hover { text-decoration: underline; }
   text-shadow: 0 0 12px #ffd700aa;
 }
 
-/* ========================================
-   Modals
-   ======================================== */
+
+/* Modals */
 .modal {
   position: fixed;
   inset: 0;
@@ -398,9 +437,7 @@ footer a:hover { text-decoration: underline; }
 #reject-gdpr:hover,
 #close-profiles-modal:hover { background: #555; }
 
-/* ========================================
-   GitHub Corner
-   ======================================== */
+/* Guthub Corner */
 .github-corner:hover .octo-arm { animation: octocat-wave 560ms ease-in-out; }
 @keyframes octocat-wave {
   0%, 100% { transform: rotate(0); }
@@ -408,9 +445,7 @@ footer a:hover { text-decoration: underline; }
   40%, 80% { transform: rotate(10deg); }
 }
 
-/* ========================================
-   Responsive
-   ======================================== */
+/*  Responsiveness */
 @media (max-width: 900px) {
   .container { flex-direction: column; }
   .section { min-width: 100%; min-height: auto; max-height: none; overflow-y: visible; }
@@ -420,12 +455,10 @@ footer a:hover { text-decoration: underline; }
   .event-timers { flex-direction: column; gap: 10px; }
   .action-filter-row { flex-direction: column; align-items: stretch; }
   .filter-input { max-width: none; }
-  .import-export { left: 10px; top: 70px; flex-direction: column; }
 }
 
-/* ========================================
-   Profiles 
-   ======================================== */
+
+/*  Profiles */
 #profiles-list {
   list-style: none;
   padding: 0;
@@ -455,9 +488,4 @@ footer a:hover { text-decoration: underline; }
 
 #profiles-list button:last-child {
   background: #b5101a;
-}
-
-.import-export button {
-  font-size: 0.7rem;
-  padding: 0.4rem 0.8rem;
 }
