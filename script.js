@@ -36,9 +36,9 @@
     { id: "weekly_ice_dragon_normal", label: "Ice Dragon Raid - Normal (12710+ Ability Score)", color: "blue" },
     { id: "weekly_ice_dragon_hard", label: "Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue" },
     { id: "weekly_ice_dragon_nightmare", label: "Ice Dragon Raid - Nightmare (22300+ Ability Score)", color: "blue" },
-    { id: "weekly_dark_dragon_normal", label: "Dark Dragon Raid - Normal (15210+ Ability Score)", color: "dark_purple" },
-    { id: "weekly_dark_dragon_hard", label: "Dark Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple" },
-    { id: "weekly_dark_dragon_nightmare", label: "Dark Dragon Raid - Nightmare (24180+ Ability Score)", color: "dark_purple" },
+    { id: "weekly_dark_dragon_normal", label: "Bone Dragon Raid - Normal (15210+ Ability Score)", color: "dark_purple" },
+    { id: "weekly_dark_dragon_hard", label: "Bone Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple" },
+    { id: "weekly_dark_dragon_nightmare", label: "Bone Dragon Raid - Nightmare (24180+ Ability Score)", color: "dark_purple" },
     { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Normal (UNKNOWN Ability Score)", color: "yellow" },
     { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (UNKNOWN Ability Score)", color: "yellow" },
     { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (UNKNOWN Ability Score)", color: "yellow" }
@@ -636,3 +636,4 @@
     ? document.addEventListener('DOMContentLoaded', init)
     : init();
 })();
+
