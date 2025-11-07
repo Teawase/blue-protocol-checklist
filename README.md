@@ -15,6 +15,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
   - Animated progress bars with percentage display and gradient fills.
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
 - **Show/Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
+- **Multiple Profiles Support:** Save your progress between multiple profiles/characters with independent progress tracking.
 - **Import/export:** Backup and restore daily/weekly checklist progress via a JSON file with instant UI updates.
 
 ## Search & Navigation
