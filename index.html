@@ -22,6 +22,7 @@
 
   <div class="import-export">
     <button id="importExportBtn">Import/Export</button>
+    <button id="profilesBtn">Profiles</button>
     <input type="file" id="importFile" accept=".json" style="display: none;">
   </div>
 
@@ -55,7 +56,7 @@
   <div class="container">
     <div class="section" id="daily_section">
       <h2>
-         Daily Tasks
+        Daily Tasks
         <span class="counter-container">
           <span class="counter" id="daily_counter">0 / 9 complete</span>
           <div class="progress-bar" id="daily_progress_bar" data-tooltip="">
@@ -69,22 +70,10 @@
           <button id="btnDeselectAllDaily">Deselect All</button>
           <button id="toggleDaily" aria-pressed="true">Show Completed</button>
         </div>
-        <input
-          type="text"
-          placeholder="Search Daily…"
-          id="daily_filter"
-          class="filter-input"
-          aria-label="Search Daily Tasks"
-        />
+        <input type="text" placeholder="Search Daily…" id="daily_filter" class="filter-input" aria-label="Search Daily Tasks" />
       </div>
       <div class="tasks" id="daily_tasks_container" role="list"></div>
-      <div
-        id="daily_completion_message"
-        class="completion-message"
-        aria-live="polite"
-        role="status"
-        style="display: none"
-      >
+      <div id="daily_completion_message" class="completion-message" aria-live="polite" role="status" style="display: none">
         All daily tasks completed! Great job!
       </div>
     </div>
@@ -93,7 +82,7 @@
       <h2>
         Weekly Tasks
         <span class="counter-container">
-          <span class="counter" id="weekly_counter">0 / 24 complete</span>
+          <span class="counter" id="weekly_counter">0 / 27 complete</span>
           <div class="progress-bar" id="weekly_progress_bar" data-tooltip="">
             <div class="progress-fill" id="weekly_progress">0%</div>
           </div>
@@ -105,22 +94,10 @@
           <button id="btnDeselectAllWeekly">Deselect All</button>
           <button id="toggleWeekly" aria-pressed="true">Show Completed</button>
         </div>
-        <input
-          type="text"
-          placeholder="Search Weekly…"
-          id="weekly_filter"
-          class="filter-input"
-          aria-label="Search Weekly Tasks"
-        />
+        <input type="text" placeholder="Search Weekly…" id="weekly_filter" class="filter-input" aria-label="Search Weekly Tasks" />
       </div>
       <div class="tasks" id="weekly_tasks_container" role="list"></div>
-      <div
-        id="weekly_completion_message"
-        class="completion-message"
-        aria-live="polite"
-        role="status"
-        style="display: none"
-      >
+      <div id="weekly_completion_message" class="completion-message" aria-live="polite" role="status" style="display: none">
         All weekly tasks completed! You're amazing!
       </div>
     </div>
@@ -129,7 +106,7 @@
   <div id="gdpr-modal" class="modal" style="display: none;">
     <div class="modal-content">
       <h3>Privacy Notice</h3>
-      <p>This site uses localStorage cookies to save your progress across sessions. We respect your privacy and do not share data.</p>
+      <p>This site uses localStorage to save your progress across sessions. We respect your privacy and do not share data.</p>
       <button id="accept-gdpr">Accept</button>
       <button id="reject-gdpr">Decline (Exit)</button>
     </div>
@@ -145,20 +122,30 @@
     </div>
   </div>
 
+  <div id="profiles-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 420px;">
+      <h3>Manage Profiles</h3>
+      <p>Current profile: <strong id="current-profile-name"></strong></p>
+      <ul id="profiles-list" style="list-style: none; padding: 0; margin: 10px 0; max-height: 300px; overflow-y: auto;"></ul>
+      <div style="margin-top: 20px; display: flex; gap: 10px;">
+        <input type="text" id="new-profile-name" placeholder="New profile name" style="flex: 1; padding: 8px; background:#333; border:none; border-radius:6px; color:#eee;">
+        <button id="create-profile-btn">Create</button>
+      </div>
+      <button id="close-profiles-modal" style="margin-top: 15px;">Close</button>
+    </div>
+  </div>
+
   <footer>
     Resources:
     <a href="https://blueprotocol.lunixx.de/" target="_blank" rel="noopener noreferrer">Players Database</a> |
     <a href="https://natsume.io/bpsr/" target="_blank" rel="noopener noreferrer">Events Schedule</a> |
     <a href="https://bptimer.com/" target="_blank" rel="noopener noreferrer">Boss Timers</a> |
-    <a href="https://maxroll.gg/blue-protocol/" target="_blank" rel="noopener noreferrer">Maxroll</a> |
+    <a href="https://maxroll.gg/blue-protocol" target="_blank" rel="noopener noreferrer">Maxroll</a> |
     <a href="https://prydwen.gg/blue-protocol/" target="_blank" rel="noopener noreferrer">Prydwen</a> |
-    <a href="https://starresonance.th.gl/" target="_blank" rel="noopener noreferrer">Interactive Maps</a>
+    <a href="https://blueprotocol.interactivemap.app/" target="_blank" rel="noopener noreferrer">Interactive Map</a>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
-
-
-
