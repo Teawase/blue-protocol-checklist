@@ -3,7 +3,7 @@ body {
   background: #242424;
   color: #eee;
   margin: 0;
-  padding: 20px 20px 20px !important;
+  padding: 0px 0px 10px !important;
   user-select: none;
   position: relative;
   min-height: 100vh;
