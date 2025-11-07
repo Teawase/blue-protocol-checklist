@@ -13,7 +13,7 @@
 
   const weeklyTaskData = [
     { id: "weekly_pioneer_rewards", label: "Pioneer Awards (Pioneer NPC in town)", color: "yellow" },
-    { id: "weekly_reclaim_hub", label: "Reclaim Hub (If you missed a daily/weekly)", color: "grey" },
+    { id: "weekly_reclaim_hub", label: "Reclaim Hub (If missed a daily/weekly)", color: "grey" },
     { id: "weekly_guild_activity_rewards", label: "Guild Activity Rewards (7000/7000 Points)", color: "orange" },
     { id: "weekly_guild_hunt_extended", label: "Guild Hunt (Available only on Friday, Saturday, Sunday)", color: "orange" },
     { id: "weekly_guild_dance", label: "Guild Dance (Available only on Friday)", color: "orange" },
@@ -472,7 +472,7 @@
   }
 
   function updateTitle() {
-    const start = new Date('2025-10-09');
+    const start = new Date('2025-10-09T10:00:00-02:00'); // Exact launch time in America/Noronha timzeone
     const now = new Date();
     const day = Math.floor((now - start) / 864e5) + 1;
     $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
@@ -686,4 +686,3 @@
   }
 
 })();
-
