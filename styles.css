@@ -30,13 +30,13 @@ body {
 /* Top-Left Buttons */
 .import-export {
   position: fixed !important;
-  top: 8px !important;
-  left: 8px !important;
+  top: 2px !important;
+  left: 0px !important;
   display: flex;
-  gap: 7px;
+  gap: 5px;
   z-index: 9999;
   background: rgba(26, 26, 26, 0.92);
-  padding: 7px 9px;
+  padding: 5px 5px;
   border-radius: 9px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px);
@@ -47,9 +47,9 @@ body {
 .import-export button {
   font-size: 0.68rem !important;
   padding: 0.4rem 0.7rem !important;
-  min-width: 78px !important;
+  min-width: 75px !important;
   background: #506aff;
-  border-radius: 7px;
+  border-radius: 9px;
 }
 
 .import-export button:hover {
@@ -74,13 +74,13 @@ body {
 }
 
 #page-title {
-  font-weight: 900;
+  font-weight: 700;
   font-size: 2rem;
   background: linear-gradient(90deg, #506aff, #a0c4ff, #ffb800);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-shadow: 0 0 8px #506affaa;
   user-select: none;
   margin-bottom: 20px;
@@ -124,10 +124,10 @@ h2 {
 
 .progress-bar {
   position: relative;
-  width: 145px;
+  width: 190px;
   height: 14px;
   background: #444;
-  border-radius: 6px;
+  border-radius: 9px;
   overflow: hidden;
   box-shadow: inset 0 0 5px #222;
 }
@@ -186,7 +186,7 @@ h2 {
   display: flex;
   gap: 1.5rem;
   flex-wrap: wrap;
-  max-width: 75rem;
+  max-width: 85rem;
   margin: 0 auto;
 }
 
@@ -194,7 +194,7 @@ h2 {
   flex: 1 1 45%;
   background: linear-gradient(145deg, #1a1a1a, #222);
   border-radius: 10px;
-  border: 1px solid rgba(80, 106, 255, 0.1);
+  border: 6px solid rgba(80, 106, 255, 0.1);
   padding: 1.25rem;
   box-shadow:
     0 8px 32px rgba(0,0,0,0.4),
@@ -217,8 +217,8 @@ h2 {
 
 .action-buttons {
   display: flex;
-  gap: 0.625rem;
-  margin-left: 0.45rem;
+  gap: 0.35rem;
+  margin-left: 0rem;
 }
 
 .filter-input {
@@ -226,7 +226,7 @@ h2 {
   font-size: 0.9rem;
   border-radius: 6px;
   border: none;
-  max-width: 115px;
+  max-width: 175px;
   background: #333;
   color: #eee;
 }
@@ -241,15 +241,15 @@ h2 {
   flex-grow: 1;
   overflow-y: auto;
   transition: all 0.3s;
-  padding: 0.5rem;
+  padding: 0rem;
   background: rgba(0,0,0,0.1);
-  border-radius: 8px;
+  border-radius: 9px;
 }
 
 .task {
   background: linear-gradient(135deg, var(--base1, #333) 0%, var(--base2, #2a2a2a) 100%);
   padding: 0.75rem 1.125rem;
-  border-radius: 10px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   flex-basis: calc(50% - 0.875rem);
@@ -265,11 +265,12 @@ h2 {
 }
 
 .task.completed {
-  opacity: 0.7;
+  opacity: 0.5;
   text-decoration: line-through;
-  filter: grayscale(50%) brightness(0.9);
-  animation: completeBounce 0.4s ease-out;
+  filter: grayscale(50%) brightness(0.85);
+  animation: completeBounce 0.45s ease-out;
 }
+
 @keyframes completeBounce {
   0%   { transform: scale(1) translateY(0); }
   50%  { transform: scale(0.95) translateY(2px); }
@@ -297,7 +298,6 @@ h2 {
 .grey        { --base1:#7b746a; --base2:#8b837a; --hover1:#8b837a; --hover2:#9b928a; }
 .blue        { --base1:#1e6bb8; --base2:#2e7bc8; --hover1:#2e7bc8; --hover2:#3e8bd8; }
 
-
 /* Buttons */
 button {
   font-size: 0.75rem;
@@ -310,20 +310,20 @@ button {
   transition: background-color 0.3s;
   user-select: none;
 }
+
 button:hover,
 button:focus {
   background: #3b59dc;
   outline: none;
 }
 
-
 /* Timers */
 .event-timers {
   display: flex;
   justify-content: space-between;
   margin: 20px auto;
-  max-width: 75rem;
-  gap: 20px;
+  max-width: 85rem;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
@@ -333,7 +333,7 @@ button:focus {
   text-align: center;
   background: #1a1a1a;
   padding: 10px 8px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 0 12px rgba(0,0,0,0.7);
   display: flex;
   flex-direction: column;
@@ -344,6 +344,7 @@ button:focus {
 .event-timer.active {
   animation: pulse 2s infinite;
 }
+
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 12px rgba(80, 106, 255, 0.3); }
   50%      { box-shadow: 0 0 20px rgba(80, 106, 255, 0.6); }
@@ -352,7 +353,7 @@ button:focus {
 .event-timer .name {
   font-weight: 700;
   font-size: 0.95rem;
-  margin-bottom: 3px;
+  margin-bottom: 1px;
   cursor: pointer;
   background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
   -webkit-background-clip: text;
@@ -361,7 +362,7 @@ button:focus {
 }
 
 .event-timer .countdown {
-  font-weight: 500;
+  font-weight: 400;
   font-size: 0.9rem;
   opacity: 0.9;
   background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
@@ -370,11 +371,11 @@ button:focus {
   -webkit-text-fill-color: transparent;
   animation: countdownFade 1s ease-in-out infinite alternate;
 }
+
 @keyframes countdownFade {
-  from { opacity: 0.9; }
+  from { opacity: 0.85; }
   to   { opacity: 1; text-shadow: 0 0 8px #506aff; }
 }
-
 
 /* Footer & Completion */
 footer {
@@ -383,21 +384,22 @@ footer {
   font-size: 0.9rem;
   color: #888;
 }
+
 footer a {
   color: #809bff;
   text-decoration: none;
 }
+
 footer a:hover { text-decoration: underline; }
 
 .completion-message {
   margin: 10px 0 0;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #ffd700;
   text-align: center;
   text-shadow: 0 0 12px #ffd700aa;
 }
-
 
 /* Modals */
 .modal {
@@ -457,12 +459,11 @@ footer a:hover { text-decoration: underline; }
   .filter-input { max-width: none; }
 }
 
-
 /*  Profiles */
 #profiles-list {
   list-style: none;
   padding: 0;
-  margin: 10px 0;
+  margin: 20px 0;
   max-height: 300px;
   overflow-y: auto;
 }
