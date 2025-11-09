@@ -3,15 +3,15 @@
   // Task Data
   // ========================================
   const dailyTaskData = [
+    { id: "daily_mystery_store", label: "Mystery Store (Buy Starforge Crystals & Advanced Books & Moss/Burl Shards if available)", color: "grey" },
     { id: "daily_guild_checkin", label: "Guild Check-In & Cargo (Guild Administrator & Cargo Administrator in Guild Center)", color: "orange" },
     { id: "daily_unstable_space_dungeon", label: "Clear Unstable Space Dungeon (2x Daily)", color: "purple" },
-    { id: "daily_season_activity_goals", label: "Season Pass Activity (Earn 500 Activity Merits in the Season Pass)", color: "yellow" },
     { id: "daily_commissions", label: "Bureau Commissions (3x Daily | You can skip this daily for up to 2 days | Commissions Cap: 9)", color: "green" },
-    { id: "daily_mystery_store", label: "Mystery Store (Buy Starforge Crystals & Advanced Books & Moss/Burl Shards if available)", color: "grey" },
+    { id: "daily_homestead_commissions", label: "Homestead Commissions (You can skip this daily for up to 2 days)", color: "green" },
     { id: "daily_world_boss_keys", label: "World Boss Keys (2x Daily | You can skip this daily for up to 2 days | Keys Cap: 6)", color: "red" },
     { id: "daily_elite_boss_keys", label: "Elite Boss Keys (2x Daily | You can skip this daily for up to 2 days | Keys Cap: 6)", color: "red" },
     { id: "daily_focus", label: "Life Skill Focus (Spend 400 Focus Daily | This daily can be skipped for up to 4 days | Focus Cap: 2000)", color: "yellow" },
-    { id: "daily_homestead_commissions", label: "Homestead Commissions (You can skip this daily for up to 2 days)", color: "green" }
+    { id: "daily_season_activity_goals", label: "Season Pass Activity (Earn 500 Activity Merits in the Season Pass)", color: "yellow" }
   ];
 
   const weeklyTaskData = [
