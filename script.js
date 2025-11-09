@@ -39,9 +39,9 @@
     { id: "weekly_dark_dragon_normal", label: "Bone Dragon Raid - Easy (15210+ Ability Score)", color: "dark_purple" },
     { id: "weekly_dark_dragon_hard", label: "Bone Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple" },
     { id: "weekly_dark_dragon_nightmare", label: "Bone Dragon Raid - Nightmare (24180+ Ability Score)", color: "dark_purple" },
-    { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Easy (??? Ability Score)", color: "yellow" },
-    { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (??? Ability Score)", color: "yellow" },
-    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (??? Ability Score)", color: "yellow" }
+    { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Easy (16140+ Ability Score)", color: "yellow" },
+    { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (20670+ Ability Score)", color: "yellow" },
+    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (27790+ Ability Score)", color: "yellow" }
   ];
 
   // ========================================
