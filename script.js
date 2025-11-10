@@ -8,8 +8,8 @@
     { id: "daily_unstable_space_dungeon", label: "Unstable Space Dungeon (Clear 2x Daily)", color: "purple" },
     { id: "daily_commissions", label: "Bureau Commissions (3x Daily) | Can skip up to 2 days (Commissions Cap: 9)", color: "green" },
     { id: "daily_homestead_commissions", label: "Homestead Commissions | Can skip up to 2 days", color: "green" },
-    { id: "daily_world_boss_keys", label: "World Boss Keys (2x Daily) | Can skip up to 2 days (Keys Cap: 6)", color: "red" },
-    { id: "daily_elite_boss_keys", label: "Elite Boss Keys (2x Daily) | Can skip up to 2 days (Keys Cap: 6)", color: "red" },
+    { id: "daily_world_boss_keys", label: "World Boss Keys (2x Daily) | Can skip up to 2 days (Keys Cap: 6)", color: "brown" },
+    { id: "daily_elite_boss_keys", label: "Elite Boss Keys (2x Daily) | Can skip up to 2 days (Keys Cap: 6)", color: "brown" },
     { id: "daily_focus", label: "Life Skill Focus (400x Daily) | Can skip up to 4 days (Focus Cap: 2000)", color: "yellow" },
     { id: "daily_season_activity_goals", label: "Season Pass Activity (Earn 500 Activity Merits)", color: "yellow" }
   ];
@@ -20,11 +20,11 @@
     { id: "weekly_guild_activity_rewards", label: "Guild Activity Rewards (Reach 7000/7000 Points)", color: "orange" },
     { id: "weekly_guild_hunt_extended", label: "Guild Hunt (Available on Friday, Saturday, Sunday)", color: "orange" },
     { id: "weekly_guild_dance", label: "Guild Dance (Available on Friday)", color: "orange" },
-    { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Earn 1200 Points)", color: "red" },
+    { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Earn 1200 Points)", color: "brown" },
     { id: "weekly_clear_dungeons_normal", label: "Clear Dungeons (Normal/Hard) | 20 runs for weekly Reforge Stones", color: "purple" },
     { id: "weekly_clear_dungeons_master_1_5", label: "Clear Dungeons (Master 1-5) | 20 runs for weekly Reforge Stones", color: "purple" },
     { id: "weekly_clear_dungeons_master_6_20", label: "Clear Dungeons (Master 6-20) | 20 runs for weekly Reforge Stones | Available: 24th Nov. 2025", color: "purple" },
-    { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Dungeon Spawn) | 5x for Legendary Select Boxes", color: "red" },
+    { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Dungeon Spawn) | 5x for Legendary Select Boxes", color: "brown" },
     { id: "weekly_gear_exchange_store", label: "Gear Exchange Stores (Buy Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey" },
     { id: "weekly_honor_store", label: "Honor Store (Earn 10000 Honor Points)", color: "grey" },
     { id: "weekly_friendship_store", label: "Friendship Store (Earn 2000 Friendship Points)", color: "grey" },
@@ -32,26 +32,22 @@
     { id: "weekly_guild_store", label: "Guild Store (Buy Focus Potions, Supply Chests & Burl Shards)", color: "grey" },
     { id: "weekly_event_store", label: "Event Store (If available)", color: "grey" },
     { id: "weekly_life_skill_quests", label: "Life Skill Quests (Complete the 12 Exchange Quests)", color: "green" },
-    { id: "weekly_stimen_vaults", label: "Stimen Vaults (Resets every 2 weeks) | Check Timer", color: "silver" },
+    { id: "weekly_stimen_vaults", label: "Stimen Vaults (Resets every 2 weeks) | Check Timer", color: "pearl" },
     { id: "weekly_ice_dragon_normal", label: "Ice Dragon Raid - Easy (12710+ Ability Score)", color: "blue" },
     { id: "weekly_ice_dragon_hard", label: "Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue" },
     { id: "weekly_ice_dragon_nightmare", label: "Ice Dragon Raid - Nightmare (22300+ Ability Score) | Available: 24th Nov. 2025", color: "blue" },
     { id: "weekly_dark_dragon_normal", label: "Bone Dragon Raid - Easy (15210+ Ability Score)", color: "dark_purple" },
     { id: "weekly_dark_dragon_hard", label: "Bone Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple" },
     { id: "weekly_dark_dragon_nightmare", label: "Bone Dragon Raid - Nightmare (24180+ Ability Score) | Available: 24th Nov. 2025", color: "dark_purple" },
-    { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Easy (16140+ Ability Score)", color: "yellow" },
-    { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (20670+ Ability Score)", color: "yellow" },
-    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (27790+ Ability Score) | Available: 24th Nov. 2025", color: "yellow" }
+    { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Easy (16140+ Ability Score)", color: "gold" },
+    { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (20670+ Ability Score)", color: "gold" },
+    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (27790+ Ability Score) | Available: 24th Nov. 2025", color: "gold" }
   ];
 
-  // ========================================
   // DOM Helpers
-  // ========================================
   const $ = id => document.getElementById(id);
 
-  // ========================================
   // Profiles System
-  // ========================================
   let profiles = {
     current: "default",
     list: ["default"],
@@ -91,9 +87,7 @@
     }
   };
 
-  // ========================================
   // DOM Elements
-  // ========================================
   const dailyContainer = $('daily_tasks_container');
   const weeklyContainer = $('weekly_tasks_container');
   const dailyCounter = $('daily_counter');
@@ -131,9 +125,7 @@
 
   let hideCompletedState = { daily: true, weekly: true };
 
-  // ========================================
   // Profiles UI
-  // ========================================
   const renderProfilesList = () => {
     profilesListEl.innerHTML = '';
     profiles.list.sort().forEach(name => {
@@ -203,9 +195,7 @@
     reloadCurrentProfileData();
   };
 
-  // ========================================
   // Profile Storage
-  // ========================================
   const getProfileData = () => profiles.data[profiles.current];
 
   const getCurrentDailyDate = (now = parseNoronha()) => {
@@ -253,9 +243,7 @@
     }
   };
 
-  // ========================================
   // Task Rendering
-  // ========================================
   const createTaskElement = (task, section) => {
     const div = document.createElement('div');
     div.className = `task ${task.color}`;
@@ -270,7 +258,18 @@
     }
 
     div.onclick = () => toggleTask(div, section);
-    div.onkeydown = e => (e.key === 'Enter' || e.key === ' ') && (e.preventDefault(), toggleTask(div, section));
+    div.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleTask(div, section);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (div.previousElementSibling) div.previousElementSibling.focus();
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (div.nextElementSibling) div.nextElementSibling.focus();
+      }
+    };
     return div;
   };
 
@@ -308,9 +307,7 @@
     dailyFilterInput.value = weeklyFilterInput.value = '';
   };
 
-  // ========================================
   // Counters & Progress
-  // ========================================
   const updateCounter = section => {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     const counter = section === 'daily' ? dailyCounter : weeklyCounter;
@@ -347,9 +344,7 @@
     }
   };
 
-  // ========================================
   // Filters & Select All
-  // ========================================
   const applyCompletedFilter = section => {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     const input = section === 'daily' ? dailyFilterInput : weeklyFilterInput;
@@ -389,9 +384,7 @@
     applyCompletedFilter(section);
   };
 
-  // ========================================
   // Import/Export
-  // ========================================
   const exportProgress = () => {
     if (!isStorageAllowed) return alert('Storage disabled');
     const pd = getProfileData();
@@ -431,19 +424,15 @@
     reader.readAsText(file);
   };
 
-  // ========================================
   // Day Counter
-  // ========================================
   const updateTitle = () => {
-  const launch = new Date('2025-10-09T05:00:00-02:00');
-  const now = new Date();
-  const day = Math.floor((now - launch) / 86400000) + 1;
-     $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
-};
+    const launch = new Date('2025-10-09T05:00:00-02:00');
+    const now = new Date();
+    const day = Math.floor((now - launch) / 86400000) + 1;
+    $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
+  };
 
-  // ========================================
   // Timer Functions
-  // ========================================
   const parseNoronha = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Noronha' }));
   const diffSec = (future, now = parseNoronha()) => Math.max(0, Math.floor((future - now) / 1000));
   const format = o => `${o.d ? o.d + 'd ' : ''}${o.h || o.d ? o.h + 'h ' : ''}${o.m || o.h || o.d ? o.m + 'm ' : ''}${o.s}s`;
@@ -559,9 +548,7 @@
     setInterval(updateAll, 1000);
   };
 
-  // ========================================
   // GDPR
-  // ========================================
   const checkGDPR = async () => {
     try {
       const res = await fetch('https://ipapi.co/json/');
@@ -593,9 +580,7 @@
     }, 100);
   };
 
-  // ========================================
   // Init
-  // ========================================
   const init = async () => {
     updateTitle();
     await checkGDPR();
