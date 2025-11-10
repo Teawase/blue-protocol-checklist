@@ -636,4 +636,3 @@
     ? document.addEventListener('DOMContentLoaded', init)
     : init();
 })();
-
