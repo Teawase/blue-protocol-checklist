@@ -25,7 +25,7 @@
     { id: "weekly_clear_dungeons_master_1_5", label: "Clear Dungeons (Master 1-5 - 20 runs for weekly cap of Reforge Stones)", color: "purple" },
     { id: "weekly_clear_dungeons_master_6_20", label: "Clear Dungeons (Master 6-20 - 20 runs for weekly cap of Reforge Stones)", color: "purple" },
     { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Encounter when clearing dungeons | Max 5 times a week for Legendary Select Boxes)", color: "red" },
-    { id: "weekly_gear_exchange_store", label: "Gear Exchange Store (Buy Luno Pouches & Allow Shards from all the gear exchange stores)", color: "grey" },
+    { id: "weekly_gear_exchange_store", label: "Gear Exchange Store (Buy Luno Pouches & Alloy Shards & Reforge Stones from all the gear exchange stores)", color: "grey" },
     { id: "weekly_honor_store", label: "Honor Store (10000 Honor Points weekly)", color: "grey" },
     { id: "weekly_friendship_store", label: "Friendship Store (2000 Friendship Points weekly)", color: "grey" },
     { id: "weekly_reputation_store", label: 'Reputation Store (Buy Will Wish Coin & "Revive" Candy & Healing Aromatic Lv.1)', color: "grey" },
@@ -636,3 +636,4 @@
     ? document.addEventListener('DOMContentLoaded', init)
     : init();
 })();
+
