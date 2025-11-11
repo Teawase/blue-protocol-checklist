@@ -10,12 +10,13 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 - **Daily Tasks:** Track your daily activities with color-coded categories.
 - **Weekly Tasks:** Track your weekly activities with similar color-coding and organization.
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
-- **Progress Tracking:**
+- **Multiple Profiles Support:** Save your progress between multiple profiles/characters with independent progress tracking.
+- **Incremental Progress** for specific tasks.
+- **Total Progress Tracking:**
   - Real-time counters (e.g., "6 / 9 complete").
   - Animated progress bars with percentage display and gradient fills.
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
 - **Show/Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
-- **Multiple Profiles Support:** Save your progress between multiple profiles/characters with independent progress tracking.
 - **Import/export:** Backup and restore daily/weekly checklist progress via a JSON file with instant UI updates.
 
 ## Search & Navigation
