@@ -396,6 +396,31 @@ footer a {
 
 footer a:hover { text-decoration: underline; }
 
+
+/* Contact: Bottom Right */
+.contact {
+  position: fixed;
+  bottom: 67px;
+  right: 2px;
+  background: linear-gradient(to right, #a3c4f3, #9b82e3, #af88f7, #c1a3f7, #d5b9ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-style: normal !important;
+  transform-origin: bottom right;
+  transform: rotate(-90deg);
+  white-space: nowrap;
+}
+
+.contact address,
+.contact a {
+  color: inherit !important;
+  font-style: normal !important;
+  -webkit-text-stroke: inherit !important;
+  text-shadow: inherit !important;
+}
+
 .completion-message {
   margin: 10px 0 0;
   font-weight: 700;
@@ -493,3 +518,11 @@ footer a:hover { text-decoration: underline; }
 #profiles-list button:last-child {
   background: #b5101a;
 }
+
+/* Hidden Scrollbars */
+::-webkit-scrollbar {
+  display: none;
+}
+
+-ms-overflow-style: none;
+scrollbar-width: none;
