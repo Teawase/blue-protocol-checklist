@@ -10,8 +10,8 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks for
 - **Daily Tasks:** Track your daily activities with color-coded categories.
 - **Weekly Tasks:** Track your weekly activities with similar color-coding and organization.
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
-- **Multiple Profiles Support:** Save your progress between multiple profiles/characters with independent progress tracking.
-- **Incremental Progress** for specific tasks.
+- **Multiple Profiles:** Save your progress between multiple profiles/characters with independent progress tracking.
+- **Incremental Progress:** Keep track of how many dungeon runs you've completed, how many times you've fought the bane lord or others.
 - **Total Progress Tracking:**
   - Real-time counters (e.g., "6 / 9 complete").
   - Animated progress bars with percentage display and gradient fills.
