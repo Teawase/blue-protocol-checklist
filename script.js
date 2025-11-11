@@ -3,45 +3,45 @@
   // Task Data
   // ========================================
   const dailyTaskData = [
-    { id: "daily_mystery_store", label: "Mystery Store (Starforge Crystals, Advanced Books & Moss/Burl Shards)", color: "grey" },
-    { id: "daily_guild_checkin", label: "Guild Check-In & Cargo (Guild & Cargo Administrators in Guild Center)", color: "orange" },
-    { id: "daily_unstable_space_dungeon", label: "Unstable Space Dungeon (Clear 2x Daily)", color: "purple" },
-    { id: "daily_commissions", label: "Bureau Commissions (3x Daily) | Can skip up to 2 days (Commissions Cap: 9)", color: "green" },
-    { id: "daily_homestead_commissions", label: "Homestead Commissions | Can skip up to 2 days", color: "green" },
-    { id: "daily_world_boss_keys", label: "World Boss Keys (2x Daily) | Can skip up to 2 days (Keys Cap: 6)", color: "brown" },
-    { id: "daily_elite_boss_keys", label: "Elite Boss Keys (2x Daily) | Can skip up to 2 days (Keys Cap: 6)", color: "brown" },
-    { id: "daily_focus", label: "Life Skill Focus (400x Daily) | Can skip up to 4 days (Focus Cap: 2000)", color: "yellow" },
-    { id: "daily_season_activity_goals", label: "Season Pass Activity (Earn 500 Activity Merits)", color: "yellow" }
+    { id: "daily_mystery_store", label: "Mystery Store (Starforge Crystals, Advanced Books & Moss/Burl Shards)", color: "grey", maxProgress: 1 },
+    { id: "daily_guild_checkin", label: "Guild Check-In & Cargo (Guild & Cargo Administrators in Guild Center)", color: "orange", maxProgress: 1 },
+    { id: "daily_unstable_space_dungeon", label: "Clear Unstable Space Dungeon", color: "purple", maxProgress: 2 },
+    { id: "daily_commissions", label: "Bureau Commissions | Can skip up to 2 days", color: "green", maxProgress: 3 },
+    { id: "daily_homestead_commissions", label: "Homestead Commissions | Can skip up to 2 days", color: "green", maxProgress: 3 },
+    { id: "daily_world_boss_keys", label: "World Boss Keys | Can skip up to 2 days", color: "brown", maxProgress: 2 },
+    { id: "daily_elite_boss_keys", label: "Elite Boss Keys | Can skip up to 2 days", color: "brown", maxProgress: 2 },
+    { id: "daily_focus", label: "Life Skill Focus | Can skip up to 4 days", color: "yellow", maxProgress: 1 },
+    { id: "daily_season_activity_goals", label: "Season Pass Activity (Earn 500 Activity Merits)", color: "yellow", maxProgress: 1 }
   ];
 
   const weeklyTaskData = [
-    { id: "weekly_pioneer_rewards", label: "Pioneer Awards (Pioneer NPC in town)", color: "yellow" },
-    { id: "weekly_reclaim_hub", label: "Reclaim Hub (If you missed a Daily/Weekly)", color: "grey" },
-    { id: "weekly_guild_activity_rewards", label: "Guild Activity Rewards (Reach 7000/7000 Points)", color: "orange" },
-    { id: "weekly_guild_hunt_extended", label: "Guild Hunt (Available on Friday, Saturday, Sunday)", color: "orange" },
-    { id: "weekly_guild_dance", label: "Guild Dance (Available on Friday)", color: "orange" },
-    { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Earn 1200 Points)", color: "brown" },
-    { id: "weekly_clear_dungeons_normal", label: "Clear Dungeons (Normal/Hard) | 20 runs for weekly Reforge Stones", color: "purple" },
-    { id: "weekly_clear_dungeons_master_1_5", label: "Clear Dungeons (Master 1-5) | 20 runs for weekly Reforge Stones", color: "purple" },
-    { id: "weekly_clear_dungeons_master_6_20", label: "Clear Dungeons (Master 6-20) | 20 runs for weekly Reforge Stones | Available: 24th Nov. 2025", color: "purple" },
-    { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Dungeon Spawn) | 5x for Legendary Select Boxes", color: "brown" },
-    { id: "weekly_gear_exchange_store", label: "Gear Exchange Stores (Buy Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey" },
-    { id: "weekly_honor_store", label: "Honor Store (Earn 10000 Honor Points)", color: "grey" },
-    { id: "weekly_friendship_store", label: "Friendship Store (Earn 2000 Friendship Points)", color: "grey" },
-    { id: "weekly_reputation_store", label: 'Reputation Store (Buy Will Wish Coin, "Revive" Candy & Healing Aromatic Lv.1)', color: "grey" },
-    { id: "weekly_guild_store", label: "Guild Store (Buy Focus Potions, Supply Chests & Burl Shards)", color: "grey" },
-    { id: "weekly_event_store", label: "Event Store (If available)", color: "grey" },
-    { id: "weekly_life_skill_quests", label: "Life Skill Quests (Complete the 12 Exchange Quests)", color: "green" },
-    { id: "weekly_stimen_vaults", label: "Stimen Vaults (Resets every 2 weeks) | Check Timer", color: "pearl" },
-    { id: "weekly_ice_dragon_normal", label: "Ice Dragon Raid - Easy (12710+ Ability Score)", color: "blue" },
-    { id: "weekly_ice_dragon_hard", label: "Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue" },
-    { id: "weekly_ice_dragon_nightmare", label: "Ice Dragon Raid - Nightmare (22300+ Ability Score) | Available: 24th Nov. 2025", color: "blue" },
-    { id: "weekly_dark_dragon_normal", label: "Bone Dragon Raid - Easy (15210+ Ability Score)", color: "dark_purple" },
-    { id: "weekly_dark_dragon_hard", label: "Bone Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple" },
-    { id: "weekly_dark_dragon_nightmare", label: "Bone Dragon Raid - Nightmare (24180+ Ability Score) | Available: 24th Nov. 2025", color: "dark_purple" },
-    { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Easy (16140+ Ability Score)", color: "gold" },
-    { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (20670+ Ability Score)", color: "gold" },
-    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (27790+ Ability Score) | Available: 24th Nov. 2025", color: "gold" }
+    { id: "weekly_pioneer_rewards", label: "Pioneer Awards (Pioneer NPC in town)", color: "yellow", maxProgress: 1 },
+    { id: "weekly_reclaim_hub", label: "Reclaim Hub (If you missed a Daily/Weekly)", color: "grey", maxProgress: 1 },
+    { id: "weekly_guild_activity_rewards", label: "Guild Activity Rewards (Reach 7000/7000 Points)", color: "orange", maxProgress: 1 },
+    { id: "weekly_guild_hunt_extended", label: "Guild Hunt (Available on Fridays, Saturdays, Sundays)", color: "orange", maxProgress: 3 },
+    { id: "weekly_guild_dance", label: "Guild Dance (Available on Friday)", color: "orange", maxProgress: 1 },
+    { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 1 },
+    { id: "weekly_clear_dungeons_normal", label: "Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
+    { id: "weekly_clear_dungeons_master_1_5", label: "Dungeonss (Master 1-5) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
+    { id: "weekly_clear_dungeons_master_6_20", label: "Dungeons (Master 6-20) | Clear for Reforge Stones | Available: 24th Nov.", color: "purple", maxProgress: 20 },
+    { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Dungeon Encounter)", color: "brown", maxProgress: 5 },
+    { id: "weekly_gear_exchange_store", label: "Gear Exchange Stores (Buy Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey", maxProgress: 1 },
+    { id: "weekly_honor_store", label: "Honor Store (Earn 10000 Honor Points)", color: "grey", maxProgress: 1 },
+    { id: "weekly_friendship_store", label: "Friendship Store (Earn 2000 Friendship Points)", color: "grey", maxProgress: 1 },
+    { id: "weekly_reputation_store", label: 'Reputation Store (Buy Will Wish Coin, "Revive" Candy & Healing Aromatic Lv.1)', color: "grey", maxProgress: 1 },
+    { id: "weekly_guild_store", label: "Guild Store (Buy Focus Potions, Supply Chests & Burl Shards)", color: "grey", maxProgress: 1 },
+    { id: "weekly_event_store", label: "Event Store (If available)", color: "grey", maxProgress: 1 },
+    { id: "weekly_life_skill_quests", label: "Life Skill Exchange Quests", color: "green", maxProgress: 12 },
+    { id: "weekly_stimen_vaults", label: "Stimen Vaults (Resets every 2 weeks) | Check Timer", color: "pearl", maxProgress: 1 },
+    { id: "weekly_ice_dragon_normal", label: "Ice Dragon Raid - Easy (12710+ Ability Score)", color: "blue", maxProgress: 1 },
+    { id: "weekly_ice_dragon_hard", label: "Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue", maxProgress: 1 },
+    { id: "weekly_ice_dragon_nightmare", label: "Ice Dragon Raid - Nightmare (22300+ Ability Score) | Available: 24th Nov. 2025", color: "blue", maxProgress: 1 },
+    { id: "weekly_dark_dragon_normal", label: "Bone Dragon Raid - Easy (15210+ Ability Score)", color: "dark_purple", maxProgress: 1 },
+    { id: "weekly_dark_dragon_hard", label: "Bone Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple", maxProgress: 1 },
+    { id: "weekly_dark_dragon_nightmare", label: "Bone Dragon Raid - Nightmare (24180+ Ability Score) | Available: 24th Nov. 2025", color: "dark_purple", maxProgress: 1 },
+    { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Easy (16140+ Ability Score)", color: "gold", maxProgress: 1 },
+    { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (20670+ Ability Score)", color: "gold", maxProgress: 1 },
+    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (27790+ Ability Score) | Available: 24th Nov. 2025", color: "gold", maxProgress: 1 }
   ];
 
   // DOM Helpers
@@ -69,16 +69,32 @@
     } else if (localStorage.getItem('daily_tasks') || weeklyTaskData.some(t => localStorage.getItem(t.id))) {
       if (confirm('Migrate old progress to "default" profile?')) {
         const def = profiles.data.default;
-        def.daily_tasks = localStorage.getItem('daily_tasks');
-        def.weekly_reset_date = localStorage.getItem('weekly_reset_date');
+
+        const dailyStr = localStorage.getItem('daily_tasks');
+        if (dailyStr) {
+          const dailyOld = JSON.parse(dailyStr);
+          const newDaily = { tasks: {} };
+          dailyTaskData.forEach(t => {
+            if (dailyOld.tasks && dailyOld.tasks[t.id]) {
+              newDaily.tasks[t.id] = t.maxProgress || 1;
+            }
+          });
+          newDaily.date = getCurrentDailyDate();
+          def.daily_tasks = JSON.stringify(newDaily);
+        }
+
         def.weekly_tasks = {};
         weeklyTaskData.forEach(t => {
           const v = localStorage.getItem(t.id);
-          if (v) def.weekly_tasks[t.id] = v;
-          localStorage.removeItem(t.id);
+          if (v === 'true') {
+            def.weekly_tasks[t.id] = t.maxProgress || 1;
+          }
         });
+        def.weekly_reset_date = localStorage.getItem('weekly_reset_date');
+
         localStorage.removeItem('daily_tasks');
         localStorage.removeItem('weekly_reset_date');
+        weeklyTaskData.forEach(t => localStorage.removeItem(t.id));
         saveProfiles();
       }
     }
@@ -124,6 +140,23 @@
   const closeProfilesModal = $('close-profiles-modal');
 
   let hideCompletedState = { daily: true, weekly: true };
+
+  const HOLD_INTERVAL_MS = 250
+  let holdInterval = null;
+
+  const startHoldIncrement = (el, section) => {
+    if (holdInterval) clearInterval(holdInterval);
+    holdInterval = setInterval(() => {
+      toggleTask(el, section);
+    }, HOLD_INTERVAL_MS);
+  };
+
+  const stopHoldIncrement = () => {
+    if (holdInterval) {
+      clearInterval(holdInterval);
+      holdInterval = null;
+    }
+  };
 
   // Profiles UI
   const renderProfilesList = () => {
@@ -209,25 +242,46 @@
   const getDailyStorage = () => {
     const pd = getProfileData();
     const date = getCurrentDailyDate();
-    let stored = pd.daily_tasks ? JSON.parse(pd.daily_tasks) : { date: null, tasks: {}, currentCompleted: 0 };
+    let stored = pd.daily_tasks ? JSON.parse(pd.daily_tasks) : { date: null, tasks: {} };
     if (stored.date !== date) {
-      stored = { date, tasks: {}, currentCompleted: 0 };
+      stored = { date, tasks: {} };
       pd.daily_tasks = JSON.stringify(stored);
       saveProfiles();
     }
     return stored;
   };
 
-  const updateDailyStorage = (id, completed) => {
+  const getCount = (id, section) => {
+    if (section === 'daily') {
+      const stored = getDailyStorage();
+      return Number(stored.tasks[id] || 0);
+    } else {
+      return Number(getProfileData().weekly_tasks[id] || 0);
+    }
+  };
+
+  const setDailyCount = (id, count) => {
     if (!isStorageAllowed) return;
     const stored = getDailyStorage();
-    const was = !!stored.tasks[id];
-    if (was !== completed) {
-      completed ? stored.tasks[id] = true : delete stored.tasks[id];
-      stored.currentCompleted = Object.keys(stored.tasks).length;
-      getProfileData().daily_tasks = JSON.stringify(stored);
-      saveProfiles();
+    if (count === 0) {
+      delete stored.tasks[id];
+    } else {
+      stored.tasks[id] = count;
     }
+    getProfileData().daily_tasks = JSON.stringify(stored);
+    saveProfiles();
+  };
+
+  const setWeeklyCount = (id, count) => {
+    if (!isStorageAllowed) return;
+    const pd = getProfileData();
+    pd.weekly_tasks ||= {};
+    if (count === 0) {
+      delete pd.weekly_tasks[id];
+    } else {
+      pd.weekly_tasks[id] = count;
+    }
+    saveProfiles();
   };
 
   const resetWeeklyStorageIfNeeded = () => {
@@ -244,20 +298,90 @@
   };
 
   // Task Rendering
+  const updateTaskUI = (el, count, max) => {
+    const completed = count === max;
+    el.classList.toggle('completed', completed);
+    const badge = el.querySelector('.progress-badge');
+    if (max > 1) {
+      if (!badge) {
+        const span = document.createElement('span');
+        span.className = 'progress-badge';
+        el.querySelector('label').appendChild(span);
+        badge = span;
+      }
+      badge.textContent = `${count}/${max}`;
+    } else {
+      if (badge) badge.remove();
+    }
+  };
+
   const createTaskElement = (task, section) => {
     const div = document.createElement('div');
     div.className = `task ${task.color}`;
     div.tabIndex = 0;
     div.dataset.id = task.id;
-    div.innerHTML = `<label>${task.label}</label>`;
 
-    if (section === 'daily') {
-      getDailyStorage().tasks[task.id] && div.classList.add('completed');
-    } else {
-      getProfileData().weekly_tasks[task.id] === 'true' && div.classList.add('completed');
+    const max = task.maxProgress || 1;
+    const current = getCount(task.id, section);
+    const completed = current === max;
+
+    let innerHTML = `<label>${task.label}`;
+    if (max > 1) {
+      innerHTML += ` <span class="progress-badge">${current}/${max}</span>`;
     }
+    innerHTML += '</label>';
 
-    div.onclick = () => toggleTask(div, section);
+    div.innerHTML = innerHTML;
+    div.classList.toggle('completed', completed);
+
+    // Hold and click management
+    let isPressed = false;
+    let holdTimeout = null;
+    let holdStarted = false;
+
+    const handlePressStart = (e) => {
+      e.preventDefault();
+      isPressed = true;
+      holdTimeout = setTimeout(() => {
+        if (isPressed) {
+          holdStarted = true;
+          toggleTask(div, section); // Initial increment for hold
+          startHoldIncrement(div, section);
+          if (e.pointerId !== undefined) {
+            e.currentTarget.setPointerCapture(e.pointerId);
+          }
+        }
+      }, 300); // Delay to distinguish quick tap from hold
+    };
+
+    const handlePressEnd = (e) => {
+      e.preventDefault();
+      isPressed = false;
+      clearTimeout(holdTimeout);
+      stopHoldIncrement();
+      if (!holdStarted) {
+        // Quick tap: single increment
+        toggleTask(div, section);
+      }
+      holdStarted = false;
+    };
+
+    const handlePressCancel = (e) => {
+      e.preventDefault();
+      isPressed = false;
+      clearTimeout(holdTimeout);
+      stopHoldIncrement();
+      holdStarted = false;
+    };
+
+    div.onmousedown = handlePressStart;
+    div.onmouseup = handlePressEnd;
+    div.onmouseleave = handlePressCancel;
+    div.ontouchstart = handlePressStart;
+    div.ontouchend = handlePressEnd;
+    div.ontouchcancel = handlePressCancel;
+
+    // Keyboard events
     div.onkeydown = e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -270,22 +394,25 @@
         if (div.nextElementSibling) div.nextElementSibling.focus();
       }
     };
+
     return div;
   };
 
   const toggleTask = (el, section) => {
-    const completed = el.classList.toggle('completed');
     const id = el.dataset.id;
+    const taskData = section === 'daily' ? dailyTaskData : weeklyTaskData;
+    const task = taskData.find(t => t.id === id);
+    const max = task.maxProgress || 1;
+    let current = getCount(id, section);
+    let newCount = current < max ? current + 1 : 0;
 
-    if (section === 'weekly') {
-      const pd = getProfileData();
-      pd.weekly_tasks[id] = completed ? 'true' : undefined;
-      if (!completed) delete pd.weekly_tasks[id];
-      saveProfiles();
+    if (section === 'daily') {
+      setDailyCount(id, newCount);
     } else {
-      updateDailyStorage(id, completed);
+      setWeeklyCount(id, newCount);
     }
 
+    updateTaskUI(el, newCount, max);
     updateCounter(section);
     applyCompletedFilter(section);
   };
@@ -359,27 +486,37 @@
   };
 
   const selectAll = section => {
+    const data = section === 'daily' ? dailyTaskData : weeklyTaskData;
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     container.querySelectorAll('.task').forEach(t => {
-      t.classList.add('completed');
       const id = t.dataset.id;
-      if (section === 'weekly') getProfileData().weekly_tasks[id] = 'true';
-      else updateDailyStorage(id, true);
+      const task = data.find(tt => tt.id === id);
+      const max = task.maxProgress || 1;
+      if (section === 'daily') {
+        setDailyCount(id, max);
+      } else {
+        setWeeklyCount(id, max);
+      }
+      updateTaskUI(t, max, max);
     });
-    saveProfiles();
     updateCounter(section);
     applyCompletedFilter(section);
   };
 
   const deselectAll = section => {
+    const data = section === 'daily' ? dailyTaskData : weeklyTaskData;
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     container.querySelectorAll('.task').forEach(t => {
-      t.classList.remove('completed');
       const id = t.dataset.id;
-      if (section === 'weekly') delete getProfileData().weekly_tasks[id];
-      else updateDailyStorage(id, false);
+      const task = data.find(tt => tt.id === id);
+      const max = task.maxProgress || 1;
+      if (section === 'daily') {
+        setDailyCount(id, 0);
+      } else {
+        setWeeklyCount(id, 0);
+      }
+      updateTaskUI(t, 0, max);
     });
-    saveProfiles();
     updateCounter(section);
     applyCompletedFilter(section);
   };
