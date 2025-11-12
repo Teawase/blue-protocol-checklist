@@ -21,7 +21,7 @@
     { id: "weekly_guild_dance", label: "Guild Dance (Available on Friday)", color: "orange", maxProgress: 1 },
     { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 1 },
     { id: "weekly_clear_dungeons_normal", label: "Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
-    { id: "weekly_clear_dungeons_master_1_5", label: "Dungeonss (Master 1-5) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
+    { id: "weekly_clear_dungeons_master_1_5", label: "Dungeons (Master 1-5) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_clear_dungeons_master_6_20", label: "Dungeons (Master 6-20) | Clear for Reforge Stones | Available: 24th Nov.", color: "purple", maxProgress: 20 },
     { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Dungeon Encounter)", color: "brown", maxProgress: 5 },
     { id: "weekly_gear_exchange_store", label: "Gear Exchange Stores (Buy Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey", maxProgress: 1 },
@@ -138,10 +138,16 @@
   const createProfileBtn = $('create-profile-btn');
   const closeProfilesModal = $('close-profiles-modal');
 
+  // News Modal Elements
+  const newsBtn = $('newsBtn');
+  const newsModal = $('news-modal');
+  const changelogsContent = $('changelogs-content');
+  const closeNewsModal = $('close-news-modal');
+
   let hideCompletedState = { daily: true, weekly: true };
 
   // Incremental Progress on hold
-  const HOLD_INTERVAL_MS = 250
+  const HOLD_INTERVAL_MS = 250;
   let holdInterval = null;
 
   const startHoldIncrement = (el, section) => {
@@ -193,12 +199,10 @@
       };
       li.appendChild(switchBtn);
 
-      // Only show Delete if there are 2+ profiles
       if (profiles.list.length > 1) {
         const delBtn = document.createElement('button');
         delBtn.textContent = 'Delete';
         delBtn.onclick = () => {
-          // Never allow deleting the very last profile
           if (profiles.list.length === 1) {
             alert('You cannot delete your only profile!');
             return;
@@ -347,7 +351,6 @@
     div.innerHTML = innerHTML;
     div.classList.toggle('completed', completed);
 
-    // Hold shift and click for decrement
     let isPressed = false;
     let holdTimeout = null;
     let holdStarted = false;
@@ -375,7 +378,7 @@
             e.currentTarget.setPointerCapture(e.pointerId);
           }
         }
-      }, 300);  // Delay to distinguish quick tap from hold
+      }, 300);
     };
 
     const handlePressEnd = (e) => {
@@ -386,7 +389,6 @@
       stopHoldIncrement();
       stopHoldDecrement(); 
       if (!holdStarted) {
-        // Quick tap: decrement if shift, else increment
         if (holdMode === 'decrement') {
           decrementTask(div, section);
         } else {
@@ -405,7 +407,6 @@
       holdStarted = false;
     };
 
-    // Global shift listener
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Shift') {
         updateHoldMode({ shiftKey: true });
@@ -424,7 +425,6 @@
     div.ontouchend = handlePressEnd;
     div.ontouchcancel = handlePressCancel;
 
-    // Keyboard events
     div.onkeydown = e => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -676,7 +676,7 @@
   };
 
   const getGuildHuntPeriod = now => {
-    const days = [5, 6, 0]; // Fri, Sat, Sun
+    const days = [5, 6, 0];
     for (const day of days) {
       const start = cloneSet(now, day, 14, 0);
       const end = new Date(start);
@@ -694,7 +694,7 @@
   };
 
   const getGuildDancePeriod = now => {
-    const start = cloneSet(now, 5, 15, 30); // Friday
+    const start = cloneSet(now, 5, 15, 30);
     const end = new Date(start);
     end.setDate(end.getDate() + 1);
     end.setHours(3, 30, 0, 0);
@@ -823,6 +823,32 @@
         </div>`;
     }, 100);
   };
+
+  // News/Changelogs Modal
+  const loadChangelogs = async () => {
+    changelogsContent.textContent = 'Loading changelogs...';
+    try {
+      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases');
+      const releases = await res.json();
+      let html = '';
+      releases.slice(0, 10).forEach(r => {
+        const date = new Date(r.published_at).toLocaleDateString();
+        html += `<h4>${r.tag_name} (${date})</h4><div class="release-body">${marked.parse(r.body || 'No details')}</div>`;
+      });
+      changelogsContent.innerHTML = html || '<p>No updates found.</p>';
+    } catch (err) {
+      changelogsContent.textContent = 'Failed to load. Check console.';
+      console.error(err);
+    }
+  };
+
+  newsBtn.onclick = () => {
+    loadChangelogs();
+    newsModal.style.display = 'flex';
+  };
+
+  closeNewsModal.onclick = () => newsModal.style.display = 'none';
+  newsModal.onclick = (e) => { if (e.target === newsModal) newsModal.style.display = 'none'; };
 
   // Init
   const init = async () => {
