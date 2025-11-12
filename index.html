@@ -14,6 +14,10 @@
     <input type="file" id="importFile" accept=".json" style="display: none;">
   </div>
 
+  <div class="news">
+    <button id="newsBtn">📰</button>
+  </div>
+
   <div class="stars"></div>
   <h1 id="page-title">Blue Protocol: Star Resonance Checklist</h1>
 
@@ -135,6 +139,14 @@
     </div>
   </div>
 
+  <div id="news-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow: auto;">
+      <h2>Changelogs</h2>
+      <div id="changelogs-content">Loading...</div>
+      <button id="close-news-modal" style="margin-top: 20px;">Close (Exit)</button>
+    </div>
+  </div>
+
   <footer>
     Resources:
     <a href="https://blueprotocol.lunixx.de/" target="_blank" rel="noopener noreferrer">Players Database</a> |
@@ -154,6 +166,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@latest/lib/marked.umd.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
