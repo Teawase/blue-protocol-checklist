@@ -21,7 +21,7 @@
     { id: "weekly_guild_dance", label: "Guild Dance (Available on Friday)", color: "orange", maxProgress: 1 },
     { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 1 },
     { id: "weekly_clear_dungeons_normal", label: "Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
-    { id: "weekly_clear_dungeons_master_1_5", label: "Dungeons (Master 1-5) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
+    { id: "weekly_clear_dungeons_master_1_5", label: "Dungeonss (Master 1-5) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_clear_dungeons_master_6_20", label: "Dungeons (Master 6-20) | Clear for Reforge Stones | Available: 24th Nov.", color: "purple", maxProgress: 20 },
     { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Dungeon Encounter)", color: "brown", maxProgress: 5 },
     { id: "weekly_gear_exchange_store", label: "Gear Exchange Stores (Buy Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey", maxProgress: 1 },
@@ -137,10 +137,6 @@
   const newProfileNameInput = $('new-profile-name');
   const createProfileBtn = $('create-profile-btn');
   const closeProfilesModal = $('close-profiles-modal');
-  const newsBtn = $('newsBtn');
-  const newsModal = $('news-modal');
-  const changelogsContent = $('changelogs-content');
-  const closeNewsModal = $('close-news-modal');
 
   let hideCompletedState = { daily: true, weekly: true };
 
@@ -763,15 +759,49 @@
     setInterval(updateAll, 1000);
   };
 
-  // GDPR
+  // Cache key and expiry for IP API data
+  const IPAPI_CACHE_KEY = 'ipapi_cache';
+  const IPAPI_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+  // GDPR Check
   const checkGDPR = async () => {
     try {
+      const cached = localStorage.getItem(IPAPI_CACHE_KEY);
+      if (cached) {
+        const data = JSON.parse(cached);
+        const now = Date.now();
+        if (now - data.timestamp < IPAPI_CACHE_EXPIRY_MS) {
+          if (data.response.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+            gdprModal.style.display = 'flex';
+          }
+          return;
+        }
+      }
+
       const res = await fetch('https://ipapi.co/json/');
-      const data = await res.json();
-      if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+      if (res.status === 429) {
+        console.warn('Rate limit hit for ipapi.co request');
+        if (cached) {
+          const data = JSON.parse(cached);
+          if (data.response.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+            gdprModal.style.display = 'flex';
+          }
+        }
+        return;
+      } else if (!res.ok) {
+        console.error('IPAPI API error:', res.status);
+        return;
+      }
+
+      const json = await res.json();
+      localStorage.setItem(IPAPI_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), response: json }));
+
+      if (json.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
         gdprModal.style.display = 'flex';
       }
-    } catch {}
+    } catch (err) {
+      console.error('Failed to check GDPR via IPAPI:', err);
+    }
   };
 
   acceptBtn.onclick = () => {
@@ -795,30 +825,6 @@
     }, 100);
   };
 
-  // News Modal
-  newsBtn.onclick = () => {
-    changelogsContent.innerHTML = 'Loading...';
-    newsModal.style.display = 'flex';
-    fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch releases');
-        return res.json();
-      })
-  .then(releases => {
-    let html = '';
-    releases.slice(0, 10).forEach(r => {  //  Number of latest releases to show
-      const title = r.name || r.tag_name;
-      const date = new Date(r.published_at).toLocaleDateString();
-      const bodyHtml = marked.parse(r.body || '');
-      html += `<h4>${r.tag_name} - ${title} (${date})</h4><div class="release-body">${bodyHtml}</div><hr>`;
-    });
-    if (!html) html = '<p>No changelogs available.</p>';
-      changelogsContent.innerHTML = html;
-      })
-  };
-
-  closeNewsModal.onclick = () => newsModal.style.display = 'none';
-
   // Init
   const init = async () => {
     updateTitle();
@@ -826,12 +832,6 @@
     loadProfiles();
     reloadCurrentProfileData();
     startTimerUpdates();
-
-    newsModal.addEventListener('click', (e) => {
-      if (e.target === newsModal) {
-        newsModal.style.display = 'none';
-      }
-    });
 
     importExportBtn.onclick = () => importExportModal.style.display = 'flex';
     importProgressBtn.onclick = () => { importExportModal.style.display = 'none'; importFile.click(); };
