@@ -56,6 +56,31 @@ body {
   transform: translateY(-1px);
 }
 
+.news {
+  position: fixed;
+  bottom: 3px;
+  left: 2px;
+  transform-origin: bottom left;
+  white-space: nowrap;
+  z-index: 9998;
+}
+
+.news button {
+  font-size: 0.75rem !important;
+  padding: 0.3rem 0.3rem !important;
+  min-width: 20px !important;
+  background: #506aff;
+  border-radius: 9px;
+  color: #fff;
+  border: 1px solid #9F2B68;
+  cursor: pointer;
+}
+
+.news button:hover {
+  background: #3b59dc;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 600px) {
   body { padding-top: 90px !important; }
   .import-export {
@@ -65,6 +90,15 @@ body {
     gap: 5px;
   }
   .import-export button {
+    font-size: 0.73rem !important;
+    padding: 0.45rem 0.65rem !important;
+    min-width: 45px !important;
+  }
+  .news {
+    bottom: 50px;
+    left: 2px;
+  }
+  .news button {
     font-size: 0.73rem !important;
     padding: 0.45rem 0.65rem !important;
     min-width: 72px !important;
@@ -460,6 +494,22 @@ footer a:hover { text-decoration: underline; }
   max-width: 400px;
 }
 
+#news-modal .modal-content {
+  text-align: left;
+}
+
+#news-modal .modal-content h2 {
+  text-align: center;
+}
+
+#news-modal .modal-content h3 {
+  text-align: left;
+}
+
+#news-modal .modal-content h4 {
+  text-align: right;
+}
+
 .modal-content button {
   margin: 10px;
   padding: 10px 20px;
@@ -470,13 +520,15 @@ footer a:hover { text-decoration: underline; }
 
 #cancelImportExport,
 #reject-gdpr,
-#close-profiles-modal { background: #666; }
+#close-profiles-modal,
+#close-news-modal { background: #666; }
 
 #import-export-modal button:hover,
 #create-profile-btn:hover { background: #3b59dc; }
 
 #reject-gdpr:hover,
-#close-profiles-modal:hover { background: #555; }
+#close-profiles-modal:hover,
+#close-news-modal:hover { background: #555; }
 
 .github-corner:hover .octo-arm { animation: octocat-wave 560ms ease-in-out; }
 @keyframes octocat-wave {
@@ -537,3 +589,88 @@ footer a:hover { text-decoration: underline; }
 
 -ms-overflow-style: none;
 scrollbar-width: none;
+
+/* Markdown styles for changelogs */
+#news-modal .release-body {
+  text-align: left !important;
+  margin: 10px 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+#news-modal .release-body h1,
+#news-modal .release-body h2,
+#news-modal .release-body h3,
+#news-modal .release-body h4,
+#news-modal .release-body h5,
+#news-modal .release-body h6 {
+  color: #eee;
+  margin: 1em 0 0.5em;
+}
+
+#news-modal .release-body p {
+  margin: 0.5em 0;
+}
+
+#news-modal .release-body ul,
+#news-modal .release-body ol {
+  margin: 0.5em 0;
+  padding-left: 2em;
+}
+
+#news-modal .release-body li {
+  margin: 0.25em 0;
+}
+
+#news-modal .release-body code {
+  background: #333;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  color: #ffb800;
+}
+
+#news-modal .release-body pre {
+  background: #1a1a1a;
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+#news-modal .release-body blockquote {
+  border-left: 4px solid #506aff;
+  padding-left: 1em;
+  margin: 0.5em 0;
+  color: #ccc;
+}
+
+#news-modal .release-body strong {
+  font-weight: bold;
+}
+
+#news-modal .release-body em {
+  font-style: italic;
+}
+
+#news-modal .release-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+#news-modal .release-body th,
+#news-modal .release-body td {
+  border: 1px solid #444;
+  padding: 0.5em;
+  text-align: left;
+}
+
+#news-modal .release-body th {
+  background: #333;
+}
+
+#news-modal #close-news-modal {
+  display: block;
+  margin: 20px auto 0;
+  width: fit-content;
+  padding: 10px 10px;
+}
