@@ -1,7 +1,5 @@
 (() => {
-  // ========================================
-  // Task Data
-  // ========================================
+  // Daily Tasks
   const dailyTaskData = [
     { id: "daily_mystery_store", label: "Mystery Store (Starforge Crystals, Advanced Books & Moss/Burl Shards)", color: "grey", maxProgress: 1 },
     { id: "daily_guild_checkin", label: "Guild Check-In & Cargo (Guild & Cargo Administrators in Guild Center)", color: "orange", maxProgress: 1 },
@@ -14,6 +12,7 @@
     { id: "daily_season_activity_goals", label: "Season Pass Activity (Earn 500 Activity Merits)", color: "yellow", maxProgress: 1 }
   ];
 
+  // Weekly Tasks
   const weeklyTaskData = [
     { id: "weekly_pioneer_rewards", label: "Pioneer Awards (Pioneer NPC in town)", color: "yellow", maxProgress: 1 },
     { id: "weekly_reclaim_hub", label: "Reclaim Hub (If you missed a Daily/Weekly)", color: "grey", maxProgress: 1 },
@@ -141,17 +140,32 @@
 
   let hideCompletedState = { daily: true, weekly: true };
 
+  // Incremental Progress on hold
   const HOLD_INTERVAL_MS = 250
   let holdInterval = null;
 
   const startHoldIncrement = (el, section) => {
     if (holdInterval) clearInterval(holdInterval);
     holdInterval = setInterval(() => {
-      toggleTask(el, section);
+      toggleTask(el, section, true);
     }, HOLD_INTERVAL_MS);
   };
 
   const stopHoldIncrement = () => {
+    if (holdInterval) {
+      clearInterval(holdInterval);
+      holdInterval = null;
+    }
+  };
+
+  const startHoldDecrement = (el, section) => {
+    if (holdInterval) clearInterval(holdInterval);
+    holdInterval = setInterval(() => {
+      decrementTask(el, section);
+    }, HOLD_INTERVAL_MS);
+  };
+
+  const stopHoldDecrement = () => {
     if (holdInterval) {
       clearInterval(holdInterval);
       holdInterval = null;
@@ -228,7 +242,7 @@
     reloadCurrentProfileData();
   };
 
-  // Profile Storage
+  // Profiles Storage
   const getProfileData = () => profiles.data[profiles.current];
 
   const getCurrentDailyDate = (now = parseNoronha()) => {
@@ -334,34 +348,51 @@
     div.innerHTML = innerHTML;
     div.classList.toggle('completed', completed);
 
-    // Hold and click management
+    // Hold shift and click for decrement
     let isPressed = false;
     let holdTimeout = null;
     let holdStarted = false;
+    let holdMode = 'increment';
+
+    const updateHoldMode = (e) => {
+      holdMode = e.shiftKey ? 'decrement' : 'increment';
+    };
 
     const handlePressStart = (e) => {
       e.preventDefault();
+      updateHoldMode(e);
       isPressed = true;
       holdTimeout = setTimeout(() => {
         if (isPressed) {
           holdStarted = true;
-          toggleTask(div, section); // Initial increment for hold
-          startHoldIncrement(div, section);
+          if (holdMode === 'decrement') {
+            decrementTask(div, section);
+            startHoldDecrement(div, section);
+          } else {
+            toggleTask(div, section, true);
+            startHoldIncrement(div, section);
+          }
           if (e.pointerId !== undefined) {
             e.currentTarget.setPointerCapture(e.pointerId);
           }
         }
-      }, 300); // Delay to distinguish quick tap from hold
+      }, 300);  // Delay to distinguish quick tap from hold
     };
 
     const handlePressEnd = (e) => {
       e.preventDefault();
+      updateHoldMode(e);
       isPressed = false;
       clearTimeout(holdTimeout);
       stopHoldIncrement();
+      stopHoldDecrement(); 
       if (!holdStarted) {
-        // Quick tap: single increment
-        toggleTask(div, section);
+        // Quick tap: decrement if shift, else increment
+        if (holdMode === 'decrement') {
+          decrementTask(div, section);
+        } else {
+          toggleTask(div, section);
+        }
       }
       holdStarted = false;
     };
@@ -371,8 +402,21 @@
       isPressed = false;
       clearTimeout(holdTimeout);
       stopHoldIncrement();
+      stopHoldDecrement();
       holdStarted = false;
     };
+
+    // Global shift listener
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Shift') {
+        updateHoldMode({ shiftKey: true });
+      }
+    });
+    document.addEventListener('keyup', (e) => {
+      if (e.key === 'Shift') {
+        updateHoldMode({ shiftKey: false });
+      }
+    });
 
     div.onmousedown = handlePressStart;
     div.onmouseup = handlePressEnd;
@@ -398,13 +442,24 @@
     return div;
   };
 
-  const toggleTask = (el, section) => {
+  const toggleTask = (el, section, isHold = false) => {
     const id = el.dataset.id;
     const taskData = section === 'daily' ? dailyTaskData : weeklyTaskData;
     const task = taskData.find(t => t.id === id);
     const max = task.maxProgress || 1;
     let current = getCount(id, section);
-    let newCount = current < max ? current + 1 : 0;
+    let newCount;
+    if (current < max) {
+      if (isHold && max > 1 && current >= max - 1) {
+        return;
+      }
+      newCount = current + 1;
+    } else {
+      if (isHold) {
+        return;
+      }
+      newCount = 0;
+    }
 
     if (section === 'daily') {
       setDailyCount(id, newCount);
@@ -415,6 +470,25 @@
     updateTaskUI(el, newCount, max);
     updateCounter(section);
     applyCompletedFilter(section);
+  };
+
+  const decrementTask = (el, section) => {
+    const id = el.dataset.id;
+    const taskData = section === 'daily' ? dailyTaskData : weeklyTaskData;
+    const task = taskData.find(t => t.id === id);
+    const max = task.maxProgress || 1;
+    let current = getCount(id, section);
+    if (current > 0) {
+      const newCount = current - 1;
+      if (section === 'daily') {
+        setDailyCount(id, newCount);
+      } else {
+        setWeeklyCount(id, newCount);
+      }
+      updateTaskUI(el, newCount, max);
+      updateCounter(section);
+      applyCompletedFilter(section);
+    }
   };
 
   const renderTasks = (container, data, section) => {
