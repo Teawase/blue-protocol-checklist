@@ -21,7 +21,7 @@
     { id: "weekly_guild_dance", label: "Guild Dance (Available on Friday)", color: "orange", maxProgress: 1 },
     { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 1 },
     { id: "weekly_clear_dungeons_normal", label: "Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
-    { id: "weekly_clear_dungeons_master_1_5", label: "Dungeonss (Master 1-5) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
+    { id: "weekly_clear_dungeons_master_1_5", label: "Dungeons (Master 1-5) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_clear_dungeons_master_6_20", label: "Dungeons (Master 6-20) | Clear for Reforge Stones | Available: 24th Nov.", color: "purple", maxProgress: 20 },
     { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Dungeon Encounter)", color: "brown", maxProgress: 5 },
     { id: "weekly_gear_exchange_store", label: "Gear Exchange Stores (Buy Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey", maxProgress: 1 },
@@ -137,6 +137,10 @@
   const newProfileNameInput = $('new-profile-name');
   const createProfileBtn = $('create-profile-btn');
   const closeProfilesModal = $('close-profiles-modal');
+  const newsBtn = $('newsBtn');
+  const newsModal = $('news-modal');
+  const changelogsContent = $('changelogs-content');
+  const closeNewsModal = $('close-news-modal');
 
   let hideCompletedState = { daily: true, weekly: true };
 
@@ -791,6 +795,30 @@
     }, 100);
   };
 
+  // News Modal
+  newsBtn.onclick = () => {
+    changelogsContent.innerHTML = 'Loading...';
+    newsModal.style.display = 'flex';
+    fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases')
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch releases');
+        return res.json();
+      })
+  .then(releases => {
+    let html = '';
+    releases.slice(0, 10).forEach(r => {  //  Number of latest releases to show
+      const title = r.name || r.tag_name;
+      const date = new Date(r.published_at).toLocaleDateString();
+      const bodyHtml = marked.parse(r.body || '');
+      html += `<h4>${r.tag_name} - ${title} (${date})</h4><div class="release-body">${bodyHtml}</div><hr>`;
+    });
+    if (!html) html = '<p>No changelogs available.</p>';
+      changelogsContent.innerHTML = html;
+      })
+  };
+
+  closeNewsModal.onclick = () => newsModal.style.display = 'none';
+
   // Init
   const init = async () => {
     updateTitle();
@@ -798,6 +826,12 @@
     loadProfiles();
     reloadCurrentProfileData();
     startTimerUpdates();
+
+    newsModal.addEventListener('click', (e) => {
+      if (e.target === newsModal) {
+        newsModal.style.display = 'none';
+      }
+    });
 
     importExportBtn.onclick = () => importExportModal.style.display = 'flex';
     importProgressBtn.onclick = () => { importExportModal.style.display = 'none'; importFile.click(); };
