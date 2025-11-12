@@ -321,7 +321,6 @@
         const span = document.createElement('span');
         span.className = 'progress-badge';
         el.querySelector('label').appendChild(span);
-        badge = span;
       }
       badge.textContent = `${count}/${max}`;
     } else {
@@ -771,7 +770,7 @@
         const data = JSON.parse(cached);
         const now = Date.now();
         if (now - data.timestamp < IPAPI_CACHE_EXPIRY_MS) {
-          if (data.response.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+          if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
             gdprModal.style.display = 'flex';
           }
           return;
@@ -783,7 +782,7 @@
         console.warn('Rate limit hit for ipapi.co request');
         if (cached) {
           const data = JSON.parse(cached);
-          if (data.response.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+          if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
             gdprModal.style.display = 'flex';
           }
         }
@@ -794,7 +793,7 @@
       }
 
       const json = await res.json();
-      localStorage.setItem(IPAPI_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), response: json }));
+      localStorage.setItem(IPAPI_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), continent_code: json.continent_code }));
 
       if (json.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
         gdprModal.style.display = 'flex';
