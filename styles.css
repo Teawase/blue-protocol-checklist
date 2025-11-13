@@ -462,6 +462,27 @@ footer a {
   font-style: normal;
 }
 
+.reset-data {
+  position: fixed;
+  bottom: 3px;
+  left: 35px;
+  z-index: 9999;
+}
+#resetSiteDataBtn {
+  font-size: 0.75rem !important;
+  padding: 0.45rem 0.45rem !important;
+  min-width: 20px !important;
+  background: #b5101a;
+  border-radius: 9px;
+  color: #fff;
+  border: 1px solid #9F2B68;
+  cursor: pointer;
+  transition: background 0.5s;
+}
+#resetSiteDataBtn:hover {
+  background: #d91b2b;
+}
+
 .completion-message {
   margin: 20px 0 0;
   font-weight: 700;
