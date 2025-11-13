@@ -394,9 +394,9 @@ button:focus {
   animation: pulse 2s ease-in-out infinite;
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(0.99); box-shadow: 0 0 2px rgba(80, 106, 255, 0.28), inset 0 0 6px rgba(80, 106, 255, 0.2); border-color: rgba(80, 106, 255, 0.4); filter: brightness(100%); }
-  50% { transform: scale(1.01); box-shadow: 0 0 4px rgba(80, 106, 255, 0.4), inset 0 0 10px rgba(80, 106, 255, 0.25); border-color: rgba(80, 106, 255, 0.7); filter: brightness(1.1); }
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 2px #506aff47,inset 0 0 6px #506aff33;border-color:#506aff66;filter:brightness(1)}
+  50%{box-shadow:0 0 6px #506aff80,inset 0 0 12px #506aff4d;border-color:#506affcc;filter:brightness(1.15)}
 }
 
 .event-timer .name {
@@ -419,13 +419,13 @@ button:focus {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: countdownFade 1s ease-in-out infinite alternate;
+  animation: countdownFade 2s ease-in-out infinite alternate;
   letter-spacing: 0.04em;
 }
 
 @keyframes countdownFade {
-  from { opacity: 0.95; text-shadow: none; }
-  to   { opacity: 1; text-shadow: 0 0 0.5px rgba(80, 106, 255, 0.6), 0 0 1px rgba(80, 106, 255, 0.4), 0 0 2px rgba(80, 106, 255, 0.2); }
+  from, to { opacity: 0.9; text-shadow: none; }
+  50%      { opacity: 1; text-shadow: 0 0 .7px #506affb3, 0 0 1.4px #506aff80, 0 0 2.8px #506aff4d; }
 }
 
 footer {
