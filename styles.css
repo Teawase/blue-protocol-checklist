@@ -81,7 +81,7 @@ body {
 }
 
 @media (max-width: 600px) {
-  body { padding-top: 90px !important; }
+  body { padding-top: 60px !important; }
   .import-export {
     top: 5px !important;
     left: 5px !important;
@@ -271,8 +271,8 @@ h2 {
   width: 100%;
   flex-grow: 1;
   transition: all 0.3s;
-  padding: 10px 10px 40px 0;
-  background: rgba(0,0,0,0.1);
+  padding: 6px 0px 0px 0px;
+  background: transparent;
   border-radius: 9px;
   overflow: visible;
   scrollbar-width: none;
