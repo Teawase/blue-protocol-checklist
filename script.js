@@ -68,7 +68,6 @@
     } else if (localStorage.getItem('daily_tasks') || weeklyTaskData.some(t => localStorage.getItem(t.id))) {
       if (confirm('Migrate old progress to "default" profile?')) {
         const def = profiles.data.default;
-
         const dailyStr = localStorage.getItem('daily_tasks');
         if (dailyStr) {
           const dailyOld = JSON.parse(dailyStr);
@@ -143,6 +142,9 @@
   const newsModal = $('news-modal');
   const changelogsContent = $('changelogs-content');
   const closeNewsModal = $('close-news-modal');
+
+  // Reset Site Data Button
+  const resetSiteDataBtn = $('resetSiteDataBtn');
 
   let hideCompletedState = { daily: true, weekly: true };
 
@@ -337,7 +339,6 @@
     div.className = `task ${task.color}`;
     div.tabIndex = 0;
     div.dataset.id = task.id;
-
     const max = task.maxProgress || 1;
     const current = getCount(task.id, section);
     const completed = current === max;
@@ -387,7 +388,7 @@
       isPressed = false;
       clearTimeout(holdTimeout);
       stopHoldIncrement();
-      stopHoldDecrement(); 
+      stopHoldDecrement();
       if (!holdStarted) {
         if (holdMode === 'decrement') {
           decrementTask(div, section);
@@ -459,7 +460,6 @@
       }
       newCount = 0;
     }
-
     if (section === 'daily') {
       setDailyCount(id, newCount);
     } else {
@@ -514,7 +514,6 @@
     const progress = section === 'daily' ? dailyProgress : weeklyProgress;
     const bar = section === 'daily' ? dailyProgressBar : weeklyProgressBar;
     const msg = section === 'daily' ? dailyCompletionMsg : weeklyCompletionMsg;
-
     const done = container.querySelectorAll('.task.completed').length;
     const total = container.querySelectorAll('.task').length;
     const pct = total ? done / total * 100 : 0;
@@ -550,7 +549,6 @@
     const input = section === 'daily' ? dailyFilterInput : weeklyFilterInput;
     const hide = hideCompletedState[section];
     const text = input.value.toLowerCase();
-
     container.querySelectorAll('.task').forEach(t => {
       const match = t.textContent.toLowerCase().includes(text);
       const completed = t.classList.contains('completed');
@@ -849,6 +847,24 @@
 
   closeNewsModal.onclick = () => newsModal.style.display = 'none';
   newsModal.onclick = (e) => { if (e.target === newsModal) newsModal.style.display = 'none'; };
+
+  // Reset Site Data Button
+  if (resetSiteDataBtn) {
+    resetSiteDataBtn.onclick = () => {
+      const sure = confirm(
+        'Are you sure you want to reset ALL site data? (localStorage)\n' +
+		'Use this option only when a bug occurs on the website.\n\n' +
+        'Your profiles, progress and settings will be permanently deleted.\n\n' +
+        'This action is irreversible and cannot be undone.'
+      );
+
+      if (!sure) return;
+      localStorage.clear();
+
+      alert('All site data has been cleared!\nThe page will now reload.');
+      location.reload();
+    };
+  };
 
   // Init
   const init = async () => {
