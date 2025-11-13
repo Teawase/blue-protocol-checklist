@@ -2,26 +2,25 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #242424;
   color: #eee;
-  margin: 0;
+  margin: 0px;
   padding: 0px 0px 10px !important;
   user-select: none;
   position: relative;
   min-height: 100vh;
   box-sizing: border-box;
-  padding-top: 0 !important;
+  padding-top: 0px !important;
 }
 
 .stars {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background:
     radial-gradient(2px 2px at 20px 30px, #eee 100%, transparent 0),
-    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8) 100%, transparent 0),
-    linear-gradient(90deg, transparent 99%, rgba(255,255,255,0.1) 0);
-  background-size: 60px 80px, 80px 100px, 100% 100%;
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8) 100%, transparent 0);
+  background-size: 60px 80px, 80px 100px;
   opacity:  0.1;
   pointer-events: none;
   z-index: -1;
@@ -72,7 +71,7 @@ body {
   background: #506aff;
   border-radius: 9px;
   color: #fff;
-  border: 1px solid #9F2B68;
+  border: 3px solid #9F2B68;
   cursor: pointer;
 }
 
@@ -155,7 +154,7 @@ h2 {
 
 .progress-bar {
   position: relative;
-  width: 190px;
+  width: 165px;
   height: 14px;
   background: #444;
   border-radius: 9px;
@@ -268,16 +267,16 @@ h2 {
 .tasks {
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
+  gap: 0.65rem;
   width: 100%;
   flex-grow: 1;
   transition: all 0.3s;
-  padding: 10px;
+  padding: 10px 10px 40px 0;
   background: rgba(0,0,0,0.1);
   border-radius: 9px;
-  overflow-y: auto;
-  scrollbar-width: none;        /* Firefox */
-  -ms-overflow-style: none;     /* IE, Edge */
+  overflow: visible;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 .tasks::-webkit-scrollbar {
   display: none;
@@ -294,7 +293,7 @@ h2 {
   overflow: hidden;
   margin: 4px 0;
   outline: none;
-  border: 1.5px solid rgba(80, 106, 255, 0.20);
+  border: 1px solid rgba(80, 106, 255, 0.20);
   box-sizing: border-box;
   box-shadow: 0 0 2px 0 rgba(80,106,255,0.14);
   transition: background 0.3s, color 0.3s, opacity 0.3s, transform 0.2s ease-out, box-shadow 0.3s, border 0.3s;
@@ -305,7 +304,7 @@ h2 {
 .task.completed {
   opacity: 0.5;
   text-decoration: line-through;
-  filter: grayscale(50%) brightness(0.85);
+  filter: grayscale(50%) brightness(0.5);
   animation: completeBounce 0.45s ease-out;
 }
 
@@ -327,17 +326,17 @@ h2 {
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-.dark_purple { --base1:#4b2b55; --base2:#6a3e80; --hover1:#8a58a0; }
-.red         { --base1:#b22222; --base2:#d93b3b; --hover1:#fa4e4e; }
 .blue        { --base1:#1f5faf; --base2:#2977d7; --hover1:#4590f9; }
+.brown       { --base1:#3a1f17; --base2:#503425; --hover1:#6b493d; }
+.dark_purple { --base1:#4b2b55; --base2:#6a3e80; --hover1:#8a58a0; }
+.gold        { --base1:#a3772e; --base2:#c59046; --hover1:#edd07c; }
 .green       { --base1:#519b4a; --base2:#66b45f; --hover1:#87d17a; }
 .grey        { --base1:#7c746f; --base2:#989077; --hover1:#b2ab8e; }
-.yellow      { --base1:#b9972c; --base2:#d2b430; --hover1:#e7c94f; }
 .orange      { --base1:#e07b00; --base2:#ff9400; --hover1:#ffb233; }
-.purple      { --base1:#4643a4; --base2:#595fb8; --hover1:#7a80ce; }
 .pearl       { --base1:#f7e9e8; --base2:#f9f1f0; --hover1:#fcf5f4; color:#333; }
-.gold        { --base1:#a3772e; --base2:#c59046; --hover1:#edd07c; }
-.brown       { --base1:#3a1f17; --base2:#503425; --hover1:#6b493d; }
+.purple      { --base1:#4643a4; --base2:#595fb8; --hover1:#7a80ce; }
+.red         { --base1:#b22222; --base2:#d93b3b; --hover1:#fa4e4e; }
+.yellow      { --base1:#b9972c; --base2:#d2b430; --hover1:#e7c94f; }
 
 .progress-badge {
   font-weight: bold;
@@ -392,18 +391,30 @@ button:focus {
 }
 
 .event-timer.active {
-  animation: pulse 2s infinite;
+  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 12px rgba(80, 106, 255, 0.3); }
-  50%      { box-shadow: 0 0 20px rgba(80, 106, 255, 0.6); }
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 4px rgba(80, 106, 255, 0.28),
+                inset 0 0 6px rgba(80, 106, 255, 0.2);
+    border-color: rgba(80, 106, 255, 0.4);
+    filter: brightness(100%);
+  }
+  50% {
+    transform: scale(1.01);
+    box-shadow: 0 0 6px rgba(80, 106, 255, 0.4),
+                inset 0 0 10px rgba(80, 106, 255, 0.25);
+    border-color: rgba(80, 106, 255, 0.7);
+    filter: brightness(1.1);
+  }
 }
 
 .event-timer .name {
   font-weight: 700;
   font-size: 0.95rem;
-  margin-bottom: 1px;
+  margin-bottom: 0px;
   cursor: pointer;
   background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
   -webkit-background-clip: text;
@@ -439,35 +450,30 @@ footer a {
   text-decoration: none;
 }
 
-footer a:hover { text-decoration: underline; }
-
-
-/* Contact: Bottom Right */
 .contact {
   position: fixed;
-  bottom: 67px;
+  bottom: 64px;
   right: 2px;
-  background: linear-gradient(to right, #a3c4f3, #9b82e3, #af88f7, #c1a3f7, #d5b9ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  font-style: normal !important;
-  transform-origin: bottom right;
   transform: rotate(-90deg);
+  transform-origin: bottom right;
   white-space: nowrap;
+  z-index: 9999;
+  cursor: pointer;
+  line-height: 1;
 }
 
-.contact address,
 .contact a {
-  color: inherit !important;
-  font-style: normal !important;
-  -webkit-text-stroke: inherit !important;
-  text-shadow: inherit !important;
+  background-image: linear-gradient(to right, #a3c4f3, #9b82e3, #af88f7, #c1a3f7, #d5b9ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  text-decoration: none;
+  font-style: normal;
 }
 
 .completion-message {
-  margin: 10px 0 0;
+  margin: 20px 0 0;
   font-weight: 700;
   font-size: 1.2rem;
   color: #ffd700;
@@ -582,11 +588,10 @@ footer a:hover { text-decoration: underline; }
   background: #b5101a;
 }
 
-/* Hidden Scrollbars */
+/* Hide Scrollbars */
 ::-webkit-scrollbar {
   display: none;
 }
-
 -ms-overflow-style: none;
 scrollbar-width: none;
 
