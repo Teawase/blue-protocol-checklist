@@ -57,7 +57,7 @@ body {
 
 .news {
   position: fixed;
-  bottom: 3px;
+  bottom: 39px;
   left: 2px;
   transform-origin: bottom left;
   white-space: nowrap;
@@ -464,8 +464,8 @@ footer a {
 
 .reset-data {
   position: fixed;
-  bottom: 3px;
-  left: 35px;
+  bottom: 1px;
+  left: 2px;
   z-index: 9999;
 }
 #resetSiteDataBtn {
@@ -481,6 +481,7 @@ footer a {
 }
 #resetSiteDataBtn:hover {
   background: #d91b2b;
+  transform: translateY(-1px);
 }
 
 .completion-message {
