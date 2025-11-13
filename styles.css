@@ -402,7 +402,7 @@ button:focus {
 .event-timer .name {
   font-weight: 700;
   font-size: 0.95rem;
-  margin-bottom: 0px;
+  margin-bottom: 2px;
   cursor: pointer;
   background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
   -webkit-background-clip: text;
@@ -413,6 +413,7 @@ button:focus {
 .event-timer .countdown {
   font-weight: 400;
   font-size: 0.9rem;
+  margin-bottom: 2px;
   opacity: 0.9;
   background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
   -webkit-background-clip: text;
