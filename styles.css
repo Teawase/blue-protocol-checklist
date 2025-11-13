@@ -424,7 +424,7 @@ button:focus {
 }
 
 @keyframes countdownFade {
-  from, to { opacity: 0.9; text-shadow: none; }
+  from, to { opacity: 0.93; text-shadow: none; }
   50%      { opacity: 1; text-shadow: 0 0 .7px #506affb3, 0 0 1.4px #506aff80, 0 0 2.8px #506aff4d; }
 }
 
@@ -691,3 +691,4 @@ scrollbar-width: none;
   width: fit-content;
   padding: 10px 10px;
 }
+
