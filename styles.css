@@ -196,7 +196,7 @@ h2 {
 .progress-bar:hover::before {
   content: '';
   position: absolute;
-  bottom: 110%;
+  bottom: 20px;
   right: 20px;
   border: 6px solid transparent;
   border-top-color: #506aff;
