@@ -29,7 +29,7 @@ body {
 .import-export {
   position: fixed !important;
   top: 2px !important;
-  left: 0px !important;
+  left: 2px !important;
   display: flex;
   gap: 5px;
   z-index: 9999;
@@ -57,8 +57,8 @@ body {
 
 .news {
   position: fixed;
-  bottom: 39px;
-  left: 2px;
+  bottom: 39px !important;
+  left: 2px !important;
   transform-origin: bottom left;
   white-space: nowrap;
   z-index: 9998;
@@ -156,10 +156,21 @@ h2 {
   position: relative;
   width: 165px;
   height: 14px;
-  background: #444;
+  background: #333;
   border-radius: 9px;
   overflow: hidden;
-  box-shadow: inset 0 0 5px #222;
+  box-shadow: 
+    inset 0 0 8px rgba(0, 0, 0, 0.6),
+    0 0 12px rgba(80, 106, 255, 0.2);
+  transition: box-shadow 0.4s ease;
+}
+
+.progress-bar:hover {
+  box-shadow: 
+    inset 0 0 10px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(80, 106, 255, 0.5);
+  transform: translateY(-1px);
+  transition: all 0.4s ease;
 }
 
 .progress-bar:hover::after {
@@ -167,45 +178,128 @@ h2 {
   position: absolute;
   bottom: 125%;
   right: 0;
-  background: #222;
-  color: #eee;
-  padding: 6px 10px;
-  border-radius: 6px;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
   white-space: nowrap;
-  opacity: 0.95;
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0;
   pointer-events: none;
-  font-size: 0.9rem;
+  z-index: 10;
+  border: 1px solid #506aff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  animation: tooltipFadeIn 0.4s ease forwards;
+}
+
+.progress-bar:hover::before {
+  content: '';
+  position: absolute;
+  bottom: 110%;
+  right: 15px;
+  border: 6px solid transparent;
+  border-top-color: #506aff;
+  opacity: 0;
+  animation: tooltipFadeIn 0.4s ease 0.1s forwards;
+}
+
+@keyframes tooltipFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
 }
 
 .progress-fill {
   height: 100%;
   width: 0;
   border-radius: 6px 0 0 6px;
-  background: linear-gradient(90deg, #506aff, #ffb800);
-  box-shadow: 0 0 12px currentColor inset;
-  transition: background 0.5s;
+  background: linear-gradient(90deg, #506aff 0%, #7b8fff 30%, #ffb800 70%, #ff8c00 100%);
+  background-size: 200% 100%;
+  animation: gradientFlow 3s ease infinite;
+  box-shadow: 
+    0 0 12px rgba(80, 106, 255, 0.6) inset,
+    0 0 8px rgba(255, 184, 0, 0.4);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.5s;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #242424;
-  font-weight: 600;
+  color: #fff;
+  font-weight: 700;
   font-size: 0.75rem;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
   user-select: none;
   position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.progress-fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 3s infinite;
+  opacity: 0;
+}
+
+.progress-bar:hover .progress-fill::before {
+  opacity: 1;
+  animation: shimmer 1.8s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .progress-fill::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 40%);
+  background-size: 300% 300%;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease;
+  animation: sparkle 1.5s ease-in-out infinite;
 }
+
 .progress-bar:hover .progress-fill::after {
   opacity: 1;
-  animation: sparkle 2s infinite;
 }
+
+@keyframes sparkle {
+  0%, 100% { 
+    opacity: 0.7; 
+    background-position: 0% 0%, 100% 100%, 50% 50%;
+    transform: scale(1) rotate(0deg);
+  }
+  50% { 
+    opacity: 1; 
+    background-position: 100% 100%, 0% 0%, 50% 50%;
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+.progress-bar.active .progress-fill {
+  animation: gradientFlow 2s ease infinite, pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(80, 106, 255, 0.6) inset; }
+  50% { box-shadow: 0 0 20px rgba(80, 106, 255, 0.9) inset, 0 0 16px rgba(255, 184, 0, 0.6); }
+}
+
 @keyframes sparkle {
   0%, 100% { transform: scale(1); }
   50%      { transform: scale(1.05); }
@@ -464,8 +558,8 @@ footer a {
 
 .reset-data {
   position: fixed;
-  bottom: 1px;
-  left: 2px;
+  bottom: 2px !important;
+  left: 2px !important;
   z-index: 9999;
 }
 #resetSiteDataBtn {
@@ -691,4 +785,3 @@ scrollbar-width: none;
   width: fit-content;
   padding: 10px 10px;
 }
-
