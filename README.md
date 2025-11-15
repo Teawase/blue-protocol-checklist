@@ -12,10 +12,10 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
 - **Multiple Profiles:** Save your progress between multiple profiles/characters with independent progress tracking.
 - **Incremental Progress:** Keep track of how many dungeon runs you've completed, how many times you've fought the bane lord or others.
-  - **Left Click (MB1):** Increment by 1 
-  - **Hold Left Click (MB1):** Incrment quickly
-  - **Right Click (MB2):** Decrement by 1 
-  - **Hold Right Click (MB2):** Decrement quickly 
+  - Left Click (MB1): increase by 1 
+  - Hold Left Click (MB1): increase quickly (continuous increment) | Mobile: Hold Tap
+  - Right Click (MB2): decrease by 1
+  - Hold Right Click (MB2): decrease quickly (continuous decrement) | Mobile: Double Tap + Hold
 - **Real-time counters** (e.g., "6 / 9 complete").
 - **Progress bars** with percentage display and gradient fills.
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
@@ -24,7 +24,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 
 ## Search & Navigation
 - **Live Search:** Text input filters tasks by label in daily and weekly sections, switching to a vertical list for easier reading.
-- **Keyboard Navigation:** Arrow keys (Up/Down/Left/Right) to move focus between visible tasks; Enter/Space for toggling.
+- **Keyboard Navigation:** Use Tab then Arrow keys (Up/Down) to move focus between tasks; Enter/Space for toggling.
 
 ## History Tracking
 - **Persistent Storage:** Uses localStorage to save task states across sessions. Daily progress resets at (5:00 AM Noronha timezone); Weekly progress resets every Monday at (5:00 AM Noronha timezone).
