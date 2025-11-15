@@ -452,7 +452,7 @@
         button: 0
       });
       handleMouseDown(mouseEvent);
-      // Check for double-tap on touchstart (fires on first tap of double)
+      // Check for double-tap on touchstart
       handleDoubleTap(e);
     };
 
@@ -469,7 +469,7 @@
       if (isDecrementHoldMode) {
         clearTimeout(decrementHoldTimeout);
         stopHoldDecrement();
-        if (!holdStartedRight) { // Avoid double-trigger if already held
+        if (!holdStartedRight) {
           decrementTask(div, section);
         }
         isDecrementHoldMode = false;
