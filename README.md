@@ -12,10 +12,10 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
 - **Multiple Profiles:** Save your progress between multiple profiles/characters with independent progress tracking.
 - **Incremental Progress:** Keep track of how many dungeon runs you've completed, how many times you've fought the bane lord or others.
-  - Left Click (MB1): increase by 1 
-  - Hold Left Click (MB1): increase quickly (continuous increment) | Mobile: Hold Tap
-  - Right Click (MB2): decrease by 1
-  - Hold Right Click (MB2): decrease quickly (continuous decrement) | Mobile: Double Tap + Hold
+> **Left Click (MB1):** Increase by 1<br/>
+> **Hold Left Click (MB1):** Increase quickly (continuous increment) | Mobile: Hold Tap<br/>
+> **Right Click (MB2):** Decrease by 1<br/>
+> **Hold Right Click (MB2):** Decrease quickly (continuous decrement) | Mobile: Double Tap + Hold<br/>
 - **Real-time counters** (e.g., "6 / 9 complete").
 - **Progress bars** with percentage display and gradient fills.
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
