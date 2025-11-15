@@ -352,79 +352,146 @@
     div.innerHTML = innerHTML;
     div.classList.toggle('completed', completed);
 
-    let isPressed = false;
-    let holdTimeout = null;
-    let holdStarted = false;
-    let holdMode = 'increment';
+    let isPressedLeft = false;
+    let holdTimeoutLeft = null;
+    let holdStartedLeft = false;
+    let isPressedRight = false;
+    let holdTimeoutRight = null;
+    let holdStartedRight = false;
 
-    const updateHoldMode = (e) => {
-      holdMode = e.shiftKey ? 'decrement' : 'increment';
-    };
+    // Double-tap detection for mobile decrement
+    let lastTap = 0;
+    const DOUBLE_TAP_THRESHOLD = 300; // ms between taps
+    let isDecrementHoldMode = false;
+    let decrementHoldTimeout = null;
 
-    const handlePressStart = (e) => {
-      e.preventDefault();
-      updateHoldMode(e);
-      isPressed = true;
-      holdTimeout = setTimeout(() => {
-        if (isPressed) {
-          holdStarted = true;
-          if (holdMode === 'decrement') {
+    const handleDoubleTap = (e) => {
+      const now = Date.now();
+      if (now - lastTap < DOUBLE_TAP_THRESHOLD) {
+        e.preventDefault();
+        // Enter decrement mode on second tap
+        isDecrementHoldMode = true;
+        decrementHoldTimeout = setTimeout(() => {
+          if (isDecrementHoldMode) {
             decrementTask(div, section);
             startHoldDecrement(div, section);
-          } else {
+          }
+        }, 300); // Hold threshold after second tap
+      }
+      lastTap = now;
+    };
+
+    const handleMouseDown = (e) => {
+      e.preventDefault();
+      if (e.button === 0) { // Left click: increment/toggle
+        isPressedLeft = true;
+        holdTimeoutLeft = setTimeout(() => {
+          if (isPressedLeft) {
+            holdStartedLeft = true;
             toggleTask(div, section, true);
             startHoldIncrement(div, section);
+            if (e.pointerId !== undefined) {
+              div.setPointerCapture(e.pointerId);
+            }
           }
-          if (e.pointerId !== undefined) {
-            e.currentTarget.setPointerCapture(e.pointerId);
+        }, 300);
+      } else if (e.button === 2) { // Right click: decrement
+        isPressedRight = true;
+        holdTimeoutRight = setTimeout(() => {
+          if (isPressedRight) {
+            holdStartedRight = true;
+            decrementTask(div, section);
+            startHoldDecrement(div, section);
+            if (e.pointerId !== undefined) {
+              div.setPointerCapture(e.pointerId);
+            }
           }
-        }
-      }, 300);
+        }, 300);
+      }
     };
 
-    const handlePressEnd = (e) => {
+    const handleMouseUp = (e) => {
       e.preventDefault();
-      updateHoldMode(e);
-      isPressed = false;
-      clearTimeout(holdTimeout);
-      stopHoldIncrement();
-      stopHoldDecrement();
-      if (!holdStarted) {
-        if (holdMode === 'decrement') {
-          decrementTask(div, section);
-        } else {
+      if (e.button === 0) { // Left
+        isPressedLeft = false;
+        clearTimeout(holdTimeoutLeft);
+        stopHoldIncrement();
+        if (!holdStartedLeft) {
           toggleTask(div, section);
         }
+        holdStartedLeft = false;
+      } else if (e.button === 2) { // Right
+        isPressedRight = false;
+        clearTimeout(holdTimeoutRight);
+        stopHoldDecrement();
+        if (!holdStartedRight) {
+          decrementTask(div, section);
+        }
+        holdStartedRight = false;
       }
-      holdStarted = false;
     };
 
-    const handlePressCancel = (e) => {
+    const handleMouseLeave = (e) => {
       e.preventDefault();
-      isPressed = false;
-      clearTimeout(holdTimeout);
+      isPressedLeft = false;
+      isPressedRight = false;
+      clearTimeout(holdTimeoutLeft);
+      clearTimeout(holdTimeoutRight);
       stopHoldIncrement();
       stopHoldDecrement();
-      holdStarted = false;
+      holdStartedLeft = false;
+      holdStartedRight = false;
     };
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Shift') {
-        updateHoldMode({ shiftKey: true });
-      }
-    });
-    document.addEventListener('keyup', (e) => {
-      if (e.key === 'Shift') {
-        updateHoldMode({ shiftKey: false });
-      }
-    });
+    const handleTouchStart = (e) => {
+      e.preventDefault(); // Prevent scrolling interference on long press
+      const touch = e.touches[0];
+      const mouseEvent = new MouseEvent('mousedown', {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+        button: 0
+      });
+      handleMouseDown(mouseEvent);
+      // Check for double-tap on touchstart (fires on first tap of double)
+      handleDoubleTap(e);
+    };
 
-    div.onmousedown = handlePressStart;
-    div.onmouseup = handlePressEnd;
-    div.onmouseleave = handlePressCancel;
-    div.ontouchstart = handlePressStart;
-    div.ontouchend = handlePressEnd;
-    div.ontouchcancel = handlePressCancel;
+    const handleTouchEnd = (e) => {
+      const touch = e.changedTouches[0];
+      const mouseEvent = new MouseEvent('mouseup', {
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+        button: 0
+      });
+      handleMouseUp(mouseEvent);
+
+      // If in decrement hold mode but touch ended quickly, do single decrement
+      if (isDecrementHoldMode) {
+        clearTimeout(decrementHoldTimeout);
+        stopHoldDecrement();
+        if (!holdStartedRight) { // Avoid double-trigger if already held
+          decrementTask(div, section);
+        }
+        isDecrementHoldMode = false;
+      }
+    };
+
+    const handleTouchCancel = (e) => {
+      handleMouseLeave(e);
+      if (isDecrementHoldMode) {
+        clearTimeout(decrementHoldTimeout);
+        stopHoldDecrement();
+        isDecrementHoldMode = false;
+      }
+    };
+
+    div.onmousedown = handleMouseDown;
+    div.onmouseup = handleMouseUp;
+    div.onmouseleave = handleMouseLeave;
+    div.oncontextmenu = (e) => { e.preventDefault(); return false; };
+    div.ontouchstart = handleTouchStart;
+    div.ontouchend = handleTouchEnd;
+    div.ontouchcancel = handleTouchCancel;
 
     div.onkeydown = e => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -853,7 +920,7 @@
     resetSiteDataBtn.onclick = () => {
       const sure = confirm(
         'Are you sure you want to reset ALL site data? (localStorage)\n' +
-		'Use this option only when a bug occurs on the website.\n\n' +
+        'Use this option only when a bug occurs on the website.\n\n' +
         'Your profiles, progress and settings will be permanently deleted.\n\n' +
         'This action is irreversible and cannot be undone.'
       );
@@ -868,6 +935,9 @@
 
   // Init
   const init = async () => {
+    // Disable right-click globally
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
     updateTitle();
     await checkGDPR();
     loadProfiles();
