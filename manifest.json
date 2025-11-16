@@ -1,0 +1,18 @@
+{
+  "name": "Blue Protocol: Star Resonance Checklist",
+  "short_name": "BP Checklist",
+  "description": "Daily and weekly task checklist for Blue Protocol: Star Resonance.",
+  "start_url": "/",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#506aff",
+  "background_color": "#242424",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
