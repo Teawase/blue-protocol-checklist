@@ -143,6 +143,9 @@
   const changelogsContent = $('changelogs-content');
   const closeNewsModal = $('close-news-modal');
 
+  // Version Element
+  const versionEl = $('version');
+
   // Reset Site Data Button
   const resetSiteDataBtn = $('resetSiteDataBtn');
 
@@ -707,6 +710,21 @@
     $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
   };
 
+  // Latest Version Fetch
+  const getLatestVersion = async () => {
+    try {
+      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest');
+      if (!res.ok) {
+        throw new Error('Failed to fetch');
+      }
+      const latest = await res.json();
+      versionEl.textContent = `v${latest.tag_name}`;
+    } catch (err) {
+      console.error('Failed to fetch latest version:', err);
+      versionEl.textContent = 'v?.?.?';
+    }
+  };
+
   // Timer Functions
   const parseNoronha = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Noronha' }));
   const diffSec = (future, now = parseNoronha()) => Math.max(0, Math.floor((future - now) / 1000));
@@ -940,6 +958,9 @@
 
     updateTitle();
     await checkGDPR();
+    await getLatestVersion();
+    versionEl.style.cursor = 'pointer';
+    versionEl.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank');
     loadProfiles();
     reloadCurrentProfileData();
     startTimerUpdates();
