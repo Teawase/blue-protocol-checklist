@@ -978,14 +978,6 @@ scrollbar-width: none;
   font-style: italic;
 }
 
-.no-categories {
-  text-align: center;
-  color: #888;
-  font-size: 1rem;
-  padding: 4rem 2rem;
-  font-style: italic;
-}
-
 #add-category-modal .modal-content,
 #add-custom-task-modal .modal-content {
   max-width: 350px;
