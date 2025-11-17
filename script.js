@@ -175,6 +175,15 @@
   const getCustomTaskCount = (categoryId, taskId) => {
     const pd = getProfileData();
     if (!pd) return 0;
+    const cat = customCategories[categoryId];
+    if (!cat) return 0;
+    const task = cat.tasks.find(t => t.id === taskId);
+    if (!task) return 0;
+    if (task.resetType === 'daily') {
+      getDailyStorage();
+    } else if (task.resetType === 'weekly') {
+      resetWeeklyStorageIfNeeded();
+    }
     const key = getCustomTaskCountKey(categoryId, taskId);
     return Number(pd[key] || 0);
   };
@@ -392,6 +401,7 @@
       const stored = getDailyStorage();
       return Number(stored.tasks[id] || 0);
     } else {
+      resetWeeklyStorageIfNeeded();
       return Number(getProfileData().weekly_tasks[id] || 0);
     }
   };
