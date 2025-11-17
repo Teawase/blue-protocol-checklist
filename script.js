@@ -844,11 +844,6 @@
       catDiv.appendChild(tasksDiv);
       customCategoriesContainer.appendChild(catDiv);
     });
-
-    if (ids.length === 0) {
-      const p = document.createElement('p'); p.className = 'no-categories'; p.textContent = '📋 No custom categories yet. Create one to get started!';
-      customCategoriesContainer.appendChild(p);
-    }
   };
 
   const reloadCurrentProfileData = () => {
