@@ -299,7 +299,7 @@
   let currentCategoryId = null;
 
   // --- Hold increment/decrement ---
-  const HOLD_INTERVAL_MS = 250;
+  const HOLD_INTERVAL_MS = 150;
   let holdInterval = null;
   const startHoldIncrement = (el, section) => {
     if (holdInterval) clearInterval(holdInterval);
@@ -696,7 +696,7 @@
     const current = getCustomTaskCount(categoryId, taskId);
     let newCount;
     if (current < max) {
-      if (isHold && max > 1 && current >= max - 1) return;
+      if (isHold && max > 1 && current >= max - 2) return;
       newCount = current + 1;
     } else {
       if (isHold) return;
