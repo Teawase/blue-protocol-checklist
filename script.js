@@ -134,7 +134,7 @@
       id: `task_${Date.now()}`,
       label,
       color,
-      maxProgress: Math.max(1, Math.min(20, maxProgress)),
+      maxProgress: Math.max(1, Math.min(1000, maxProgress)),
       resetType, // 'permanent' | 'daily' | 'weekly'
       createdAt: new Date().toISOString()
     };
@@ -990,7 +990,7 @@
     if (!currentCategoryId) return;
     const label = customTaskLabel.value.trim();
     const color = customTaskColor.value;
-    const maxProgress = Math.max(1, Math.min(20, parseInt(customTaskMaxProgress.value) || 1));
+    const maxProgress = Math.max(1, Math.min(1000, parseInt(customTaskMaxProgress.value) || 1));
     const resetType = customTaskReset.value;
     if (!label) return alert('Please enter a task label');
     addTaskToCategory(currentCategoryId, label, color, maxProgress, resetType);
