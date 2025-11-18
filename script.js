@@ -22,7 +22,7 @@
     { id: "weekly_world_boss_crusade_points", label: "World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 1 },
     { id: "weekly_clear_dungeons_normal", label: "Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_clear_dungeons_master_1_5", label: "Dungeons (Master 1-5) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
-    { id: "weekly_clear_dungeons_master_6_20", label: "Dungeons (Master 6-20) | Clear for Reforge Stones | Available: 24th Nov.", color: "purple", maxProgress: 20 },
+    { id: "weekly_clear_dungeons_master_6_20", label: "Dungeons (Master 6-20) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_fight_bane_lord", label: "Fight the Bane Lord (Random Dungeon Encounter)", color: "brown", maxProgress: 5 },
     { id: "weekly_gear_exchange_store", label: "Gear Exchange Stores (Buy Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey", maxProgress: 1 },
     { id: "weekly_honor_store", label: "Honor Store (Earn 10000 Honor Points)", color: "grey", maxProgress: 1 },
@@ -34,13 +34,13 @@
     { id: "weekly_stimen_vaults", label: "Stimen Vaults (Resets every 2 weeks) | Check Timer", color: "pearl", maxProgress: 1 },
     { id: "weekly_ice_dragon_normal", label: "Ice Dragon Raid - Easy (12710+ Ability Score)", color: "blue", maxProgress: 1 },
     { id: "weekly_ice_dragon_hard", label: "Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue", maxProgress: 1 },
-    { id: "weekly_ice_dragon_nightmare", label: "Ice Dragon Raid - Nightmare (22300+ Ability Score) | Available: 24th Nov. 2025", color: "blue", maxProgress: 1 },
+    { id: "weekly_ice_dragon_nightmare", label: "Ice Dragon Raid - Nightmare (22300+ Ability Score)", color: "blue", maxProgress: 1 },
     { id: "weekly_dark_dragon_normal", label: "Bone Dragon Raid - Easy (15210+ Ability Score)", color: "dark_purple", maxProgress: 1 },
     { id: "weekly_dark_dragon_hard", label: "Bone Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple", maxProgress: 1 },
-    { id: "weekly_dark_dragon_nightmare", label: "Bone Dragon Raid - Nightmare (24180+ Ability Score) | Available: 24th Nov. 2025", color: "dark_purple", maxProgress: 1 },
+    { id: "weekly_dark_dragon_nightmare", label: "Bone Dragon Raid - Nightmare (24180+ Ability Score)", color: "dark_purple", maxProgress: 1 },
     { id: "weekly_light_dragon_normal", label: "Light Dragon Raid - Easy (16140+ Ability Score)", color: "gold", maxProgress: 1 },
     { id: "weekly_light_dragon_hard", label: "Light Dragon Raid - Hard (20670+ Ability Score)", color: "gold", maxProgress: 1 },
-    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (27790+ Ability Score) | Available: 24th Nov. 2025", color: "gold", maxProgress: 1 }
+    { id: "weekly_light_dragon_nightmare", label: "Light Dragon Raid - Nightmare (27790+ Ability Score)", color: "gold", maxProgress: 1 }
   ];
 
   // --- DOM ---
