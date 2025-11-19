@@ -1,0 +1,8 @@
+{
+  "name": "Blue Protocol: Star Resonance Checklist",
+  "short_name": "BP Checklist",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#242424",
+  "theme_color": "#506aff"
+}
