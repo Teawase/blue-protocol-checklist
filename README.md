@@ -64,9 +64,12 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **HTML5:** Semantic structure with modals and live regions.
 - **CSS3:** Flexbox, gradients, animations, dark theme.
 - **JavaScript (ES6+):** Vanilla JS with async/await, debouncing, and timezone handling. No frameworks.
-- **External:** Only canvas-confetti for celebrations.
+- **External:** Only **canvas-confetti** for celebrations and **marked** for markdown rendering.
 
-## Contact
+# Contact
 - **Discord:** [Teawase](https://discordredirect.discordsafe.com/users/96620826689822720)
 - **In-game UID:** #225964
 ![20251107104850_011_011418](https://github.com/user-attachments/assets/fb69811f-76b2-40cf-a495-ab34a1e95ee7)
+
+# License
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE) file for details.
