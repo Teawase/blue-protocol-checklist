@@ -1,3 +1,4 @@
+/* Global */
 html, body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #242424;
@@ -9,6 +10,7 @@ html, body {
   box-sizing: border-box;
 }
 
+/* Background Stars Decoration */
 .stars {
   position: absolute;
   top: 0;
@@ -24,6 +26,7 @@ html, body {
   z-index: -1;
 }
 
+/* UI Elements (Top-Left / Bottom left) */
 .import-export {
   position: fixed !important;
   top: 2px !important;
@@ -81,6 +84,7 @@ html, body {
   border-color: #c0d8ff;
 }
 
+/* Mobile Adjustments for UI Elements */
 @media (max-width: 600px) {
   body { padding-top: 60px !important; }
   .import-export { top: 5px !important; left: 5px !important; padding: 5px; gap: 5px; flex-wrap: wrap; }
@@ -89,6 +93,7 @@ html, body {
   .news button { font-size: 0.73rem !important; padding: 0.45rem 0.65rem !important; min-width: 72px !important; }
 }
 
+/* Typography & Headings */
 #page-title {
   font-weight: 700;
   font-size: 2rem;
@@ -109,6 +114,7 @@ h2 {
   color: #ccc;
 }
 
+/* Progress Bar & Counter */
 .counter-container {
   display: flex;
   align-items: center;
@@ -247,6 +253,7 @@ h2 {
   50% { box-shadow: 0 0 20px rgba(80, 106, 255, 0.9) inset, 0 0 16px rgba(255, 184, 0, 0.6); }
 }
 
+/* Layout Container */
 .container {
   display: flex;
   gap: 1.5rem;
@@ -335,6 +342,7 @@ h2 {
   color: #bbb;
 }
 
+/* Tasks List */
 .tasks {
   display: flex;
   flex-direction: column;
@@ -354,6 +362,7 @@ h2 {
   display: none;
 }
 
+/* Tasks Styles */
 .task {
   background: linear-gradient(135deg, var(--base1, #333) 0%, var(--base2, #2a2a2a) 100%);
   padding: 0.75rem 1.125rem;
@@ -395,6 +404,7 @@ h2 {
   box-shadow: 0 0 10px 2px var(--hover1, #444), 0 4px 12px rgba(80, 106, 255, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+/* Tasks Colors */
 .blue { --base1:#1f5faf; --base2:#2977d7; --hover1:#4590f9; }
 .brown { --base1:#3a1f17; --base2:#503425; --hover1:#6b493d; }
 .dark_purple { --base1:#4b2b55; --base2:#6a3e80; --hover1:#8a58a0; }
@@ -407,6 +417,7 @@ h2 {
 .red { --base1:#b22222; --base2:#d93b3b; --hover1:#fa4e4e; }
 .yellow { --base1:#b9972c; --base2:#d2b430; --hover1:#e7c94f; }
 
+/* Progress Badge */
 .progress-badge {
   font-weight: bold;
   color: #ffd700;
@@ -418,6 +429,7 @@ h2 {
   margin-left: 8px;
 }
 
+/* Buttons */
 button {
   font-size: 0.75rem;
   padding: 0.5rem 1.375rem;
@@ -445,6 +457,7 @@ button:hover, button:focus {
   flex-wrap: wrap;
 }
 
+/* Timers */
 .event-timer {
   flex: 1;
   min-width: 140px;
@@ -497,6 +510,7 @@ button:hover, button:focus {
   50% { opacity: 1; text-shadow: 0 0 .7px #506affb3, 0 0 1.4px #506aff80, 0 0 2.8px #506aff4d; }
 }
 
+/* Footer, Version & Contact */
 footer {
   margin-top: 1.2rem;
   text-align: center;
@@ -548,6 +562,7 @@ footer a {
   font-style: normal;
 }
 
+/* Clear Data Button */
 .reset-data {
   position: fixed;
   bottom: 2px !important;
@@ -573,6 +588,7 @@ footer a {
   transform: translateY(-1px);
 }
 
+/* Completion Message */
 .completion-message {
   margin: 20px 0 0;
   font-weight: 700;
@@ -582,6 +598,7 @@ footer a {
   text-shadow: 0 0 12px #ffd700aa;
 }
 
+/* Modals */
 .modal {
   position: fixed;
   inset: 0;
@@ -890,6 +907,7 @@ footer a {
   transform: scale(1.05);
 }
 
+/* Custom Categories */
 .custom-categories-section {
   max-width: 85rem;
   margin: 2rem auto;
@@ -1086,6 +1104,7 @@ footer a {
   }
 }
 
+/* Github Corner */
 .github-corner svg {
   top: -21px !important;
 }
@@ -1106,6 +1125,7 @@ footer a {
   .reset-data { bottom: 0 !important; }
 }
 
+/* Hide Scrollbars */
 ::-webkit-scrollbar {
   display: none;
 }
