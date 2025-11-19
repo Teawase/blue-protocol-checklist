@@ -5,7 +5,7 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#242424",
-  "theme_color": "#506aff",
+  "theme_color": "#242424",
   "orientation": "any",
   "categories": ["games", "productivity", "utilities"],
   "lang": "en",
@@ -23,4 +23,5 @@
       "purpose": "any"
     }
   ]
+
 }
