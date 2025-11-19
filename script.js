@@ -292,7 +292,7 @@
   // --- Version ---
   const versionEl = $('version');
 
-  // --- Reset button ---
+  // --- Clear button ---
   const resetSiteDataBtn = $('resetSiteDataBtn');
 
   let hideCompletedState = { daily: true, weekly: true };
@@ -454,6 +454,7 @@
     }
   };
 
+  // --- Task Element Creation (Daily/Weekly) ---
   const createTaskElement = (task, section) => {
     const div = document.createElement('div');
     div.className = `task ${task.color}`;
@@ -860,7 +861,7 @@
     if (weeklyFilterInput) weeklyFilterInput.value = '';
   };
 
-  // --- Counters & progress UI ---
+  // --- Counters & Progress UI ---
   const updateCounter = (section) => {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     const counter = section === 'daily' ? dailyCounter : weeklyCounter;
@@ -978,14 +979,14 @@
     reader.readAsText(file);
   };
 
-  // --- Category modal ---
+  // --- Custom Category Modal ---
   if (addCategoryBtn) addCategoryBtn.onclick = () => { newCategoryNameInput.value = ''; addCategoryModal.style.display = 'flex'; setTimeout(()=>newCategoryNameInput.focus(),100); };
   if (createCategoryBtn) createCategoryBtn.onclick = () => {
     const name = newCategoryNameInput.value.trim(); if (!name) return alert('Please enter a category name'); createCategory(name); addCategoryModal.style.display = 'none'; renderCategories();
   };
   if (closeCategoryModal) closeCategoryModal.onclick = () => addCategoryModal.style.display = 'none';
 
-  // --- Custom task modal handlers ---
+  // --- Custom Task Modal ---
   if (addCustomTaskBtn) addCustomTaskBtn.onclick = () => {
     if (!currentCategoryId) return;
     const label = customTaskLabel.value.trim();
@@ -1019,7 +1020,7 @@
     }
   };
 
-  // --- Time helpers and event timers ---
+  // --- Time and Event Timers ---
   const parseNoronha = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Noronha' }));
   const diffSec = (future, now = parseNoronha()) => Math.max(0, Math.floor((future - now) / 1000));
   const format = o => `${o.d?o.d+'d ':''}${o.h||o.d?o.h+'h ':''}${o.m||o.h||o.d?o.m+'m ':''}${o.s}s`;
