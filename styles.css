@@ -58,7 +58,7 @@ html, body {
 
 .news {
   position: fixed;
-  bottom: 39px !important;
+  bottom: 50px !important;
   left: 2px !important;
   transform-origin: bottom left;
   white-space: nowrap;
@@ -70,6 +70,7 @@ html, body {
   padding: 0.5rem 0.5rem !important;
   min-width: 20px !important;
   background: linear-gradient(135deg, #506aff, #3b59dc);
+  border: 1px solid #9F2B68;
   border-radius: 9px;
   color: #fff;
   cursor: pointer;
