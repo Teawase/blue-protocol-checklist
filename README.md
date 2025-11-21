@@ -1,13 +1,24 @@
 [![Version](https://img.shields.io/github/v/release/Teawase/blue-protocol-checklist?color=ef4444&style=flat-square&label=Version)](https://github.com/Teawase/blue-protocol-checklist/releases)
 [![Last update](https://img.shields.io/github/last-commit/Teawase/blue-protocol-checklist?color=f59e0b&style=flat-square&label=Last%20update)](https://github.com/Teawase/blue-protocol-checklist/commits/main)
 [![Size](https://img.shields.io/github/repo-size/Teawase/blue-protocol-checklist?color=ec4899&style=flat-square&label=Size)](https://github.com/Teawase/blue-protocol-checklist)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
 # Blue Protocol: Star Resonance Checklist
+| Feature                                | Description                                                                                         |
+|----------------------------------------|-----------------------------------------------------------------------------------------------------|
+| 🎯 Dynamic Title                       | Displays the current server day (“Day #XX”) next to the page title.                                |
+| 🕰️ Automatic Daily/Weekly Reset        | Tasks reset exactly at 5 AM -03:00 (Noronha) daily or weekly.                                      |
+| 👤 Multiple Profiles                   | Independent tracking for each alt or account — switch between profiles instantly.                  |
+| ⏰ Event Timers                        | Accurate timers for World Bosses, Guild Hunts, Stimen Vaults, and more.                            |
+| 🎨 Custom Categories & Tasks           | Create your own sections, choose any color, and set custom reset rules (daily, weekly, never).     |
+| ⚡ Rapid Increment/Decrement Counters  | Left-click (or hold) to add increments · Right-click (or hold) to undo — fast and forgiving.       |
+| 💾 Fully Offline & Data Portability    | Works offline and in incognito mode · One-click export/import and backup/restore.                  |
+| 📱 Mobile UI Support                   | Responsive design with perfectly functioning timers and counters on every device.                  |
+| ⚡ Lightweight & Future-Proof          | Built with vanilla JavaScript and only two tiny dependencies — blazing fast and built to last.     |
+
 A simple, responsive web-based checklist for tracking daily and weekly tasks in Blue Protocol: Star Resonance, built with HTML, CSS, and JavaScript, using only confetti.js for celebrations and marked.js for markdown rendering. **The progress is saved locally in your browser (localStorage) and supports import/export functionality for easy backup and transfer.**
 
-### https://teawase.github.io/blue-protocol-checklist/
-
->  Note: Some code in this project was generated with AI assistance and subsequently reviewed and refined by the developer.
+## ✨ https://teawase.github.io/blue-protocol-checklist/ ✨
 
 # Features
 ## Core Functionality
@@ -69,6 +80,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **CSS3:** Flexbox, gradients, animations, dark theme.
 - **JavaScript (ES6+):** Vanilla JS with async/await, debouncing, and timezone handling. No frameworks.
 - **External:** Only **canvas-confetti** for celebrations and **marked** for markdown rendering.
+>  Note: Some code in this project was generated with AI assistance and subsequently reviewed and refined by the developer.
 
 # Contact
 - **Discord:** [Teawase](https://discordredirect.discordsafe.com/users/96620826689822720)
