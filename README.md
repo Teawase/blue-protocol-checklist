@@ -4,6 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
 # Blue Protocol: Star Resonance Checklist
+## ✨ https://teawase.github.io/blue-protocol-checklist/ ✨
 | Feature                                | Description                                                                                         |
 |----------------------------------------|-----------------------------------------------------------------------------------------------------|
 | 🎯 Dynamic Title                       | Displays the current server day (“Day #XX”) next to the page title.                                |
@@ -17,8 +18,6 @@
 | ⚡ Lightweight & Future-Proof          | Built with vanilla JavaScript and only two tiny dependencies — blazing fast and built to last.     |
 
 A simple, responsive web-based checklist for tracking daily and weekly tasks in Blue Protocol: Star Resonance, built with HTML, CSS, and JavaScript, using only confetti.js for celebrations and marked.js for markdown rendering. **The progress is saved locally in your browser (localStorage) and supports import/export functionality for easy backup and transfer.**
-
-## ✨ https://teawase.github.io/blue-protocol-checklist/ ✨
 
 # Features
 ## Core Functionality
