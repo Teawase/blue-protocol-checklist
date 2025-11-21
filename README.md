@@ -3,7 +3,7 @@
 [![Size](https://img.shields.io/github/repo-size/Teawase/blue-protocol-checklist?color=ec4899&style=flat-square&label=Size)](https://github.com/Teawase/blue-protocol-checklist)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
-# Blue Protocol: Star Resonance Checklist
+# ✔️ Blue Protocol: Star Resonance Checklist
 ## ✨ https://teawase.github.io/blue-protocol-checklist/ ✨
 | Feature                                | Description                                                                                         |
 |----------------------------------------|-----------------------------------------------------------------------------------------------------|
