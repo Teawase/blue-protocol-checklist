@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
 # ✔️ Blue Protocol: Star Resonance Checklist
-**A fully offline (after the first load), mobile-friendly checklist with auto-resetting tasks, multiple character profiles, custom categories, rapid counters and accurate event timers.**
+A simple, responsive web-based checklist for tracking daily and weekly tasks in Blue Protocol: Star Resonance, built with HTML, CSS, and JavaScript, using only confetti.js for celebrations and marked.js for markdown rendering. **The progress is saved locally in your browser (localStorage) and supports import/export functionality for easy backup and transfer.**
 ## ✨ https://teawase.github.io/blue-protocol-checklist/ ✨
 | Feature                                | Description                                                                                         |
 |----------------------------------------|-----------------------------------------------------------------------------------------------------|
@@ -34,8 +34,6 @@
     </tr>
   </table>
 </p>
-
-A simple, responsive web-based checklist for tracking daily and weekly tasks in Blue Protocol: Star Resonance, built with HTML, CSS, and JavaScript, using only confetti.js for celebrations and marked.js for markdown rendering. **The progress is saved locally in your browser (localStorage) and supports import/export functionality for easy backup and transfer.**
 
 ## Core Functionality
 - **Daily Tasks:** Track your daily activities with color-coded categories.
