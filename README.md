@@ -1,9 +1,11 @@
 [![Version](https://img.shields.io/github/v/release/Teawase/blue-protocol-checklist?color=ef4444&style=flat-square&label=Version)](https://github.com/Teawase/blue-protocol-checklist/releases)
 [![Last update](https://img.shields.io/github/last-commit/Teawase/blue-protocol-checklist?color=f59e0b&style=flat-square&label=Last%20update)](https://github.com/Teawase/blue-protocol-checklist/commits/main)
 [![Size](https://img.shields.io/github/repo-size/Teawase/blue-protocol-checklist?color=ec4899&style=flat-square&label=Size)](https://github.com/Teawase/blue-protocol-checklist)
+[![Stars](https://img.shields.io/github/stars/Teawase/blue-protocol-checklist?color=a855f7&style=flat-square&label=Stars&logo=github)](https://github.com/Teawase/blue-protocol-checklist/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
-# ✔️ Blue Protocol: Star Resonance Checklist
+## ✔️ Blue Protocol: Star Resonance Checklist
+**A fully offline (after the first load), mobile-friendly checklist with auto-resetting tasks, multiple character profiles, custom categories, rapid counters and accurate event timers.**
 ## ✨ https://teawase.github.io/blue-protocol-checklist/ ✨
 | Feature                                | Description                                                                                         |
 |----------------------------------------|-----------------------------------------------------------------------------------------------------|
@@ -16,27 +18,26 @@
 | 💾 Fully Offline & Data Portability    | Works offline and in incognito mode · One-click export/import and backup/restore.                  |
 | 📱 Mobile UI Support                   | Responsive design with perfectly functioning timers and counters on every device.                  |
 | ⚡ Lightweight & Future-Proof          | Built with vanilla JavaScript and only two tiny dependencies — blazing fast and built to last.     |
-<!-- PREVIEW -->
+
 <p align="center">
   <table>
     <tr>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/privacynotice.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/mainpage.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/privacynotice.png" width="472" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/mainpage.png" width="472" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customcategory.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customtask.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customcategory.png" width="472" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customtask.png" width="472" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/profiles.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/backup.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/profiles.png" width="472" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/backup.png" width="472" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
     </tr>
   </table>
 </p>
-<!-- END OF PREVIEW -->
+
 A simple, responsive web-based checklist for tracking daily and weekly tasks in Blue Protocol: Star Resonance, built with HTML, CSS, and JavaScript, using only confetti.js for celebrations and marked.js for markdown rendering. **The progress is saved locally in your browser (localStorage) and supports import/export functionality for easy backup and transfer.**
 
-# Features
 ## Core Functionality
 - **Daily Tasks:** Track your daily activities with color-coded categories.
 - **Weekly Tasks:** Track your weekly activities with similar color-coding and organization.
@@ -98,10 +99,15 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **External:** Only **canvas-confetti** for celebrations and **marked** for markdown rendering.
 >  Note: Some code in this project was generated with AI assistance and subsequently reviewed and refined by the developer.
 
-# Contact
+## Contact
 - **Discord:** [Teawase](https://discordredirect.discordsafe.com/users/96620826689822720)
-- **In-game UID:** #225964
+- **In-game UID (Global):** #225964
 ![20251107104850_011_011418](https://github.com/user-attachments/assets/fb69811f-76b2-40cf-a495-ab34a1e95ee7)
 
-# License
+<div align="center">
+  
+**Made with ❤️ by Teawase**
+</div>
+
+## License
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE) file for details.
