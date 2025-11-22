@@ -1,6 +1,5 @@
 [![Version](https://img.shields.io/github/v/release/Teawase/blue-protocol-checklist?color=ef4444&style=flat-square&label=Version)](https://github.com/Teawase/blue-protocol-checklist/releases)
 [![Last update](https://img.shields.io/github/last-commit/Teawase/blue-protocol-checklist?color=f59e0b&style=flat-square&label=Last%20update)](https://github.com/Teawase/blue-protocol-checklist/commits/main)
-[![Size](https://img.shields.io/github/repo-size/Teawase/blue-protocol-checklist?color=ec4899&style=flat-square&label=Size)](https://github.com/Teawase/blue-protocol-checklist)
 [![Stars](https://img.shields.io/github/stars/Teawase/blue-protocol-checklist?color=a855f7&style=flat-square&label=Stars&logo=github)](https://github.com/Teawase/blue-protocol-checklist/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
