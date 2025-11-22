@@ -16,7 +16,24 @@
 | 💾 Fully Offline & Data Portability    | Works offline and in incognito mode · One-click export/import and backup/restore.                  |
 | 📱 Mobile UI Support                   | Responsive design with perfectly functioning timers and counters on every device.                  |
 | ⚡ Lightweight & Future-Proof          | Built with vanilla JavaScript and only two tiny dependencies — blazing fast and built to last.     |
-
+<!-- PREVIEW -->
+<p align="center">
+  <table>
+    <tr>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/privacynotice.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/mainpage.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customcategory.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customtask.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+    </tr>
+    <tr>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/profiles.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/backup.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+    </tr>
+  </table>
+</p>
+<!-- END OF PREVIEW -->
 A simple, responsive web-based checklist for tracking daily and weekly tasks in Blue Protocol: Star Resonance, built with HTML, CSS, and JavaScript, using only confetti.js for celebrations and marked.js for markdown rendering. **The progress is saved locally in your browser (localStorage) and supports import/export functionality for easy backup and transfer.**
 
 # Features
