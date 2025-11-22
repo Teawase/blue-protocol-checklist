@@ -22,16 +22,16 @@
 <p align="center">
   <table>
     <tr>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/privacynotice.png" width="472" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/mainpage.png" width="472" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/privacynotice.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/mainpage.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customcategory.png" width="472" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customtask.png" width="472" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customcategory.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/customtask.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
     </tr>
     <tr>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/profiles.png" width="472" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
-      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/backup.png" width="472" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/profiles.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://github.com/Teawase/blue-protocol-checklist/blob/main/Previews/backup.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
     </tr>
   </table>
 </p>
