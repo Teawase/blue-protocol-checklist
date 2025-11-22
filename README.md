@@ -3,7 +3,7 @@
 [![Stars](https://img.shields.io/github/stars/Teawase/blue-protocol-checklist?color=a855f7&style=flat-square&label=Stars&logo=github)](https://github.com/Teawase/blue-protocol-checklist/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
-## ✔️ Blue Protocol: Star Resonance Checklist
+# ✔️ Blue Protocol: Star Resonance Checklist
 **A fully offline (after the first load), mobile-friendly checklist with auto-resetting tasks, multiple character profiles, custom categories, rapid counters and accurate event timers.**
 ## ✨ https://teawase.github.io/blue-protocol-checklist/ ✨
 | Feature                                | Description                                                                                         |
