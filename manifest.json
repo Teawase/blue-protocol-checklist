@@ -27,6 +27,51 @@
     }
   ],
 
+  "screenshots": [
+    {
+      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/privacynotice.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Privacy Notice"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/mainpage.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Main Page"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/customcategory.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Custom Category"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/customtask.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Custom Task"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/profiles.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Multiple Profiles"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/backup.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Import/Export"
+    }
+  ],
+
   "edge_side_panel": {
     "preferred_width": 380
   },
