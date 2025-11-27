@@ -96,16 +96,16 @@ html, body {
 
 /* Typography & Headings */
 #page-title {
-  font-weight: 700;
-  font-size: 2rem;
-  background: linear-gradient(90deg, #506aff, #a0c4ff, #ffb800);
+  text-align: center;
+  background: linear-gradient(90deg, 
+    #506aff 0%, #a0c4ff 30%, #fff 50%, #ffb800 70%, #ff8c00 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  letter-spacing: 2px;
-  text-shadow: 0 0 8px #506affaa;
-  margin-bottom: 20px;
-  text-align: center;
+  text-shadow: 
+    0 0 20px rgba(80,106,255,0.6),
+    0 0 40px rgba(255,184,0,0.4);
+  will-change: filter;
 }
 
 h2 {
@@ -417,6 +417,46 @@ h2 {
 .purple { --base1:#4643a4; --base2: #595fb8; --hover1:#7a80ce; }
 .red { --base1:#b22222; --base2:#d93b3b; --hover1:#fa4e4e; }
 .yellow { --base1:#b9972c; --base2:#d2b430; --hover1:#e7c94f; }
+
+.task::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%) rotate(30deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 2;
+  will-change: transform;
+}
+
+.task:hover::before {
+  opacity: 0;
+}
+
+.task:hover::before {
+  opacity: 1;
+  animation: shimmerTask 2.2s infinite linear;
+}
+
+@keyframes shimmerTask {
+  0%   { transform: translateX(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) rotate(30deg); }
+}
+
+.task:focus-visible::before {
+  opacity: 1;
+  animation: shimmerTask 1.8s infinite linear;
+}
 
 /* Progress Badge */
 .progress-badge {
@@ -1126,10 +1166,20 @@ footer a {
   .reset-data { bottom: 0 !important; }
 }
 
-/* Hide Scrollbars */
+/* Scrollbars */
 ::-webkit-scrollbar {
-  display: none;
+  width: 10px;
 }
-
--ms-overflow-style: none;
-scrollbar-width: none;
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(80,106,255,0.4);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(80,106,255,0.7);
+  background-clip: content-box;
+}
