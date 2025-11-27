@@ -1151,11 +1151,21 @@ footer a {
   top: 0 !important;
   right: 0 !important;
   z-index: 10000 !important;
-  pointer-events: auto;
+  width: 80px !important;
+  height: 80px !important;
+  pointer-events: auto !important;
+  display: block !important;
 }
 
-.github-corner:hover .octo-arm {
-  animation: octocat-wave 560ms ease-in-out;
+.github-corner svg {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  width: 80px !important;
+  height: 80px !important;
+  fill: #151513 !important;
+  color: #fff !important;
+  border: 0 !important;
 }
 
 .github-corner:hover .octo-arm {
