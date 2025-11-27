@@ -1146,8 +1146,16 @@ footer a {
 }
 
 /* Github Corner */
-.github-corner svg {
-  top: -21px !important;
+.github-corner {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  z-index: 10000 !important;
+  pointer-events: auto;
+}
+
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
 }
 
 .github-corner:hover .octo-arm {
