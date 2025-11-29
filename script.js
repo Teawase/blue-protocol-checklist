@@ -475,6 +475,7 @@
     let isPressedRight = false, holdTimeoutRight = null, holdStartedRight = false;
     let lastTap = 0, isDecrementHoldMode = false, decrementHoldTimeout = null;
     let startX = null, startY = null;
+    let dragDetected = false;
     const DOUBLE_TAP_THRESHOLD = 300;
     const DRAG_THRESHOLD = 10;
 
@@ -491,15 +492,16 @@
       isDecrementHoldMode = false;
       startX = null;
       startY = null;
+      dragDetected = false;
     };
 
     const handleDoubleTap = (e) => {
       const now = Date.now();
-      if (now - lastTap < DOUBLE_TAP_THRESHOLD) {
+      if (now - lastTap < DOUBLE_TAP_THRESHOLD && !dragDetected) {
         e.preventDefault();
         isDecrementHoldMode = true;
         decrementHoldTimeout = setTimeout(() => {
-          if (isDecrementHoldMode) {
+          if (isDecrementHoldMode && !dragDetected) {
             decrementTask(div, section);
             startHoldDecrement(div, section);
           }
@@ -513,7 +515,7 @@
       if (e.button === 0) {
         isPressedLeft = true;
         holdTimeoutLeft = setTimeout(() => {
-          if (isPressedLeft) {
+          if (isPressedLeft && !dragDetected) {
             holdStartedLeft = true;
             toggleTask(div, section, true);
             startHoldIncrement(div, section);
@@ -523,7 +525,7 @@
       } else if (e.button === 2) {
         isPressedRight = true;
         holdTimeoutRight = setTimeout(() => {
-          if (isPressedRight) {
+          if (isPressedRight && !dragDetected) {
             holdStartedRight = true;
             decrementTask(div, section);
             startHoldDecrement(div, section);
@@ -539,13 +541,13 @@
         isPressedLeft = false;
         clearTimeout(holdTimeoutLeft);
         stopHoldIncrement();
-        if (!holdStartedLeft) toggleTask(div, section);
+        if (!holdStartedLeft && !dragDetected) toggleTask(div, section);
         holdStartedLeft = false;
       } else if (e.button === 2) {
         isPressedRight = false;
         clearTimeout(holdTimeoutRight);
         stopHoldDecrement();
-        if (!holdStartedRight) decrementTask(div, section);
+        if (!holdStartedRight && !dragDetected) decrementTask(div, section);
         holdStartedRight = false;
       }
     };
@@ -560,6 +562,7 @@
       const touch = e.touches[0];
       startX = touch.clientX;
       startY = touch.clientY;
+      dragDetected = false;
       const mouseEvent = new MouseEvent('mousedown', { clientX: touch.clientX, clientY: touch.clientY, button: 0 });
       handleMouseDown(mouseEvent);
       handleDoubleTap(e);
@@ -567,12 +570,15 @@
 
     const handleTouchMove = (e) => {
       if (startX === null || startY === null) return;
-      e.preventDefault(); // Optional: prevent if needed, but allow scroll by not preventing default fully
+      e.preventDefault(); // Prevent only if not scrolling, but allow native scroll
       const touch = e.touches[0];
       const deltaX = Math.abs(touch.clientX - startX);
       const deltaY = Math.abs(touch.clientY - startY);
       if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
-        cancelPendingActions();
+        if (!dragDetected) {
+          dragDetected = true;
+          cancelPendingActions();
+        }
       }
     };
 
@@ -584,7 +590,7 @@
       if (isDecrementHoldMode) {
         clearTimeout(decrementHoldTimeout);
         stopHoldDecrement();
-        if (!holdStartedRight) decrementTask(div, section);
+        if (!holdStartedRight && !dragDetected) decrementTask(div, section);
         isDecrementHoldMode = false;
       }
       startX = null;
@@ -629,6 +635,7 @@
     let isPressedRight = false, holdTimeoutRight = null, holdStartedRight = false;
     let lastTap = 0, isDecrementHoldMode = false, decrementHoldTimeout = null;
     let startX = null, startY = null;
+    let dragDetected = false;
     const DOUBLE_TAP_THRESHOLD = 300;
     const DRAG_THRESHOLD = 10;
 
@@ -638,22 +645,23 @@
       clearTimeout(holdTimeoutLeft);
       clearTimeout(holdTimeoutRight);
       clearTimeout(decrementHoldTimeout);
-      stopHoldIncrement();
-      stopHoldDecrement();
+      stopHoldIncrementCustom();
+      stopHoldDecrementCustom();
       holdStartedLeft = false;
       holdStartedRight = false;
       isDecrementHoldMode = false;
       startX = null;
       startY = null;
+      dragDetected = false;
     };
 
     const handleDoubleTap = (e) => {
       const now = Date.now();
-      if (now - lastTap < DOUBLE_TAP_THRESHOLD) {
+      if (now - lastTap < DOUBLE_TAP_THRESHOLD && !dragDetected) {
         e.preventDefault();
         isDecrementHoldMode = true;
         decrementHoldTimeout = setTimeout(() => {
-          if (isDecrementHoldMode) { decrementCustomTask(div, categoryId); startHoldDecrementCustom(div, categoryId); }
+          if (isDecrementHoldMode && !dragDetected) { decrementCustomTask(div, categoryId); startHoldDecrementCustom(div, categoryId); }
         }, 300);
       }
       lastTap = now;
@@ -664,21 +672,21 @@
       if (e.button === 0) {
         isPressedLeft = true;
         holdTimeoutLeft = setTimeout(() => {
-          if (isPressedLeft) { holdStartedLeft = true; toggleCustomTask(div, categoryId, true); startHoldIncrementCustom(div, categoryId); }
+          if (isPressedLeft && !dragDetected) { holdStartedLeft = true; toggleCustomTask(div, categoryId, true); startHoldIncrementCustom(div, categoryId); }
         }, 300);
       } else if (e.button === 2) {
         isPressedRight = true;
         holdTimeoutRight = setTimeout(() => {
-          if (isPressedRight) { holdStartedRight = true; decrementCustomTask(div, categoryId); startHoldDecrementCustom(div, categoryId); }
+          if (isPressedRight && !dragDetected) { holdStartedRight = true; decrementCustomTask(div, categoryId); startHoldDecrementCustom(div, categoryId); }
         }, 300);
       }
     };
     const handleMouseUp = (e) => {
       e.preventDefault();
       if (e.button === 0) {
-        isPressedLeft = false; clearTimeout(holdTimeoutLeft); stopHoldIncrement(); if (!holdStartedLeft) toggleCustomTask(div, categoryId); holdStartedLeft = false;
+        isPressedLeft = false; clearTimeout(holdTimeoutLeft); stopHoldIncrementCustom(); if (!holdStartedLeft && !dragDetected) toggleCustomTask(div, categoryId); holdStartedLeft = false;
       } else if (e.button === 2) {
-        isPressedRight = false; clearTimeout(holdTimeoutRight); stopHoldDecrement(); if (!holdStartedRight) decrementCustomTask(div, categoryId); holdStartedRight = false;
+        isPressedRight = false; clearTimeout(holdTimeoutRight); stopHoldDecrementCustom(); if (!holdStartedRight && !dragDetected) decrementCustomTask(div, categoryId); holdStartedRight = false;
       }
     };
     const handleMouseLeave = (e) => {
@@ -689,6 +697,7 @@
       const t = e.touches[0]; 
       startX = t.clientX; 
       startY = t.clientY; 
+      dragDetected = false;
       const mouseEvent = new MouseEvent('mousedown', {clientX:t.clientX, clientY:t.clientY, button:0});
       handleMouseDown(mouseEvent); 
       handleDoubleTap(e); 
@@ -699,7 +708,10 @@
       const deltaX = Math.abs(t.clientX - startX);
       const deltaY = Math.abs(t.clientY - startY);
       if (deltaX > DRAG_THRESHOLD || deltaY > DRAG_THRESHOLD) {
-        cancelPendingActions();
+        if (!dragDetected) {
+          dragDetected = true;
+          cancelPendingActions();
+        }
       }
     };
     const handleTouchEnd = (e) => { 
@@ -709,8 +721,8 @@
       handleMouseUp(mouseEvent); 
       if (isDecrementHoldMode) { 
         clearTimeout(decrementHoldTimeout); 
-        stopHoldDecrement(); 
-        if (!holdStartedRight) decrementCustomTask(div, categoryId); 
+        stopHoldDecrementCustom(); 
+        if (!holdStartedRight && !dragDetected) decrementCustomTask(div, categoryId); 
         isDecrementHoldMode = false; 
       } 
       startX = null; 
@@ -763,12 +775,12 @@
     if (holdInterval) clearInterval(holdInterval);
     holdInterval = setInterval(() => toggleCustomTask(el, categoryId, true), HOLD_INTERVAL_MS);
   };
-  const stopHoldIncrementCustom = stopHoldIncrement; // Reuse
+  const stopHoldIncrementCustom = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
   const startHoldDecrementCustom = (el, categoryId) => {
     if (holdInterval) clearInterval(holdInterval);
     holdInterval = setInterval(() => decrementCustomTask(el, categoryId), HOLD_INTERVAL_MS);
   };
-  const stopHoldDecrementCustom = stopHoldDecrement; // Reuse
+  const stopHoldDecrementCustom = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
 
   const toggleCustomTask = (el, categoryId, isHold = false) => {
     const taskId = el.dataset.id;
