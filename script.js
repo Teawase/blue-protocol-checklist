@@ -473,24 +473,6 @@
     // --- Input and hold ---
     let isPressedLeft = false, holdTimeoutLeft = null, holdStartedLeft = false;
     let isPressedRight = false, holdTimeoutRight = null, holdStartedRight = false;
-    let lastTap = 0, isDecrementHoldMode = false, decrementHoldTimeout = null;
-    const DOUBLE_TAP_THRESHOLD = 300;
-
-    const handleDoubleTap = (e) => {
-      const now = Date.now();
-      if (now - lastTap < DOUBLE_TAP_THRESHOLD) {
-        e.preventDefault();
-        isDecrementHoldMode = true;
-        decrementHoldTimeout = setTimeout(() => {
-          if (isDecrementHoldMode) {
-            decrementTask(div, section);
-            startHoldDecrement(div, section);
-          }
-        }, 300);
-      }
-      lastTap = now;
-    };
-
     const handleMouseDown = (e) => {
       e.preventDefault();
       if (e.button === 0) {
@@ -542,30 +524,81 @@
       holdStartedLeft = holdStartedRight = false;
     };
 
+    // --- Touch handlers ---
+    let touchStartX = 0, touchStartY = 0;
+    let moved = false;
+    let lastTapTime = 0;
+    let touchHoldTimeout = null;
+    const LONG_PRESS_DELAY = 500;
+    const TAP_THRESHOLD = 10;
+    const DOUBLE_TAP_THRESHOLD = 300;
+
     const handleTouchStart = (e) => {
-      e.preventDefault();
+      if (e.touches.length !== 1) return;
       const touch = e.touches[0];
-      handleMouseDown(new MouseEvent('mousedown', { clientX: touch.clientX, clientY: touch.clientY, button: 0 }));
-      handleDoubleTap(e);
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      moved = false;
+      clearTimeout(touchHoldTimeout);
+      touchHoldTimeout = setTimeout(() => {
+        if (!moved) {
+          toggleTask(div, section, true);
+          startHoldIncrement(div, section);
+        }
+      }, LONG_PRESS_DELAY);
     };
 
-    const handleTouchEnd = (e) => {
-      const touch = e.changedTouches[0];
-      handleMouseUp(new MouseEvent('mouseup', { clientX: touch.clientX, clientY: touch.clientY, button: 0 }));
-      if (isDecrementHoldMode) {
-        clearTimeout(decrementHoldTimeout); stopHoldDecrement();
-        if (!holdStartedRight) decrementTask(div, section);
-        isDecrementHoldMode = false;
+    const handleTouchMove = (e) => {
+      if (moved) return;
+      const touch = e.touches[0];
+      const deltaX = Math.abs(touch.clientX - touchStartX);
+      const deltaY = Math.abs(touch.clientY - touchStartY);
+      if (deltaX > TAP_THRESHOLD || deltaY > TAP_THRESHOLD) {
+        moved = true;
+        clearTimeout(touchHoldTimeout);
+        stopHoldIncrement();
+        stopHoldDecrement();
       }
     };
 
+    const handleTouchEnd = (e) => {
+      clearTimeout(touchHoldTimeout);
+      stopHoldIncrement();
+      stopHoldDecrement();
+      if (e.changedTouches.length !== 1 || moved) {
+        touchStartX = 0;
+        touchStartY = 0;
+        return;
+      }
+      const now = Date.now();
+      if (now - lastTapTime < DOUBLE_TAP_THRESHOLD) {
+        decrementTask(div, section);
+      } else {
+        toggleTask(div, section);
+      }
+      lastTapTime = now;
+      touchStartX = 0;
+      touchStartY = 0;
+    };
+
+    const handleTouchCancel = (e) => {
+      clearTimeout(touchHoldTimeout);
+      stopHoldIncrement();
+      stopHoldDecrement();
+      touchStartX = 0;
+      touchStartY = 0;
+      moved = false;
+    };
+
+    // --- Event bindings ---
     div.onmousedown = handleMouseDown;
     div.onmouseup = handleMouseUp;
     div.onmouseleave = handleMouseLeave;
     div.oncontextmenu = (e) => { e.preventDefault(); return false; };
     div.ontouchstart = handleTouchStart;
+    div.ontouchmove = handleTouchMove;
     div.ontouchend = handleTouchEnd;
-    div.ontouchcancel = handleTouchEnd;
+    div.ontouchcancel = handleTouchCancel;
 
     div.onkeydown = (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -594,21 +627,6 @@
 
     let isPressedLeft = false, holdTimeoutLeft = null, holdStartedLeft = false;
     let isPressedRight = false, holdTimeoutRight = null, holdStartedRight = false;
-    let lastTap = 0, isDecrementHoldMode = false, decrementHoldTimeout = null;
-    const DOUBLE_TAP_THRESHOLD = 300;
-
-    const handleDoubleTap = (e) => {
-      const now = Date.now();
-      if (now - lastTap < DOUBLE_TAP_THRESHOLD) {
-        e.preventDefault();
-        isDecrementHoldMode = true;
-        decrementHoldTimeout = setTimeout(() => {
-          if (isDecrementHoldMode) { decrementCustomTask(div, categoryId); startHoldDecrementCustom(div, categoryId); }
-        }, 300);
-      }
-      lastTap = now;
-    };
-
     const handleMouseDown = (e) => {
       e.preventDefault();
       if (e.button === 0) {
@@ -626,23 +644,88 @@
     const handleMouseUp = (e) => {
       e.preventDefault();
       if (e.button === 0) {
-        isPressedLeft = false; clearTimeout(holdTimeoutLeft); stopHoldIncrement(); if (!holdStartedLeft) toggleCustomTask(div, categoryId); holdStartedLeft = false;
+        isPressedLeft = false; clearTimeout(holdTimeoutLeft); stopHoldIncrementCustom(); if (!holdStartedLeft) toggleCustomTask(div, categoryId); holdStartedLeft = false;
       } else if (e.button === 2) {
-        isPressedRight = false; clearTimeout(holdTimeoutRight); stopHoldDecrement(); if (!holdStartedRight) decrementCustomTask(div, categoryId); holdStartedRight = false;
+        isPressedRight = false; clearTimeout(holdTimeoutRight); stopHoldDecrementCustom(); if (!holdStartedRight) decrementCustomTask(div, categoryId); holdStartedRight = false;
       }
     };
     const handleMouseLeave = (e) => {
-      e.preventDefault(); isPressedLeft = false; isPressedRight = false; clearTimeout(holdTimeoutLeft); clearTimeout(holdTimeoutRight); stopHoldIncrement(); stopHoldDecrement(); holdStartedLeft = holdStartedRight = false;
+      e.preventDefault(); isPressedLeft = false; isPressedRight = false; clearTimeout(holdTimeoutLeft); clearTimeout(holdTimeoutRight); stopHoldIncrementCustom(); stopHoldDecrementCustom(); holdStartedLeft = holdStartedRight = false;
     };
-    const handleTouchStart = (e) => { e.preventDefault(); const t = e.touches[0]; handleMouseDown(new MouseEvent('mousedown', {clientX:t.clientX, clientY:t.clientY, button:0})); handleDoubleTap(e); };
-    const handleTouchEnd = (e) => { const t = e.changedTouches[0]; handleMouseUp(new MouseEvent('mouseup', {clientX:t.clientX, clientY:t.clientY, button:0})); if (isDecrementHoldMode) { clearTimeout(decrementHoldTimeout); stopHoldDecrement(); if (!holdStartedRight) decrementCustomTask(div, categoryId); isDecrementHoldMode = false; } };
 
+    let touchStartX = 0, touchStartY = 0;
+    let moved = false;
+    let lastTapTime = 0;
+    let touchHoldTimeout = null;
+    const LONG_PRESS_DELAY = 500;
+    const TAP_THRESHOLD = 10;
+    const DOUBLE_TAP_THRESHOLD = 300;
+
+    const handleTouchStart = (e) => {
+      if (e.touches.length !== 1) return;
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      moved = false;
+      clearTimeout(touchHoldTimeout);
+      touchHoldTimeout = setTimeout(() => {
+        if (!moved) {
+          toggleCustomTask(div, categoryId, true);
+          startHoldIncrementCustom(div, categoryId);
+        }
+      }, LONG_PRESS_DELAY);
+    };
+
+    const handleTouchMove = (e) => {
+      if (moved) return;
+      const touch = e.touches[0];
+      const deltaX = Math.abs(touch.clientX - touchStartX);
+      const deltaY = Math.abs(touch.clientY - touchStartY);
+      if (deltaX > TAP_THRESHOLD || deltaY > TAP_THRESHOLD) {
+        moved = true;
+        clearTimeout(touchHoldTimeout);
+        stopHoldIncrementCustom();
+        stopHoldDecrementCustom();
+      }
+    };
+
+    const handleTouchEnd = (e) => {
+      clearTimeout(touchHoldTimeout);
+      stopHoldIncrementCustom();
+      stopHoldDecrementCustom();
+      if (e.changedTouches.length !== 1 || moved) {
+        touchStartX = 0;
+        touchStartY = 0;
+        return;
+      }
+      const now = Date.now();
+      if (now - lastTapTime < DOUBLE_TAP_THRESHOLD) {
+        decrementCustomTask(div, categoryId);
+      } else {
+        toggleCustomTask(div, categoryId);
+      }
+      lastTapTime = now;
+      touchStartX = 0;
+      touchStartY = 0;
+    };
+
+    const handleTouchCancel = (e) => {
+      clearTimeout(touchHoldTimeout);
+      stopHoldIncrementCustom();
+      stopHoldDecrementCustom();
+      touchStartX = 0;
+      touchStartY = 0;
+      moved = false;
+    };
+
+    // --- Event bindings ---
     div.onmousedown = handleMouseDown;
     div.onmouseup = handleMouseUp;
     div.onmouseleave = handleMouseLeave;
     div.ontouchstart = handleTouchStart;
+    div.ontouchmove = handleTouchMove;
     div.ontouchend = handleTouchEnd;
-    div.ontouchcancel = handleTouchEnd;
+    div.ontouchcancel = handleTouchCancel;
     div.oncontextmenu = (e) => { e.preventDefault(); return false; };
 
     div.onkeydown = (e) => {
@@ -682,10 +765,12 @@
     if (holdInterval) clearInterval(holdInterval);
     holdInterval = setInterval(() => toggleCustomTask(el, categoryId, true), HOLD_INTERVAL_MS);
   };
+  const stopHoldIncrementCustom = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
   const startHoldDecrementCustom = (el, categoryId) => {
     if (holdInterval) clearInterval(holdInterval);
     holdInterval = setInterval(() => decrementCustomTask(el, categoryId), HOLD_INTERVAL_MS);
   };
+  const stopHoldDecrementCustom = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
 
   const toggleCustomTask = (el, categoryId, isHold = false) => {
     const taskId = el.dataset.id;
