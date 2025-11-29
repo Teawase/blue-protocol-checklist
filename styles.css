@@ -383,7 +383,6 @@ h2 {
   box-shadow: 0 0 2px 0 rgba(80, 106, 255, 0.14);
   transition: background 0.3s, color 0.3s, opacity 0.3s, transform 0.2s ease-out, box-shadow 0.3s, border 0.3s;
   transform: translateY(0);
-  touch-action: manipulation;
 }
 
 .task > * {
