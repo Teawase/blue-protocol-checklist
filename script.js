@@ -42,6 +42,56 @@
     { id: "weekly_light_dragon_hard", label: "✨ Light Dragon Raid - Hard (20670+ Ability Score)", color: "gold", maxProgress: 1 },
     { id: "weekly_light_dragon_nightmare", label: "✨ Light Dragon Raid - Nightmare (27790+ Ability Score)", color: "gold", maxProgress: 1 }
   ];
+  
+  // --- Loading on first visit ---
+  if (!localStorage.getItem('visited')) {
+    document.body.innerHTML = `<div style="position:fixed;inset:0;background:#0a0a1f;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#506aff;font-family:sans-serif;z-index:99999;"><h1>Loading BPSR Checklist...</h1><div style="width:300px;height:8px;background:#333;border-radius:4px;margin-top:20px;overflow:hidden;"><div id="bar" style="width:0;height:100%;background:linear-gradient(90deg,#506aff,#ffb800);transition:width 0.1s;"></div></div><p id="pct">0%</p></div>`;
+    let p = 0;
+    const int = setInterval(() => {
+      p += Math.random() * 12;
+      if (p >= 100) { clearInterval(int); localStorage.setItem('visited','true'); location.reload(); }
+      document.getElementById('bar').style.width = p + '%';
+      document.getElementById('pct').textContent = Math.round(p) + '%';
+    }, 80);
+  }
+  
+  // --- WelcomeTips ---
+    if (!localStorage.getItem('seenTips')) {
+      setTimeout(() => {
+      document.body.insertAdjacentHTML('beforeend', `
+        <div id="welcomeTip" role="dialog" aria-labelledby="welcomeTitle">
+          <center><h3 id="welcomeTitle">Welcome to BPSR Checklist...</h3></center>
+          <p>
+		    <center><h3>Desktop Controls:</h3></center>
+            <center><h2>• Left-Click or Hold → add (+1)</h2></center>
+            <center><h2>• Right-Click or Hold → remove (-1)</h2></center>
+	  	    <center><h3>Mobile Controls:</h3></center>
+		    <center><h2>• Tap or Hold → add (+1)</h2></center>
+		    <center><h2>• Double Tap + Hold → remove (-1)</h2></center>
+          </p>
+          <button id="welcomeClose">Got it!</button>
+        </div>
+      `);
+
+      const tip = document.getElementById('welcomeTip');
+
+      const closeTip = () => {
+        if (window.innerWidth >= 640) {
+          tip.classList.add('closing-desktop');
+        } else {
+          tip.classList.add('closing-mobile');
+        }
+
+        tip.addEventListener('animationend', () => {
+          tip.remove();
+          localStorage.setItem('seenTips', 'true');
+        }, { once: true });
+      };
+
+      document.getElementById('welcomeClose').onclick = closeTip;
+
+    }, 2500);
+  }
 
   // --- DOM ---
   const $ = id => document.getElementById(id);
@@ -434,7 +484,6 @@
       resetWeeklyCustomTasks();
       pd.weekly_reset_date = date;
       saveProfiles();
-      if (pd.weekly_reset_date) setTimeout(() => alert('Weekly reset!'), 500);
     }
   };
 
@@ -1255,6 +1304,13 @@
     alert('All site data has been cleared!\nThe page will now reload.');
     location.reload();
   });
+  
+  // --- Tab % of Daily | Weekly ---
+  setInterval(() => {
+  const dailyPct = Math.round((dailyContainer.querySelectorAll('.task.completed').length / dailyTaskData.length) * 100);
+  const weeklyPct = Math.round((weeklyContainer.querySelectorAll('.task.completed').length / weeklyTaskData.length) * 100);
+
+  document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;}, 5000);
 
   // --- Init ---
   const init = async () => {
@@ -1299,5 +1355,5 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
-
+ 
 })();
