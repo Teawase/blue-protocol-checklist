@@ -323,6 +323,54 @@ h2 {
   align-items: center;
 }
 
+.profile-portrait {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #333 center/cover no-repeat;
+  border: 2px solid #506aff;
+  margin-right: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: box-shadow 0.3s ease;
+  box-shadow: 0 0 8px rgba(80,106,255,0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-portrait:hover {
+  box-shadow: 0 0 16px rgba(80,106,255,0.8);
+}
+
+.profile-portrait.default::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="14" fill="%23506aff"/><path d="M25 75 Q50 95 75 75" stroke="%23506aff" stroke-width="8" fill="none"/></svg>') center/58% no-repeat;
+  pointer-events: none;
+}
+
+#profiles-list li {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  min-width: 0;
+}
+
+#profiles-list li > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#profiles-list li button {
+  flex-shrink: 0 !important;
+  min-width: 64px;
+}
+
 /* Components: Timers */
 .event-timer {
   flex: 1;

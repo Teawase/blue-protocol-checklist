@@ -387,15 +387,17 @@
         const delBtn = document.createElement('button');
         delBtn.textContent = 'Delete';
         delBtn.onclick = () => {
-          if (profiles.list.length === 1) { alert('You cannot delete your only profile!'); return; }
-          if (confirm(`Delete "${name}" and all its progress? This cannot be undone.`)) {
-            delete profiles.data[name];
-            profiles.list = profiles.list.filter(n => n !== name);
-            if (profiles.current === name) profiles.current = profiles.list[0] || 'default';
-            saveProfiles();
-            renderProfilesList();
-            reloadCurrentProfileData();
-          }
+          if (profiles.list.length === 1) return alert('You cannot delete your only profile!');
+          if (!confirm(`Delete "${name}" and all its progress? This cannot be undone.`)) return;
+
+          delete profiles.data[name];
+          localStorage.removeItem('bp_portrait_' + name);
+          profiles.list = profiles.list.filter(n => n !== name);
+          if (profiles.current === name) profiles.current = profiles.list[0] || 'default';
+
+          saveProfiles();
+          renderProfilesList();
+          reloadCurrentProfileData();
         };
         li.appendChild(delBtn);
       }
@@ -409,10 +411,28 @@
     profilesModal.style.display = 'flex';
   });
   closeProfilesModal && (closeProfilesModal.onclick = () => profilesModal.style.display = 'none');
+
   createProfileBtn && (createProfileBtn.onclick = () => {
-    const name = newProfileNameInput.value.trim();
-    if (!name) return alert('Enter name');
-    if (profiles.list.includes(name)) return alert('Exists');
+    let name = newProfileNameInput.value.trim();
+
+    if (!name) {
+      alert('Please enter a profile name');
+      return;
+    }
+
+    if (name.length > 20) {
+      alert('Profile name must be 20 characters or less');
+      newProfileNameInput.value = name.substring(0, 20);
+      newProfileNameInput.focus();
+      return;
+    }
+
+    if (profiles.list.includes(name)) {
+      alert('A profile with this name already exists');
+      newProfileNameInput.select();
+      return;
+    }
+
     profiles.list.push(name);
     profiles.data[name] = { weekly_tasks: {} };
     profiles.current = name;
@@ -1295,6 +1315,8 @@
   newsBtn && (newsBtn.onclick = () => { loadChangelogs(); newsModal.style.display = 'flex'; });
   closeNewsModal && (closeNewsModal.onclick = () => newsModal.style.display = 'none');
   newsModal && (newsModal.onclick = (e) => { if (e.target === newsModal) newsModal.style.display = 'none'; });
+  importExportModal && (importExportModal.onclick = (e) => { if (e.target === importExportModal) importExportModal.style.display = 'none'; });
+  profilesModal && (profilesModal.onclick = (e) => { if (e.target === profilesModal) profilesModal.style.display = 'none'; });
 
   // --- Reset data ---
   resetSiteDataBtn && (resetSiteDataBtn.onclick = () => {
@@ -1319,6 +1341,25 @@
     await checkGDPR();
     await getLatestVersion();
     if (versionEl) { versionEl.style.cursor = 'pointer'; versionEl.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank'); }
+
+  (() => {
+    const versionEl = document.getElementById('version');
+    if (!versionEl?.textContent?.trim() || versionEl.textContent.includes('?')) return;
+
+    const current = versionEl.textContent.trim();
+
+    const checkNewVersion = async () => {
+      try {
+        const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {cache: "no-store"});
+        const d = await r.json();
+        if (d.tag_name && d.tag_name !== current) location.reload(true);
+      } catch(e) {}
+    };
+
+    setInterval(checkNewVersion, 60 * 60 * 1000);
+
+    window.checkNewVersion = checkNewVersion;
+  })();
 
     loadProfiles();
     reloadCurrentProfileData();
@@ -1355,5 +1396,68 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+  
+  (() => {
+    const PORTRAIT_KEY = 'bp_portrait_';
+
+    const injectPortraits = () => {
+      const list = document.getElementById('profiles-list');
+      if (!list) return;
+
+      list.querySelectorAll('li').forEach(li => {
+        if (li.querySelector('.profile-portrait')) return;
+
+        const nameSpan = li.querySelector('span');
+        if (!nameSpan) return;
+        const profileName = nameSpan.textContent.trim();
+
+        const portrait = document.createElement('div');
+        portrait.className = 'profile-portrait';
+
+        const saved = localStorage.getItem(PORTRAIT_KEY + profileName);
+        if (saved) {
+          portrait.style.backgroundImage = `url(${saved})`;
+        } else {
+          portrait.classList.add('default');
+        }
+
+        portrait.onclick = (e) => {
+          e.stopPropagation();
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/*';
+          input.onchange = ev => {
+            const file = ev.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+              const url = e.target.result;
+              portrait.style.backgroundImage = `url(${url})`;
+              portrait.classList.remove('default');
+              localStorage.setItem(PORTRAIT_KEY + profileName, url);
+            };
+            reader.readAsDataURL(file);
+          };
+          input.click();
+        };
+
+        li.insertBefore(portrait, li.firstChild);
+      });
+    };
+
+   const originalProfilesBtn = profilesBtn.onclick;
+     profilesBtn.onclick = () => {
+       originalProfilesBtn();
+        setTimeout(injectPortraits, 50);
+    };
+
+  const originalCreateProfileBtn = createProfileBtn.onclick;
+    createProfileBtn.onclick = () => {
+      originalCreateProfileBtn();
+      setTimeout(injectPortraits, 100);
+    };
+
+    setTimeout(injectPortraits, 100);
+})();  
  
 })();
