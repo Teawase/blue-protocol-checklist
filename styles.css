@@ -994,7 +994,7 @@ button:hover, button:focus {
 .resource-link:hover {
   background: rgba(80, 106, 255, 0.12);
   border-color: rgba(80, 106, 255, 0.3);
-  transform: translateY(-4px) rotateX(5deg); /* Subtle 3D lift */
+  transform: translateY(-4px) rotateX(5deg);
   .link-icon { transform: scale(1.2); transition: transform 0.2s; }
   box-shadow: 0 6px 20px rgba(80, 106, 255, 0.15);
   color: #a0c4ff;
@@ -1312,8 +1312,8 @@ button:hover, button:focus {
 
 /* Scrollbars */
 ::-webkit-scrollbar {
-  width: 10px;   /* vertical scrollbar */
-  height: 10px;  /* ← ADD THIS: horizontal scrollbar thickness */
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -1321,7 +1321,7 @@ button:hover, button:focus {
 }
 
 ::-webkit-scrollbar-corner {
-  background: transparent; /* cleans up the corner where both scrollbars meet */
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -1472,3 +1472,4 @@ button:hover, button:focus {
     width: 100%;
   }
 }
+
