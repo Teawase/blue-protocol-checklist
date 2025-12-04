@@ -38,7 +38,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 ## Core Functionality
 - **Daily Tasks:** Track your daily activities with color-coded categories.
 - **Weekly Tasks:** Track your weekly activities with similar color-coding and organization.
-- **Custom Categories + Tasks:** Create your own categories and tasks with customizable colors, tracking, and reset options (daily, weekly, or permanent).
+- **Custom Categories + Tasks:** Create your own categories and tasks with customizable colors, tracking, and reset options (daily, weekly, or permanent). You can also reorder them however you like.
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
 - **Multiple Profiles:** Save your progress between multiple profiles/characters with independent progress tracking.
 - **Incremental Progress:** Keep track of how many dungeon runs you've completed, how many times you've fought the bane lord or others.
