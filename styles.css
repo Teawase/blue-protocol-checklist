@@ -16,15 +16,39 @@ html {
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #0a0a1f;
+  background: #000;
   color: #eee;
-  margin: 0px;
-  padding: 0px !important;
+  margin: 0;
+  padding: 0 !important;
   position: relative;
-  min-height: 100px;
+  min-height: 100vh;
   box-sizing: border-box;
   opacity: 0;
   animation: fadeIn 1s ease-out forwards;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  top: -50%; left: -50%; right: -50%; bottom: -50%;
+  background: radial-gradient(circle at 50% 45%,
+    #0d1b3a 0%,
+    #0a1633 40%,
+    #05071a 80%,
+    #000000 100%
+  );
+  background-size: 200% 200%;
+  animation: softPulse 24s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform;
+}
+
+@keyframes softPulse {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.12); }
 }
 
 @keyframes fadeIn {
@@ -324,12 +348,12 @@ h2 {
 }
 
 .profile-portrait {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: #333 center/cover no-repeat;
   border: 2px solid #506aff;
-  margin-right: 8px;
+  margin-right: 2px;
   cursor: pointer;
   flex-shrink: 0;
   transition: box-shadow 0.3s ease;
@@ -339,15 +363,17 @@ h2 {
 }
 
 .profile-portrait:hover {
-  box-shadow: 0 0 16px rgba(80,106,255,0.8);
+  box-shadow: 0 0 4px rgba(80,106,255,0.8);
 }
 
 .profile-portrait.default::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="14" fill="%23506aff"/><path d="M25 75 Q50 95 75 75" stroke="%23506aff" stroke-width="8" fill="none"/></svg>') center/58% no-repeat;
+  background: url('https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/default-profile.png') center / 95% no-repeat;
   pointer-events: none;
+  border-radius: 50%;
+  background-color: #222;
 }
 
 #profiles-list li {
@@ -369,6 +395,26 @@ h2 {
 #profiles-list li button {
   flex-shrink: 0 !important;
   min-width: 64px;
+}
+
+.profile-name {
+  cursor: pointer !important;
+  display: inline-block;
+  padding: 4px 12px;
+  margin: 0 4px;
+  border-radius: 12px;
+  font-weight: 600;
+  user-select: none;
+  background: rgba(80, 106, 255, 0.08);
+  transition: background 0.15s ease, transform 0.15s ease;
+  transform: translateZ(0);
+  will-change: transform, background;
+}
+
+.profile-name:hover {
+  background: rgba(80, 106, 255, 0.28);
+  transform: translateY(-1px) translateZ(0);
+  box-shadow: 0 4px 20px rgba(80, 106, 255, 0.35);
 }
 
 /* Components: Timers */
@@ -1472,4 +1518,3 @@ button:hover, button:focus {
     width: 100%;
   }
 }
-

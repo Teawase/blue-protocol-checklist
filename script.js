@@ -367,10 +367,38 @@
     profilesListEl.innerHTML = '';
     profiles.list.sort().forEach(name => {
       const li = document.createElement('li');
-      const span = document.createElement('span');
-      span.textContent = name;
-      if (name === profiles.current) span.style.fontWeight = 'bold';
-      li.appendChild(span);
+
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = name;
+      nameSpan.className = 'profile-name';
+      if (name === profiles.current) nameSpan.style.fontWeight = 'bold';
+
+      nameSpan.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const oldName = name;
+        const input = prompt('New profile name (max 20 characters):', oldName);
+        if (!input || input.trim() === '' || input.trim() === oldName) return;
+        if (input.length > 20) return alert('Maximum 20 characters');
+        if (profiles.list.includes(input.trim())) return alert('Name already exists');
+
+        const newName = input.trim();
+
+        profiles.list = profiles.list.map(n => n === oldName ? newName : n);
+        profiles.data[newName] = profiles.data[oldName];
+        delete profiles.data[oldName];
+        if (profiles.current === oldName) profiles.current = newName;
+
+        const avatar = localStorage.getItem('bp_portrait_' + oldName);
+        if (avatar) {
+          localStorage.setItem('bp_portrait_' + newName, avatar);
+          localStorage.removeItem('bp_portrait_' + oldName);
+        }
+
+        saveProfiles();
+        profilesBtn.click();
+      });
+
+      li.appendChild(nameSpan);
 
       const switchBtn = document.createElement('button');
       switchBtn.textContent = name === profiles.current ? 'Current' : 'Switch';
@@ -387,8 +415,7 @@
         const delBtn = document.createElement('button');
         delBtn.textContent = 'Delete';
         delBtn.onclick = () => {
-          if (profiles.list.length === 1) return alert('You cannot delete your only profile!');
-          if (!confirm(`Delete "${name}" and all its progress? This cannot be undone.`)) return;
+          if (!confirm(`Delete "${name}" and all its progress?`)) return;
 
           delete profiles.data[name];
           localStorage.removeItem('bp_portrait_' + name);
@@ -396,11 +423,13 @@
           if (profiles.current === name) profiles.current = profiles.list[0] || 'default';
 
           saveProfiles();
-          renderProfilesList();
           reloadCurrentProfileData();
+
+          profilesBtn.click(); 
         };
         li.appendChild(delBtn);
       }
+
       profilesListEl.appendChild(li);
     });
   };
@@ -545,7 +574,7 @@
     let lastTap = 0, isDecrementHoldMode = false, decrementHoldTimeout = null;
     let startX = null, startY = null;
     let dragDetected = false;
-    const DOUBLE_TAP_THRESHOLD = 300;
+    const DOUBLE_TAP_THRESHOLD = 400;
     const DRAG_THRESHOLD = 10;
 
     const cancelPendingActions = () => {
@@ -705,7 +734,7 @@
     let lastTap = 0, isDecrementHoldMode = false, decrementHoldTimeout = null;
     let startX = null, startY = null;
     let dragDetected = false;
-    const DOUBLE_TAP_THRESHOLD = 300;
+    const DOUBLE_TAP_THRESHOLD = 400;
     const DRAG_THRESHOLD = 10;
 
     const cancelPendingActions = () => {
