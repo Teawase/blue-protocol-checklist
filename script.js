@@ -160,10 +160,17 @@
   };
 
   const createCategory = (name) => {
-    const categoryId = `cat_${Date.now()}`;
-    customCategories[categoryId] = { id: categoryId, name: name, tasks: [] };
-    saveCustomCategories();
-    return categoryId;
+  const MAX_CATEGORIES = 10;
+
+  if (Object.keys(customCategories).length >= MAX_CATEGORIES) {
+    alert(`You can only have up to ${MAX_CATEGORIES} custom categories on this profile.`);
+    return null;
+  }
+
+  const categoryId = `cat_${Date.now()}`;
+  customCategories[categoryId] = { id: categoryId, name: name, tasks: [] };
+  saveCustomCategories();
+  return categoryId;
   };
 
   const deleteCategory = (categoryId) => {
@@ -179,23 +186,41 @@
   };
 
   const addTaskToCategory = (categoryId, label, color, maxProgress, resetType) => {
-    if (!customCategories[categoryId]) return;
-    const task = {
-      id: `task_${Date.now()}`,
-      label,
-      color,
-      maxProgress: Math.max(1, Math.min(1000, maxProgress)),
-      resetType, // 'permanent' | 'daily' | 'weekly'
-      createdAt: new Date().toISOString()
-    };
-    customCategories[categoryId].tasks.push(task);
-    saveCustomCategories();
-    return task;
+  const MAX_TASKS_PER_CATEGORY = 20;
+
+  if (!customCategories[categoryId]) return;
+
+  if (customCategories[categoryId].tasks.length >= MAX_TASKS_PER_CATEGORY) {
+    alert(`You can only have up to ${MAX_TASKS_PER_CATEGORY} tasks in this category.`);
+    return null;
+  }
+
+  const task = {
+    id: `task_${Date.now()}`,
+    label,
+    color,
+    maxProgress: Math.max(1, Math.min(1000, maxProgress)),
+    resetType, // 'permanent' | 'daily' | 'weekly'
+    createdAt: new Date().toISOString()
   };
+
+  customCategories[categoryId].tasks.push(task);
+  saveCustomCategories();
+  return task;
+  };
+
 
   const deleteTaskFromCategory = (categoryId, taskId) => {
     if (!customCategories[categoryId]) return;
     customCategories[categoryId].tasks = customCategories[categoryId].tasks.filter(t => t.id !== taskId);
+
+    if (isStorageAllowed) {
+      const pd = getProfileData();
+      const key = `custom_${categoryId}_${taskId}`;
+      delete pd[key];
+      saveProfiles();
+    }
+
     saveCustomCategories();
   };
 
@@ -277,6 +302,38 @@
       });
     });
     saveProfiles();
+  };
+  
+    const cleanupOrphanedKeys = () => {
+    if (!isStorageAllowed) return;
+    const pd = getProfileData();
+
+    if (pd.daily_tasks) {
+      try {
+        const daily = JSON.parse(pd.daily_tasks);
+        const validDailyIds = dailyTaskData.map(t => t.id);
+        let changed = false;
+        for (const key in daily.tasks) {
+          if (!validDailyIds.includes(key)) {
+            delete daily.tasks[key];
+            changed = true;
+          }
+        }
+        if (changed) pd.daily_tasks = JSON.stringify(daily);
+      } catch (e) {
+        console.warn("Corrupted daily_tasks, skipping cleanup");
+      }
+    }
+
+    const validWeeklyIds = weeklyTaskData.map(t => t.id);
+    let changed = false;
+    for (const key in pd.weekly_tasks) {
+      if (!validWeeklyIds.includes(key)) {
+        delete pd.weekly_tasks[key];
+        changed = true;
+      }
+    }
+    if (changed) saveProfiles();
   };
 
   // --- DOM elements ---
@@ -442,34 +499,38 @@
   closeProfilesModal && (closeProfilesModal.onclick = () => profilesModal.style.display = 'none');
 
   createProfileBtn && (createProfileBtn.onclick = () => {
-    let name = newProfileNameInput.value.trim();
+  if (profiles.list.length >= 5) {
+    alert('Maximum of 5 profiles allowed.');
+    return;
+  }
+  let name = newProfileNameInput.value.trim();
 
-    if (!name) {
-      alert('Please enter a profile name');
-      return;
-    }
+  if (!name || name.length === 0) {
+    alert('Please enter a valid profile name');
+    return;
+  }
 
-    if (name.length > 20) {
-      alert('Profile name must be 20 characters or less');
-      newProfileNameInput.value = name.substring(0, 20);
-      newProfileNameInput.focus();
-      return;
-    }
+  if (name.length > 20) {
+    alert('Profile name must be 20 characters or less');
+    newProfileNameInput.value = name.substring(0, 20);
+    newProfileNameInput.focus();
+    return;
+  }
 
-    if (profiles.list.includes(name)) {
-      alert('A profile with this name already exists');
-      newProfileNameInput.select();
-      return;
-    }
+  if (profiles.list.includes(name)) {
+    alert('A profile with this name already exists');
+    newProfileNameInput.select();
+    return;
+  }
 
-    profiles.list.push(name);
-    profiles.data[name] = { weekly_tasks: {} };
-    profiles.current = name;
-    saveProfiles();
-    newProfileNameInput.value = '';
-    renderProfilesList();
-    reloadCurrentProfileData();
-  });
+  profiles.list.push(name);
+  profiles.data[name] = { weekly_tasks: {} };
+  profiles.current = name;
+  saveProfiles();
+  newProfileNameInput.value = '';
+  renderProfilesList();
+  reloadCurrentProfileData();
+});
 
   // --- Profile storage helpers ---
   const getProfileData = () => profiles.data[profiles.current] || (profiles.data[profiles.current] = { weekly_tasks: {} });
@@ -529,8 +590,8 @@
     const pd = getProfileData();
     pd.weekly_tasks ||= {};
     if (pd.weekly_reset_date !== date) {
-      pd.weekly_tasks = {};
       resetWeeklyCustomTasks();
+      pd.weekly_tasks = {};
       pd.weekly_reset_date = date;
       saveProfiles();
     }
@@ -1082,7 +1143,7 @@
       if (msg) msg.style.display = 'block';
       if (progress && !progress.dataset.confettiDone) {
         progress.dataset.confettiDone = 'true';
-        confetti({ particleCount: 500, spread: 360, origin: { x: 0.5, y: -0.5 } });
+        confetti({ particleCount: 250, spread: 360, origin: { x: 0.5, y: -0.5 } });
       }
     } else {
       if (msg) msg.style.display = 'none';
@@ -1104,8 +1165,10 @@
   };
 
   const selectAll = (section) => {
-    const data = section === 'daily' ? dailyTaskData : weeklyTaskData;
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
+    if (container.children.length === 0) return; // ← NEW: prevent crash when no tasks
+
+    const data = section === 'daily' ? dailyTaskData : weeklyTaskData;
     container.querySelectorAll('.task').forEach(t => {
       const id = t.dataset.id;
       const task = data.find(tt => tt.id === id);
@@ -1118,8 +1181,10 @@
   };
 
   const deselectAll = (section) => {
-    const data = section === 'daily' ? dailyTaskData : weeklyTaskData;
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
+    if (container.children.length === 0) return; // ← NEW: prevent crash when no tasks
+
+    const data = section === 'daily' ? dailyTaskData : weeklyTaskData;
     container.querySelectorAll('.task').forEach(t => {
       const id = t.dataset.id;
       const task = data.find(tt => tt.id === id);
@@ -1174,23 +1239,50 @@
 
   // --- Custom Category Modal ---
   if (addCategoryBtn) addCategoryBtn.onclick = () => { newCategoryNameInput.value = ''; addCategoryModal.style.display = 'flex'; setTimeout(()=>newCategoryNameInput.focus(),100); };
-  if (createCategoryBtn) createCategoryBtn.onclick = () => {
-    const name = newCategoryNameInput.value.trim(); if (!name) return alert('Please enter a category name'); createCategory(name); addCategoryModal.style.display = 'none'; renderCategories();
+    if (createCategoryBtn) createCategoryBtn.onclick = () => {
+    let name = newCategoryNameInput.value.trim();
+    if (!name) return alert('Please enter a category name');
+
+    if (name.length > 25) {
+      alert('Category name must be 25 characters or less.');
+      name = name.substring(0, 25);
+      newCategoryNameInput.value = name;
+      newCategoryNameInput.focus();
+      return;
+    }
+
+    const id = createCategory(name);
+    if (!id) return;
+
+    addCategoryModal.style.display = 'none';
+    renderCategories();
   };
-  if (closeCategoryModal) closeCategoryModal.onclick = () => addCategoryModal.style.display = 'none';
 
   // --- Custom Task Modal ---
   if (addCustomTaskBtn) addCustomTaskBtn.onclick = () => {
     if (!currentCategoryId) return;
-    const label = customTaskLabel.value.trim();
+
+    let label = customTaskLabel.value.trim();
     const color = customTaskColor.value;
     const maxProgress = Math.max(1, Math.min(1000, parseInt(customTaskMaxProgress.value) || 1));
     const resetType = customTaskReset.value;
-    if (!label) return alert('Please enter a task label');
-    addTaskToCategory(currentCategoryId, label, color, maxProgress, resetType);
-    addCustomTaskModal.style.display = 'none';
-    renderCategories();
-  };
+
+  if (!label) return alert('Please enter a task label');
+
+  if (label.length > 50) {
+    alert('Task label must be 50 characters or less.');
+    label = label.substring(0, 50);
+    customTaskLabel.value = label;
+    customTaskLabel.focus();
+    return;
+  }
+
+  const task = addTaskToCategory(currentCategoryId, label, color, maxProgress, resetType);
+  if (!task) return;
+
+  addCustomTaskModal.style.display = 'none';
+  renderCategories();
+};
   if (closeCustomTaskModal) closeCustomTaskModal.onclick = () => addCustomTaskModal.style.display = 'none';
 
   // --- Title and version ---
@@ -1358,10 +1450,16 @@
   
   // --- Tab % of Daily | Weekly ---
   setInterval(() => {
-  const dailyPct = Math.round((dailyContainer.querySelectorAll('.task.completed').length / dailyTaskData.length) * 100);
-  const weeklyPct = Math.round((weeklyContainer.querySelectorAll('.task.completed').length / weeklyTaskData.length) * 100);
+    const dailyDone = dailyContainer.querySelectorAll('.task.completed').length;
+    const dailyTotal = dailyTaskData.length || 1;
+    const weeklyDone = weeklyContainer.querySelectorAll('.task.completed').length;
+    const weeklyTotal = weeklyTaskData.length || 1;
 
-  document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;}, 5000);
+    const dailyPct = Math.round((dailyDone / dailyTotal) * 100);
+    const weeklyPct = Math.round((weeklyDone / weeklyTotal) * 100);
+
+    document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
+  }, 5000);
 
   // --- Init ---
   const init = async () => {
@@ -1369,7 +1467,11 @@
     updateTitle();
     await checkGDPR();
     await getLatestVersion();
-    if (versionEl) { versionEl.style.cursor = 'pointer'; versionEl.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank'); }
+    if (versionEl) {
+      versionEl.style.cursor = 'pointer';
+      versionEl.title = 'Open releases on GitHub';
+      versionEl.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank');
+    }
 
   (() => {
     const versionEl = document.getElementById('version');
@@ -1391,6 +1493,7 @@
   })();
 
     loadProfiles();
+	cleanupOrphanedKeys();
     reloadCurrentProfileData();
     startTimerUpdates();
 
@@ -1427,66 +1530,70 @@
   else init();
   
   (() => {
-    const PORTRAIT_KEY = 'bp_portrait_';
+  const PORTRAIT_KEY = 'bp_portrait_';
 
-    const injectPortraits = () => {
-      const list = document.getElementById('profiles-list');
-      if (!list) return;
+  const injectPortraits = () => {
+    const list = document.getElementById('profiles-list');
+    if (!list) return;
 
-      list.querySelectorAll('li').forEach(li => {
-        if (li.querySelector('.profile-portrait')) return;
+    list.querySelectorAll('li').forEach(li => {
+      if (li.querySelector('.profile-portrait')) return;
 
-        const nameSpan = li.querySelector('span');
-        if (!nameSpan) return;
-        const profileName = nameSpan.textContent.trim();
+      const nameSpan = li.querySelector('span');
+      if (!nameSpan) return;
+      const profileName = nameSpan.textContent.trim();
 
-        const portrait = document.createElement('div');
-        portrait.className = 'profile-portrait';
+      const portrait = document.createElement('div');
+      portrait.className = 'profile-portrait';
 
-        const saved = localStorage.getItem(PORTRAIT_KEY + profileName);
-        if (saved) {
-          portrait.style.backgroundImage = `url(${saved})`;
-        } else {
-          portrait.classList.add('default');
-        }
+      const saved = localStorage.getItem(PORTRAIT_KEY + profileName);
+      if (saved) {
+        portrait.style.backgroundImage = `url(${saved})`;
+      } else {
+        portrait.classList.add('default');
+      }
 
-        portrait.onclick = (e) => {
-          e.stopPropagation();
-          const input = document.createElement('input');
-          input.type = 'file';
-          input.accept = 'image/*';
-          input.onchange = ev => {
-            const file = ev.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = e => {
-              const url = e.target.result;
-              portrait.style.backgroundImage = `url(${url})`;
-              portrait.classList.remove('default');
-              localStorage.setItem(PORTRAIT_KEY + profileName, url);
-            };
-            reader.readAsDataURL(file);
+      portrait.onclick = (e) => {
+        e.stopPropagation();
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = ev => {
+          const file = ev.target.files[0];
+          if (!file) return;
+          if (file.size > 50 * 1024) {
+            alert('File too large! Maximum size is 50KB.');
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = e => {
+            const url = e.target.result;
+            portrait.style.backgroundImage = `url(${url})`;
+            portrait.classList.remove('default');
+            localStorage.setItem(PORTRAIT_KEY + profileName, url);
           };
-          input.click();
+          reader.readAsDataURL(file);
         };
+        input.click();
+      };
 
-        li.insertBefore(portrait, li.firstChild);
-      });
-    };
+      li.insertBefore(portrait, li.firstChild);
+    });
+  };
 
-   const originalProfilesBtn = profilesBtn.onclick;
-     profilesBtn.onclick = () => {
-       originalProfilesBtn();
-        setTimeout(injectPortraits, 50);
-    };
+  const originalProfilesBtn = profilesBtn.onclick;
+  profilesBtn.onclick = () => {
+    originalProfilesBtn();
+    setTimeout(injectPortraits, 50);
+  };
 
   const originalCreateProfileBtn = createProfileBtn.onclick;
-    createProfileBtn.onclick = () => {
-      originalCreateProfileBtn();
-      setTimeout(injectPortraits, 100);
-    };
-
+  createProfileBtn.onclick = () => {
+    originalCreateProfileBtn();
     setTimeout(injectPortraits, 100);
-})();  
- 
+  };
+
+  setTimeout(injectPortraits, 100);
+})();
+
 })();
