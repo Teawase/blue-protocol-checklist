@@ -1561,8 +1561,8 @@
         input.onchange = ev => {
           const file = ev.target.files[0];
           if (!file) return;
-          if (file.size > 100 * 1024) {
-            alert('File too large! Maximum size is 100KB.');
+          if (file.size > 150 * 1024) {
+            alert('File too large! Maximum size is 150KB.');
             return;
           }
           const reader = new FileReader();
@@ -1597,4 +1597,5 @@
 })();
 
 })();
+
 
