@@ -29,26 +29,15 @@ body {
 }
 
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
-  top: -50%; left: -50%; right: -50%; bottom: -50%;
-  background: radial-gradient(circle at 50% 45%,
-    #0d1b3a 0%,
-    #0a1633 40%,
-    #05071a 80%,
-    #000000 100%
-  );
-  background-size: 200% 200%;
-  animation: softPulse 24s ease-in-out infinite;
+  background: 
+    radial-gradient(circle at top left, #0d1a33 0%, transparent 40%),
+    radial-gradient(circle at bottom right, #1a0d2e 0%, transparent 40%),
+    #000000;
   pointer-events: none;
   z-index: -1;
-  will-change: transform;
-}
-
-@keyframes softPulse {
-  0%, 100% { opacity: 0.75; transform: scale(1); }
-  50%      { opacity: 1;    transform: scale(1.12); }
 }
 
 @keyframes fadeIn {
@@ -511,9 +500,11 @@ h2 {
 }
 
 .counter {
-  font-weight: 600;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
   font-size: 1rem;
-  color: #a6a6a6;
+  letter-spacing: 0.5px;
+  color: #c0d6ff;
   min-width: 120px;
   text-align: right;
   font-feature-settings: "tnum";
@@ -832,7 +823,7 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
   font-weight: bold;
   position: fixed;
   font-size: 14px;
-  bottom: 34px;
+  bottom: 64px;
   right: 2px;
   transform-origin: bottom right;
   white-space: nowrap;
@@ -844,6 +835,23 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
 #version {
   color: #ffea80;
   font-weight: bold;
+}
+
+.server-time {
+  background: rgba(80,106,255,0.3);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #506aff;
+  font-weight: bold;
+  position: fixed;
+  font-size: 14px;
+  bottom: 32px;
+  right: 2px;
+  transform-origin: bottom right;
+  white-space: nowrap;
+  z-index: 9999;
+  cursor: pointer;
+  line-height: 1;
 }
 
 .contact {
@@ -1186,8 +1194,9 @@ button:hover, button:focus {
 }
 
 .event-timer.active {
-  border: 1px solid #506aff;
+  border: 2px solid #6b8aff;
   border-color: #6b8aff;
+  background: #151a2e;
   box-shadow: 0 0 0 4px rgba(80,106,255,0.3), 0 0 0 8px rgba(80,106,255,0.15);
 }
 
