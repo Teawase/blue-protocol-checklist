@@ -142,6 +142,16 @@
       }
     }
     if (!profiles.data[profiles.current]) profiles.data[profiles.current] = { weekly_tasks: {} };
+
+    Object.keys(localStorage)
+      .filter(key => key.startsWith('bp_portrait_'))
+      .forEach(key => {
+        const profileName = key.slice(12);
+        if (!profiles.list.includes(profileName)) {
+          localStorage.removeItem(key);
+          console.log('Cleaned old portrait:', key);
+        }
+      });
   };
 
   const loadCustomCategories = () => {
@@ -547,11 +557,13 @@
     const pd = getProfileData();
     const date = getCurrentDailyDate();
     let stored = pd.daily_tasks ? JSON.parse(pd.daily_tasks) : { date: null, tasks: {} };
+  
     if (stored.date !== date) {
       stored = { date, tasks: {} };
       pd.daily_tasks = JSON.stringify(stored);
       resetDailyCustomTasks();
       saveProfiles();
+      location.reload();
     }
     return stored;
   };
@@ -589,11 +601,13 @@
     const date = getCurrentWeeklyDate();
     const pd = getProfileData();
     pd.weekly_tasks ||= {};
+  
     if (pd.weekly_reset_date !== date) {
       resetWeeklyCustomTasks();
       pd.weekly_tasks = {};
       pd.weekly_reset_date = date;
       saveProfiles();
+      location.reload();
     }
   };
 
@@ -1282,8 +1296,23 @@
 
   addCustomTaskModal.style.display = 'none';
   renderCategories();
-};
+  };
   if (closeCustomTaskModal) closeCustomTaskModal.onclick = () => addCustomTaskModal.style.display = 'none';
+  
+  if (closeCategoryModal) {
+    closeCategoryModal.onclick = () => {
+      addCategoryModal.style.display = 'none';
+      newCategoryNameInput.value = '';
+    };
+  }
+  if (addCategoryModal) {
+    addCategoryModal.onclick = (e) => {
+      if (e.target === addCategoryModal) {
+        addCategoryModal.style.display = 'none';
+        newCategoryNameInput.value = '';
+      }
+    };
+  }
 
   // --- Title and version ---
   const updateTitle = () => {
@@ -1378,6 +1407,38 @@
     updateAll();
     setInterval(updateAll, 1000);
   };
+
+  // --- Server Time ---
+  const timeDisplay = document.getElementById('timeDisplay');
+  const serverTimeEl = document.getElementById('serverTime');
+
+  let use24h = localStorage.getItem('serverTime24h') === 'true'; // default = false → 12h
+
+  const updateServerTime = () => {
+    const time = new Date().toLocaleTimeString('en-US', {
+      timeZone: 'America/Noronha',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: !use24h
+    });
+    timeDisplay.textContent = time;
+  };
+
+  serverTimeEl?.addEventListener('click', () => {
+    use24h = !use24h;
+    localStorage.setItem('serverTime24h', use24h);
+    updateServerTime(); // instant feedback
+  });
+
+  updateServerTime();
+
+  const now = new Date();
+  const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+
+  setTimeout(() => {
+    updateServerTime();
+    setInterval(updateServerTime, 60000);
+  }, msUntilNextMinute);
 
   // --- GDPR + IPAPI caching ---
   const IPAPI_CACHE_KEY = 'ipapi_cache';
@@ -1597,5 +1658,3 @@
 })();
 
 })();
-
-
