@@ -633,6 +633,8 @@
     div.className = `task ${task.color}`;
     div.tabIndex = 0;
     div.dataset.id = task.id;
+	div.role = "listitem";
+	div.setAttribute("aria-label", task.label);
     const max = task.maxProgress || 1;
     const current = getCount(task.id, section);
     const completed = current === max;
@@ -799,6 +801,8 @@
     div.tabIndex = 0;
     div.dataset.id = task.id;
     div.dataset.categoryId = categoryId;
+	div.role = "listitem";
+	div.setAttribute("aria-label", task.label);
     const max = task.maxProgress || 1;
     const current = getCustomTaskCount(categoryId, task.id);
     div.innerHTML = `<label>${task.label}${max>1?` <span class="progress-badge">${current}/${max}</span>`:''}</label>`;
