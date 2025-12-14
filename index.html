@@ -49,8 +49,8 @@
   
   <!-- Import/Export & Profiles Buttons -->
   <div class="import-export">
-    <button id="importExportBtn">💾 Backup</button>
-    <button id="profilesBtn">👥 Profiles</button>
+    <button id="importExportBtn" aria-label="Backup: Import or Export your progress">💾 Backup</button>
+    <button id="profilesBtn" aria-label="Manage profiles">👥 Profiles</button>
     <input type="file" id="importFile" accept=".json" style="display: none;">
   </div>
   
@@ -107,9 +107,9 @@
       
       <div class="action-filter-row">
         <div class="action-buttons">
-          <button id="btnSelectAllDaily">Select All</button>
-          <button id="btnDeselectAllDaily">Deselect All</button>
-          <button id="toggleDaily" aria-pressed="true">Show Completed</button>
+          <button id="btnSelectAllDaily" aria-label="Mark all daily tasks as complete">Select All</button>
+          <button id="btnDeselectAllDaily" aria-label="Mark all daily tasks as incomplete">Deselect All</button>
+          <button id="toggleDaily" aria-pressed="true" aria-label="Toggle visibility of completed daily tasks">Show Completed</button>
         </div>
         <input type="text" placeholder="Search Daily…" id="daily_filter" class="filter-input" aria-label="Search Daily Tasks" />
       </div>
@@ -132,9 +132,9 @@
       
       <div class="action-filter-row">
         <div class="action-buttons">
-          <button id="btnSelectAllWeekly">Select All</button>
-          <button id="btnDeselectAllWeekly">Deselect All</button>
-          <button id="toggleWeekly" aria-pressed="true">Show Completed</button>
+          <button id="btnSelectAllWeekly" aria-label="Mark all weekly tasks as complete">Select All</button>
+          <button id="btnDeselectAllWeekly" aria-label="Mark all weekly tasks as incomplete">Deselect All</button>
+          <button id="toggleWeekly" aria-pressed="true" aria-label="Toggle visibility of completed weekly tasks">Show Completed</button>
         </div>
         <input type="text" placeholder="Search Weekly…" id="weekly_filter" class="filter-input" aria-label="Search Weekly Tasks" />
       </div>
@@ -149,7 +149,7 @@
   <div class="custom-categories-section">
     <div class="custom-categories-header">
       <h2>🎯 Custom Categories</h2>
-      <button id="addCategoryBtn" class="add-category-btn">➕</button>
+      <button id="addCategoryBtn" class="add-category-btn" aria-label="Create new custom category">➕</button>
     </div>
     <div id="custom_categories_container" class="custom-categories-container"></div>
   </div>
@@ -235,7 +235,7 @@
 
   <!-- News Button -->
   <div class="news">
-    <button id="newsBtn">📰 News</button>
+    <button id="newsBtn" aria-label="View changelogs and news">📰 News</button>
   </div>
 
   <!-- News / Changelog Modal -->
@@ -249,7 +249,7 @@
 
   <!-- Clear Data Button -->
   <div class="reset-data">
-    <button id="resetSiteDataBtn">⚠️ Clear Data</button>
+    <button id="resetSiteDataBtn" aria-label="Clear all site data (irreversible)">⚠️ Clear Data</button>
   </div>
 
   <!-- Footer -->
@@ -306,4 +306,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
