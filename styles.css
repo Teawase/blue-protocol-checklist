@@ -1527,3 +1527,92 @@ button:hover, button:focus {
     width: 100%;
   }
 }
+
+/* ======= Christmas Theme (18th December - 5th January) ======= */
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 15% 75%, rgba(196,26,26,0.2) 0%, transparent 45%),
+    radial-gradient(circle at 85% 25%, rgba(255,184,0,0.2) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(96,168,255,0.25) 0%, transparent 65%),
+    radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, transparent 55%),
+    linear-gradient(to bottom, #000814 0%, #001233 50%, #000b1f 100%);
+  pointer-events: none;
+  z-index: -2;
+}
+
+#page-title {
+  background: linear-gradient(90deg, #60a8ff 0%, #a0d4ff 25%, #ffffff 50%, #ffb800 75%, #c41a1a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 4px rgba(96,168,255,0.85), 0 0 2px rgba(255,255,255,0.45);
+}
+
+.event-timer .name,
+.event-timer .countdown {
+  background: linear-gradient(90deg, #60a8ff, #ffffff, #ffb800, #c41a1a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: none !important;
+  text-shadow: 0 0 10px rgba(96,168,255,0.65), 0 0 5px rgba(255,184,0,0.4);
+  opacity: 1;
+}
+
+.event-timer.active {
+  border-color: #ffb800;
+  box-shadow: 0 0 24px rgba(255,184,0,0.6);
+}
+
+button:hover,
+.action-buttons button:hover,
+.add-category-btn:hover,
+.import-export button:hover,
+.news button:hover,
+#resetSiteDataBtn:hover,
+#profilesBtn:hover,
+#snowToggleBtn:hover {
+  background: #c41a1a !important;
+  box-shadow: 0 5px 18px rgba(196,26,26,0.4);
+  transition: all 0.2s ease;
+}
+
+.section:hover,
+.custom-category:hover {
+  border-color: rgba(255,184,0,0.35);
+  box-shadow: 0 10px 35px rgba(96,168,255,0.1);
+}
+
+#snowToggleBtn{
+  position:fixed;
+  bottom:98px;
+  right:2px;
+  z-index:9999;
+  padding:6px 14px;
+  background:rgba(0,0,0,.75);
+  color:#ffea80;
+  border:2px solid rgba(80,106,255,.6);
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,.5),0 0 12px rgba(80,106,255,.25);
+  transition:all .3s ease;
+  user-select:none;
+  line-height:1;
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px)
+}
+
+#snowToggleBtn:hover{
+  background:rgba(0,0,0,.9);
+  border-color:#ffb800;
+  color:#fff;
+  box-shadow:0 6px 18px rgba(0,0,0,.6),0 0 16px rgba(255,184,0,.5);
+}
+
+/* ============================================================= */
