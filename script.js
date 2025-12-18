@@ -1561,6 +1561,79 @@
 	cleanupOrphanedKeys();
     reloadCurrentProfileData();
     startTimerUpdates();
+	
+// ======= Christmas Theme (18th December - 5th January) =======
+	
+    (function(){
+      const pageTitle=document.getElementById('page-title');
+      if(pageTitle)pageTitle.textContent=`❄️ ${pageTitle.textContent.replace(/^❄️\s*/,'')}`;
+      if(window.innerWidth<768)return;
+      const canvas=document.createElement('canvas');
+      canvas.style.position='fixed';
+      canvas.style.top='0';
+      canvas.style.left='0';
+      canvas.style.pointerEvents='none';
+      canvas.style.zIndex='-1';
+      document.body.insertBefore(canvas,document.body.firstChild);
+      const ctx=canvas.getContext('2d');
+      let width=canvas.width=window.innerWidth;
+      let height=canvas.height=window.innerHeight;
+      window.addEventListener('resize',()=>{
+        width=canvas.width=window.innerWidth;
+        height=canvas.height=window.innerHeight;
+        if(window.innerWidth<768)ctx.clearRect(0,0,width,height);
+      });
+      const flakeCount=30;
+      const flakes=[];
+      for(let i=0;i<flakeCount;i++){
+        flakes.push({
+          x:Math.random()*width,
+          y:Math.random()*height,
+          radius:Math.random()*3+1,
+          speed:Math.random()*1.8+1,
+          drift:Math.random()*0.6-0.3,
+          opacity:Math.random()*0.4+0.6
+        });
+      }
+      let animationId=null;
+      let snowEnabled=true;
+      function startSnow(){
+        if(animationId||window.innerWidth<768)return;
+        function animate(){
+          ctx.clearRect(0,0,width,height);
+          flakes.forEach(flake=>{
+            ctx.beginPath();
+            ctx.arc(flake.x,flake.y,flake.radius,0,Math.PI*2);
+            ctx.fillStyle=`rgba(255,255,255,${flake.opacity})`;
+            ctx.fill();
+            flake.y+=flake.speed;
+            flake.x+=flake.drift;
+            if(flake.y>height){flake.y=-10;flake.x=Math.random()*width;}
+          });
+          animationId=requestAnimationFrame(animate);
+        }
+        animate();
+      }
+      function stopSnow(){
+        if(animationId){
+          cancelAnimationFrame(animationId);
+          animationId=null;
+          ctx.clearRect(0,0,width,height);
+        }
+      }
+      const toggleBtn=document.getElementById('snowToggleBtn');
+      if(toggleBtn){
+        toggleBtn.textContent='❄️ Snow: On';
+        toggleBtn.onclick=()=>{
+          snowEnabled=!snowEnabled;
+          toggleBtn.textContent=snowEnabled?'❄️ Snow: On':'❄️ Snow: Off';
+          snowEnabled?startSnow():stopSnow();
+        };
+      }
+      startSnow();
+    })();
+	
+// =============================================================
 
     importExportBtn && (importExportBtn.onclick = () => importExportModal && (importExportModal.style.display = 'flex'));
     importProgressBtn && (importProgressBtn.onclick = () => { importExportModal && (importExportModal.style.display = 'none'); importFile && importFile.click(); });
