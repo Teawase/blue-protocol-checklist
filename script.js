@@ -19,7 +19,7 @@
     { id: "weekly_guild_activity_rewards", label: "👑 Guild Activity Rewards (Reach 7000/7000 Points)", color: "orange", maxProgress: 1 },
     { id: "weekly_guild_hunt_extended", label: "🏹 Guild Hunt (-Friday- | -Saturday- | -Sunday-)", color: "orange", maxProgress: 3 },
     { id: "weekly_guild_dance", label: "💃 Guild Dance (-Friday-)", color: "orange", maxProgress: 1 },
-    { id: "weekly_world_boss_crusade_points", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 1 },
+    { id: "weekly_world_boss_crusade_points", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3 },
     { id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for lv. 40 Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_clear_dungeons_master_1_5", label: "🗡️ Dungeons (Master 1-5) | Clear for lv. 60 Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_clear_dungeons_master_6_20", label: "🗡️ Dungeons (Master 6-20) | Clear for lv. 80 Reforge Stones", color: "purple", maxProgress: 20 },
@@ -1735,3 +1735,4 @@
 })();
 
 })();
+
