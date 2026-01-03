@@ -1,9 +1,9 @@
 (() => {
-  // --- Daily Tasks ---
+  // --- Main Tasks Data ---
   const dailyTaskData = [
     { id: "daily_mystery_store", label: "🎁 Mystery Store (Starforge Crystals, Advanced Books & Moss/Burl Shards)", color: "grey", maxProgress: 1 },
     { id: "daily_guild_checkin", label: "🏛️ Guild Check-In & Cargo (Guild & Cargo Administrators in Guild Center)", color: "orange", maxProgress: 1 },
-    { id: "daily_unstable_space_dungeon", label: "🌀 Clear Unstable Space Dungeon", color: "purple", maxProgress: 2 },
+    { id: "daily_unstable_space_dungeon", label: "🌀 Unstable Space Dungeon | Clear", color: "purple", maxProgress: 2 },
     { id: "daily_commissions", label: "📋 Bureau Commissions | Can skip up to 2 days", color: "green", maxProgress: 3 },
     { id: "daily_homestead_commissions", label: "🏡 Homestead Commissions | Can skip up to 2 days", color: "green", maxProgress: 3 },
     { id: "daily_world_boss_keys", label: "🔑 World Boss Keys | Can skip up to 2 days", color: "brown", maxProgress: 2 },
@@ -12,7 +12,6 @@
     { id: "daily_season_activity_goals", label: "🏆 Season Pass Activity (Earn 500 Activity Merits)", color: "yellow", maxProgress: 1 }
   ];
 
-  // --- Weekly Tasks ---
   const weeklyTaskData = [
     { id: "weekly_pioneer_rewards", label: "🏅 Pioneer Awards (Pioneer NPC in town)", color: "yellow", maxProgress: 1 },
     { id: "weekly_reclaim_hub", label: "⏰ Reclaim Hub (If you missed something last week)", color: "grey", maxProgress: 1 },
@@ -23,15 +22,15 @@
     { id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for lv. 40 Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_clear_dungeons_master_1_5", label: "🗡️ Dungeons (Master 1-5) | Clear for lv. 60 Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_clear_dungeons_master_6_20", label: "🗡️ Dungeons (Master 6-20) | Clear for lv. 80 Reforge Stones", color: "purple", maxProgress: 20 },
-    { id: "weekly_fight_bane_lord", label: "😈 Fight the Bane Lord (Random Dungeon Encounter)", color: "brown", maxProgress: 5 },
+    { id: "weekly_fight_bane_lord", label: "😈 Fight the Bane Lord | -Random Dungeon Encounter-", color: "brown", maxProgress: 5 },
     { id: "weekly_gear_exchange_store", label: "🔄 Gear Exchange Stores (Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey", maxProgress: 1 },
-    { id: "weekly_honor_store", label: "⚜️ Honor Store (Earn 10000 Honor Points)", color: "grey", maxProgress: 1 },
+    { id: "weekly_honor_store", label: "⚜️ Honor Store (Spend 10000 Honor Points)", color: "grey", maxProgress: 1 },
     { id: "weekly_friendship_store", label: "🤝 Friendship Store (Earn 2000 Friendship Points)", color: "grey", maxProgress: 1 },
-    { id: "weekly_reputation_store", label: '📈 Reputation Store (Will Wish Coin, "Revive" Candy & Healing Aromatic)', color: "grey", maxProgress: 1 },
+    { id: "weekly_reputation_store", label: '📈 Reputation Store (Will Wish Coin, "Revive" Candy and/or Healing Aromatics)', color: "grey", maxProgress: 1 },
     { id: "weekly_guild_store", label: "🔰 Guild Store (Focus Potions, Supply Chests & Burl Shards)", color: "grey", maxProgress: 1 },
     { id: "weekly_event_store", label: "🎉 Event Store (If available)", color: "grey", maxProgress: 1 },
     { id: "weekly_life_skill_quests", label: "🌾 Life Skill Exchange Quests", color: "green", maxProgress: 12 },
-    { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Resets every 2 weeks) > Check Timer ^", color: "pearl", maxProgress: 1 },
+    { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Resets every 2 weeks) > Check Timer (Global) ^", color: "pearl", maxProgress: 1 },
     { id: "weekly_ice_dragon_normal", label: "❄️ Ice Dragon Raid - Easy (12710+ Ability Score)", color: "blue", maxProgress: 1 },
     { id: "weekly_ice_dragon_hard", label: "❄️ Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue", maxProgress: 1 },
     { id: "weekly_ice_dragon_nightmare", label: "❄️ Ice Dragon Raid - Nightmare (22300+ Ability Score)", color: "blue", maxProgress: 1 },
@@ -42,61 +41,90 @@
     { id: "weekly_light_dragon_hard", label: "✨ Light Dragon Raid - Hard (20670+ Ability Score)", color: "gold", maxProgress: 1 },
     { id: "weekly_light_dragon_nightmare", label: "✨ Light Dragon Raid - Nightmare (27790+ Ability Score)", color: "gold", maxProgress: 1 }
   ];
-  
-  // --- Loading on first visit ---
-  if (!localStorage.getItem('visited')) {
-    document.body.innerHTML = `<div style="position:fixed;inset:0;background:#0a0a1f;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#506aff;font-family:sans-serif;z-index:99999;"><h1>Loading BPSR Checklist...</h1><div style="width:300px;height:8px;background:#333;border-radius:4px;margin-top:20px;overflow:hidden;"><div id="bar" style="width:0;height:100%;background:linear-gradient(90deg,#506aff,#ffb800);transition:width 0.1s;"></div></div><p id="pct">0%</p></div>`;
-    let p = 0;
-    const int = setInterval(() => {
-      p += Math.random() * 12;
-      if (p >= 100) { clearInterval(int); localStorage.setItem('visited','true'); location.reload(); }
-      document.getElementById('bar').style.width = p + '%';
-      document.getElementById('pct').textContent = Math.round(p) + '%';
-    }, 80);
-  }
-  
-  // --- WelcomeTips ---
-    if (!localStorage.getItem('seenTips')) {
-      setTimeout(() => {
-      document.body.insertAdjacentHTML('beforeend', `
-        <div id="welcomeTip" role="dialog" aria-labelledby="welcomeTitle">
-          <center><h3 id="welcomeTitle">Welcome to BPSR Checklist...</h3></center>
-          <p>
-		    <center><h3>Desktop Controls:</h3></center>
-            <center><h2>• Left-Click or Hold → add (+1)</h2></center>
-            <center><h2>• Right-Click or Hold → remove (-1)</h2></center>
-	  	    <center><h3>Mobile Controls:</h3></center>
-		    <center><h2>• Tap or Hold → add (+1)</h2></center>
-		    <center><h2>• Double Tap + Hold → remove (-1)</h2></center>
-          </p>
-          <button id="welcomeClose">Got it!</button>
-        </div>
-      `);
 
-      const tip = document.getElementById('welcomeTip');
+  const HOLD_INTERVAL_MS = 150;
+  const MAX_CATEGORIES = 10;
+  const MAX_TASKS_PER_CATEGORY = 20;
 
-      const closeTip = () => {
-        if (window.innerWidth >= 640) {
-          tip.classList.add('closing-desktop');
-        } else {
-          tip.classList.add('closing-mobile');
-        }
-
-        tip.addEventListener('animationend', () => {
-          tip.remove();
-          localStorage.setItem('seenTips', 'true');
-        }, { once: true });
-      };
-
-      document.getElementById('welcomeClose').onclick = closeTip;
-
-    }, 2500);
-  }
-
-  // --- DOM ---
+  // --- Utility ---
   const $ = id => document.getElementById(id);
 
-  // --- Profiles ---
+  const diffSec = (future, now = parseNoronha()) => Math.max(0, Math.floor((future - now) / 1000));
+  const format = o => `${o.d?o.d+'d ':''}${o.h||o.d?o.h+'h ':''}${o.m||o.h||o.d?o.m+'m ':''}${o.s}s`;
+
+  const cloneSet = (base, day, h, m) => {
+    const d = new Date(base); d.setHours(0,0,0,0);
+    while (d.getDay() !== day) d.setDate(d.getDate() + 1);
+    d.setHours(h,m,0,0); return d;
+  };
+
+  const getDailyReset = (now = new Date()) => {
+    const r = new Date(now);
+    r.setUTCHours(getDailyResetHour(), 0, 0, 0);
+    return now >= r ? new Date(r.getTime() + 86400000) : r;
+  };
+  
+  const getWeeklyReset = (now = new Date()) => {
+    const r = new Date(now);
+    r.setUTCHours(getWeeklyResetHour(), 0, 0, 0);
+    const currentDay = r.getUTCDay();
+    const targetDay = getWeeklyResetDay();
+    let diff = (targetDay - currentDay + 7) % 7;
+    if (diff === 0 && now.getUTCHours() >= getWeeklyResetHour()) diff = 7;
+    r.setUTCDate(r.getUTCDate() + diff);
+    return r;
+  };
+  
+  const getStimenVaults = now => { let r = new Date('2025-11-03T02:00:00'); while (r < now) r.setDate(r.getDate()+14); return r; };
+
+  const getGuildHuntPeriod = now => {
+    const days = [5,6,0];
+    for (const day of days) {
+      const start = cloneSet(now, day, 14, 0);
+      const end = new Date(start); end.setDate(end.getDate()+1); end.setHours(4,0,0,0);
+      if (now >= start && now < end) return { start, end };
+    }
+    const next = days.map(d => cloneSet(now, d, 14, 0)).map(dt => (dt <= now ? new Date(dt.getTime()+7*864e5) : dt)).sort((a,b)=>a-b)[0];
+    const end = new Date(next); end.setDate(end.getDate()+1); end.setHours(4,0,0,0);
+    return { start: next, end };
+  };
+
+  const getGuildDancePeriod = now => {
+    const start = cloneSet(now, 5, 15, 30);
+    const end = new Date(start); end.setDate(end.getDate()+1); end.setHours(3,30,0,0);
+    if (now >= start && now < end) return { start, end };
+    const next = new Date(start.getTime() + (start <= now ? 7*864e5 : 0));
+    const nextEnd = new Date(next); nextEnd.setDate(nextEnd.getDate()+1); nextEnd.setHours(3,30,0,0);
+    return { start: next, end: nextEnd };
+  };
+
+  const getWorldBossCrusadePeriod = now => {
+    const start = new Date(now); start.setHours(16,0,0,0);
+    const end = new Date(now); end.setHours(22,0,0,0);
+    if (now >= start && now < end) return { start, end };
+    if (now < start) return { start, end };
+    start.setDate(start.getDate()+1); end.setDate(end.getDate()+1); return { start, end };
+  };
+
+  const getCurrentDailyDate = () => {
+    const nextReset = getDailyReset();
+    const dailyStart = new Date(nextReset.getTime() - 86400000);
+    return dailyStart.toISOString().split('T')[0];
+  };
+
+  const getCurrentWeeklyDate = () => getWeeklyReset().toISOString().split('T')[0];
+  
+  const scrollModalIntoView = (modalElement) => {
+  setTimeout(() => {
+    modalElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center'
+      });
+    }, 100);
+  };
+
+  // --- Profile System ---
   let profiles = {
     current: "default",
     list: ["default"],
@@ -104,9 +132,6 @@
   };
 
   let isStorageAllowed = localStorage.getItem('gdpr_optout') !== 'true';
-
-  // --- Custom Categories ---
-  let customCategories = {};
 
   const saveProfiles = () => {
     if (isStorageAllowed) localStorage.setItem('checklist_profiles', JSON.stringify(profiles));
@@ -154,6 +179,12 @@
       });
   };
 
+  const getProfileData = () => profiles.data[profiles.current] || (profiles.data[profiles.current] = { weekly_tasks: {} });
+
+  // --- Custom Categories ---
+  let customCategories = {};
+  let currentCategoryId = null;
+
   const loadCustomCategories = () => {
     const pd = getProfileData();
     if (pd && pd.custom_categories) {
@@ -170,17 +201,15 @@
   };
 
   const createCategory = (name) => {
-  const MAX_CATEGORIES = 10;
+    if (Object.keys(customCategories).length >= MAX_CATEGORIES) {
+      alert(`You can only have up to ${MAX_CATEGORIES} custom categories on this profile.`);
+      return null;
+    }
 
-  if (Object.keys(customCategories).length >= MAX_CATEGORIES) {
-    alert(`You can only have up to ${MAX_CATEGORIES} custom categories on this profile.`);
-    return null;
-  }
-
-  const categoryId = `cat_${Date.now()}`;
-  customCategories[categoryId] = { id: categoryId, name: name, tasks: [] };
-  saveCustomCategories();
-  return categoryId;
+    const categoryId = `cat_${Date.now()}`;
+    customCategories[categoryId] = { id: categoryId, name: name, tasks: [] };
+    saveCustomCategories();
+    return categoryId;
   };
 
   const deleteCategory = (categoryId) => {
@@ -196,29 +225,26 @@
   };
 
   const addTaskToCategory = (categoryId, label, color, maxProgress, resetType) => {
-  const MAX_TASKS_PER_CATEGORY = 20;
+    if (!customCategories[categoryId]) return;
 
-  if (!customCategories[categoryId]) return;
+    if (customCategories[categoryId].tasks.length >= MAX_TASKS_PER_CATEGORY) {
+      alert(`You can only have up to ${MAX_TASKS_PER_CATEGORY} tasks in this category.`);
+      return null;
+    }
 
-  if (customCategories[categoryId].tasks.length >= MAX_TASKS_PER_CATEGORY) {
-    alert(`You can only have up to ${MAX_TASKS_PER_CATEGORY} tasks in this category.`);
-    return null;
-  }
+    const task = {
+      id: `task_${Date.now()}`,
+      label,
+      color,
+      maxProgress: Math.max(1, Math.min(1000, maxProgress)),
+      resetType,
+      createdAt: new Date().toISOString()
+    };
 
-  const task = {
-    id: `task_${Date.now()}`,
-    label,
-    color,
-    maxProgress: Math.max(1, Math.min(1000, maxProgress)),
-    resetType, // 'permanent' | 'daily' | 'weekly'
-    createdAt: new Date().toISOString()
+    customCategories[categoryId].tasks.push(task);
+    saveCustomCategories();
+    return task;
   };
-
-  customCategories[categoryId].tasks.push(task);
-  saveCustomCategories();
-  return task;
-  };
-
 
   const deleteTaskFromCategory = (categoryId, taskId) => {
     if (!customCategories[categoryId]) return;
@@ -313,246 +339,8 @@
     });
     saveProfiles();
   };
-  
-    const cleanupOrphanedKeys = () => {
-    if (!isStorageAllowed) return;
-    const pd = getProfileData();
 
-    if (pd.daily_tasks) {
-      try {
-        const daily = JSON.parse(pd.daily_tasks);
-        const validDailyIds = dailyTaskData.map(t => t.id);
-        let changed = false;
-        for (const key in daily.tasks) {
-          if (!validDailyIds.includes(key)) {
-            delete daily.tasks[key];
-            changed = true;
-          }
-        }
-        if (changed) pd.daily_tasks = JSON.stringify(daily);
-      } catch (e) {
-        console.warn("Corrupted daily_tasks, skipping cleanup");
-      }
-    }
-
-    const validWeeklyIds = weeklyTaskData.map(t => t.id);
-    let changed = false;
-    for (const key in pd.weekly_tasks) {
-      if (!validWeeklyIds.includes(key)) {
-        delete pd.weekly_tasks[key];
-        changed = true;
-      }
-    }
-    if (changed) saveProfiles();
-  };
-
-  // --- DOM elements ---
-  const dailyContainer = $('daily_tasks_container');
-  const weeklyContainer = $('weekly_tasks_container');
-  const customCategoriesContainer = $('custom_categories_container');
-  const dailyCounter = $('daily_counter');
-  const weeklyCounter = $('weekly_counter');
-  const dailyProgress = $('daily_progress');
-  const weeklyProgress = $('weekly_progress');
-  const dailyProgressBar = $('daily_progress_bar');
-  const weeklyProgressBar = $('weekly_progress_bar');
-  const dailyCompletionMsg = $('daily_completion_message');
-  const weeklyCompletionMsg = $('weekly_completion_message');
-  const toggleDailyBtn = $('toggleDaily');
-  const toggleWeeklyBtn = $('toggleWeekly');
-  const dailyFilterInput = $('daily_filter');
-  const weeklyFilterInput = $('weekly_filter');
-  const btnSelectAllDaily = $('btnSelectAllDaily');
-  const btnDeselectAllDaily = $('btnDeselectAllDaily');
-  const btnSelectAllWeekly = $('btnSelectAllWeekly');
-  const btnDeselectAllWeekly = $('btnDeselectAllWeekly');
-  const gdprModal = $('gdpr-modal');
-  const acceptBtn = $('accept-gdpr');
-  const rejectBtn = $('reject-gdpr');
-  const importExportBtn = $('importExportBtn');
-  const importFile = $('importFile');
-  const importExportModal = $('import-export-modal');
-  const importProgressBtn = $('importProgressBtn');
-  const exportProgressBtn = $('exportProgressBtn');
-  const cancelImportExport = $('cancelImportExport');
-  const profilesModal = $('profiles-modal');
-  const profilesBtn = $('profilesBtn');
-  const currentProfileNameEl = $('current-profile-name');
-  const profilesListEl = $('profiles-list');
-  const newProfileNameInput = $('new-profile-name');
-  const createProfileBtn = $('create-profile-btn');
-  const closeProfilesModal = $('close-profiles-modal');
-
-  // --- Category modal elements ---
-  const addCategoryBtn = $('addCategoryBtn');
-  const addCategoryModal = $('add-category-modal');
-  const newCategoryNameInput = $('new-category-name');
-  const createCategoryBtn = $('create-category-btn');
-  const closeCategoryModal = $('close-category-modal');
-
-  // --- Custom task modal elements ---
-  const addCustomTaskModal = $('add-custom-task-modal');
-  const customTaskLabel = $('custom-task-label');
-  const customTaskColor = $('custom-task-color');
-  const customTaskMaxProgress = $('custom-task-maxProgress');
-  const customTaskReset = $('custom-task-reset');
-  const categoryNameDisplay = $('category-name-display');
-  const addCustomTaskBtn = $('add-custom-task-btn');
-  const closeCustomTaskModal = $('close-custom-task-modal');
-
-  // --- News modal ---
-  const newsBtn = $('newsBtn');
-  const newsModal = $('news-modal');
-  const changelogsContent = $('changelogs-content');
-  const closeNewsModal = $('close-news-modal');
-
-  // --- Version ---
-  const versionEl = $('version');
-
-  // --- Clear button ---
-  const resetSiteDataBtn = $('resetSiteDataBtn');
-
-  let hideCompletedState = { daily: true, weekly: true };
-  let currentCategoryId = null;
-
-  // --- Hold increment/decrement ---
-  const HOLD_INTERVAL_MS = 150;
-  let holdInterval = null;
-  const startHoldIncrement = (el, section) => {
-    if (holdInterval) clearInterval(holdInterval);
-    holdInterval = setInterval(() => toggleTask(el, section, true), HOLD_INTERVAL_MS);
-  };
-  const stopHoldIncrement = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
-  const startHoldDecrement = (el, section) => {
-    if (holdInterval) clearInterval(holdInterval);
-    holdInterval = setInterval(() => decrementTask(el, section), HOLD_INTERVAL_MS);
-  };
-  const stopHoldDecrement = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
-
-  // --- UI: profiles ---
-  const renderProfilesList = () => {
-    profilesListEl.innerHTML = '';
-    profiles.list.sort().forEach(name => {
-      const li = document.createElement('li');
-
-      const nameSpan = document.createElement('span');
-      nameSpan.textContent = name;
-      nameSpan.className = 'profile-name';
-      if (name === profiles.current) nameSpan.style.fontWeight = 'bold';
-
-      nameSpan.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const oldName = name;
-        const input = prompt('New profile name (max 20 characters):', oldName);
-        if (!input || input.trim() === '' || input.trim() === oldName) return;
-        if (input.length > 20) return alert('Maximum 20 characters');
-        if (profiles.list.includes(input.trim())) return alert('Name already exists');
-
-        const newName = input.trim();
-
-        profiles.list = profiles.list.map(n => n === oldName ? newName : n);
-        profiles.data[newName] = profiles.data[oldName];
-        delete profiles.data[oldName];
-        if (profiles.current === oldName) profiles.current = newName;
-
-        const avatar = localStorage.getItem('bp_portrait_' + oldName);
-        if (avatar) {
-          localStorage.setItem('bp_portrait_' + newName, avatar);
-          localStorage.removeItem('bp_portrait_' + oldName);
-        }
-
-        saveProfiles();
-        profilesBtn.click();
-      });
-
-      li.appendChild(nameSpan);
-
-      const switchBtn = document.createElement('button');
-      switchBtn.textContent = name === profiles.current ? 'Current' : 'Switch';
-      switchBtn.disabled = name === profiles.current;
-      switchBtn.onclick = () => {
-        profiles.current = name;
-        saveProfiles();
-        reloadCurrentProfileData();
-        profilesModal.style.display = 'none';
-      };
-      li.appendChild(switchBtn);
-
-      if (profiles.list.length > 1) {
-        const delBtn = document.createElement('button');
-        delBtn.textContent = 'Delete';
-        delBtn.onclick = () => {
-          if (!confirm(`Delete "${name}" and all its progress?`)) return;
-
-          delete profiles.data[name];
-          localStorage.removeItem('bp_portrait_' + name);
-          profiles.list = profiles.list.filter(n => n !== name);
-          if (profiles.current === name) profiles.current = profiles.list[0] || 'default';
-
-          saveProfiles();
-          reloadCurrentProfileData();
-
-          profilesBtn.click(); 
-        };
-        li.appendChild(delBtn);
-      }
-
-      profilesListEl.appendChild(li);
-    });
-  };
-
-  profilesBtn && (profilesBtn.onclick = () => {
-    currentProfileNameEl.textContent = profiles.current;
-    renderProfilesList();
-    profilesModal.style.display = 'flex';
-  });
-  closeProfilesModal && (closeProfilesModal.onclick = () => profilesModal.style.display = 'none');
-
-  createProfileBtn && (createProfileBtn.onclick = () => {
-  if (profiles.list.length >= 5) {
-    alert('Maximum of 5 profiles allowed.');
-    return;
-  }
-  let name = newProfileNameInput.value.trim();
-
-  if (!name || name.length === 0) {
-    alert('Please enter a valid profile name');
-    return;
-  }
-
-  if (name.length > 20) {
-    alert('Profile name must be 20 characters or less');
-    newProfileNameInput.value = name.substring(0, 20);
-    newProfileNameInput.focus();
-    return;
-  }
-
-  if (profiles.list.includes(name)) {
-    alert('A profile with this name already exists');
-    newProfileNameInput.select();
-    return;
-  }
-
-  profiles.list.push(name);
-  profiles.data[name] = { weekly_tasks: {} };
-  profiles.current = name;
-  saveProfiles();
-  newProfileNameInput.value = '';
-  renderProfilesList();
-  reloadCurrentProfileData();
-});
-
-  // --- Profile storage helpers ---
-  const getProfileData = () => profiles.data[profiles.current] || (profiles.data[profiles.current] = { weekly_tasks: {} });
-
-  const getCurrentDailyDate = (now = parseNoronha()) => {
-    const nextReset = getDailyReset(now);
-    const dailyStart = new Date(nextReset.getTime() - 86400000);
-    return dailyStart.toISOString().split('T')[0];
-  };
-
-  const getCurrentWeeklyDate = (now = parseNoronha()) => getWeeklyReset(now).toISOString().split('T')[0];
-
+  // --- Storage ---
   const getDailyStorage = () => {
     const pd = getProfileData();
     const date = getCurrentDailyDate();
@@ -611,6 +399,63 @@
     }
   };
 
+  const cleanupOrphanedKeys = () => {
+    if (!isStorageAllowed) return;
+    const pd = getProfileData();
+
+    if (pd.daily_tasks) {
+      try {
+        const daily = JSON.parse(pd.daily_tasks);
+        const validDailyIds = dailyTaskData.map(t => t.id);
+        let changed = false;
+        for (const key in daily.tasks) {
+          if (!validDailyIds.includes(key)) {
+            delete daily.tasks[key];
+            changed = true;
+          }
+        }
+        if (changed) pd.daily_tasks = JSON.stringify(daily);
+      } catch (e) {
+        console.warn("Corrupted daily_tasks, skipping cleanup");
+      }
+    }
+
+    const validWeeklyIds = weeklyTaskData.map(t => t.id);
+    let changed = false;
+    for (const key in pd.weekly_tasks) {
+      if (!validWeeklyIds.includes(key)) {
+        delete pd.weekly_tasks[key];
+        changed = true;
+      }
+    }
+    if (changed) saveProfiles();
+  };
+
+  // --- Task Interaction Logic ---
+  let holdInterval = null;
+
+  const startHoldIncrement = (el, section) => {
+    if (holdInterval) clearInterval(holdInterval);
+    holdInterval = setInterval(() => toggleTask(el, section, true), HOLD_INTERVAL_MS);
+  };
+  const stopHoldIncrement = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
+  const startHoldDecrement = (el, section) => {
+    if (holdInterval) clearInterval(holdInterval);
+    holdInterval = setInterval(() => decrementTask(el, section), HOLD_INTERVAL_MS);
+  };
+  const stopHoldDecrement = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
+
+  const startHoldIncrementCustom = (el, categoryId) => {
+    if (holdInterval) clearInterval(holdInterval);
+    holdInterval = setInterval(() => toggleCustomTask(el, categoryId, true), HOLD_INTERVAL_MS);
+  };
+  const stopHoldIncrementCustom = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
+  const startHoldDecrementCustom = (el, categoryId) => {
+    if (holdInterval) clearInterval(holdInterval);
+    holdInterval = setInterval(() => decrementCustomTask(el, categoryId), HOLD_INTERVAL_MS);
+  };
+  const stopHoldDecrementCustom = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
+
   const updateTaskUI = (el, count, max) => {
     const completed = count === max;
     el.classList.toggle('completed', completed);
@@ -627,14 +472,86 @@
     }
   };
 
-  // --- Task Element Creation (Daily/Weekly) ---
+  const toggleTask = (el, section, isHold = false) => {
+    const id = el.dataset.id;
+    const taskData = section === 'daily' ? dailyTaskData : weeklyTaskData;
+    const task = taskData.find(t => t.id === id);
+    if (!task) return;
+    const max = task.maxProgress || 1;
+    const current = getCount(id, section);
+    let newCount;
+    if (current < max) {
+      if (isHold && max > 1 && current >= max - 1) return;
+      newCount = current + 1;
+    } else {
+      if (isHold) return;
+      newCount = 0;
+    }
+    if (section === 'daily') setDailyCount(id, newCount); else setWeeklyCount(id, newCount);
+    updateTaskUI(el, newCount, max);
+    updateCounter(section);
+    applyCompletedFilter(section);
+  };
+
+  const decrementTask = (el, section) => {
+    const id = el.dataset.id;
+    const taskData = section === 'daily' ? dailyTaskData : weeklyTaskData;
+    const task = taskData.find(t => t.id === id);
+    if (!task) return;
+    const current = getCount(id, section);
+    if (current > 0) {
+      const newCount = current - 1;
+      if (section === 'daily') setDailyCount(id, newCount); else setWeeklyCount(id, newCount);
+      updateTaskUI(el, newCount, task.maxProgress || 1);
+      updateCounter(section);
+      applyCompletedFilter(section);
+    }
+  };
+
+  const toggleCustomTask = (el, categoryId, isHold = false) => {
+    const taskId = el.dataset.id;
+    const category = customCategories[categoryId];
+    if (!category) return;
+    const task = category.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    const max = task.maxProgress || 1;
+    const current = getCustomTaskCount(categoryId, taskId);
+    let newCount;
+    if (current < max) {
+      if (isHold && max > 1 && current >= max - 2) return;
+      newCount = current + 1;
+    } else {
+      if (isHold) return;
+      newCount = 0;
+    }
+    setCustomTaskCount(categoryId, taskId, newCount);
+    updateTaskUI(el, newCount, max);
+    renderCategories();
+  };
+
+  const decrementCustomTask = (el, categoryId) => {
+    const taskId = el.dataset.id;
+    const category = customCategories[categoryId];
+    if (!category) return;
+    const task = category.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    const current = getCustomTaskCount(categoryId, taskId);
+    if (current > 0) {
+      const newCount = current - 1;
+      setCustomTaskCount(categoryId, taskId, newCount);
+      updateTaskUI(el, newCount, task.maxProgress || 1);
+      renderCategories();
+    }
+  };
+
+  // --- Task Element Creation ---
   const createTaskElement = (task, section) => {
     const div = document.createElement('div');
     div.className = `task ${task.color}`;
     div.tabIndex = 0;
     div.dataset.id = task.id;
-	div.role = "listitem";
-	div.setAttribute("aria-label", task.label);
+    div.role = "listitem";
+    div.setAttribute("aria-label", task.label);
     const max = task.maxProgress || 1;
     const current = getCount(task.id, section);
     const completed = current === max;
@@ -645,7 +562,6 @@
     div.innerHTML = innerHTML;
     div.classList.toggle('completed', completed);
 
-    // --- Input and hold ---
     let isPressedLeft = false, holdTimeoutLeft = null, holdStartedLeft = false;
     let isPressedRight = false, holdTimeoutRight = null, holdStartedRight = false;
     let lastTap = 0, isDecrementHoldMode = false, decrementHoldTimeout = null;
@@ -745,7 +661,7 @@
 
     const handleTouchMove = (e) => {
       if (startX === null || startY === null) return;
-      e.preventDefault(); // Prevent only if not scrolling, but allow native scroll
+      e.preventDefault();
       const touch = e.touches[0];
       const deltaX = Math.abs(touch.clientX - startX);
       const deltaY = Math.abs(touch.clientY - startY);
@@ -794,15 +710,14 @@
     return div;
   };
 
-  // --- Custom task element (category tasks) ---
   const createCustomTaskElement = (categoryId, task) => {
     const div = document.createElement('div');
     div.className = `task ${task.color}`;
     div.tabIndex = 0;
     div.dataset.id = task.id;
     div.dataset.categoryId = categoryId;
-	div.role = "listitem";
-	div.setAttribute("aria-label", task.label);
+    div.role = "listitem";
+    div.setAttribute("aria-label", task.label);
     const max = task.maxProgress || 1;
     const current = getCustomTaskCount(categoryId, task.id);
     div.innerHTML = `<label>${task.label}${max>1?` <span class="progress-badge">${current}/${max}</span>`:''}</label>`;
@@ -921,7 +836,6 @@
       else if (e.key === 'ArrowDown') { e.preventDefault(); if (div.nextElementSibling) div.nextElementSibling.focus(); }
     };
 
-    // --- Custom tasks controls ---
     const controlsDiv = document.createElement('div');
     controlsDiv.className = 'task-controls';
     const upBtn = document.createElement('button');
@@ -948,91 +862,21 @@
     return div;
   };
 
-  const startHoldIncrementCustom = (el, categoryId) => {
-    if (holdInterval) clearInterval(holdInterval);
-    holdInterval = setInterval(() => toggleCustomTask(el, categoryId, true), HOLD_INTERVAL_MS);
-  };
-  const stopHoldIncrementCustom = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
-  const startHoldDecrementCustom = (el, categoryId) => {
-    if (holdInterval) clearInterval(holdInterval);
-    holdInterval = setInterval(() => decrementCustomTask(el, categoryId), HOLD_INTERVAL_MS);
-  };
-  const stopHoldDecrementCustom = () => { if (holdInterval) { clearInterval(holdInterval); holdInterval = null; } };
+  // --- Rendering & UI Updates ---
+  const dailyContainer = $('daily_tasks_container');
+  const weeklyContainer = $('weekly_tasks_container');
+  const customCategoriesContainer = $('custom_categories_container');
+  const dailyCounter = $('daily_counter');
+  const weeklyCounter = $('weekly_counter');
+  const dailyProgress = $('daily_progress');
+  const weeklyProgress = $('weekly_progress');
+  const dailyProgressBar = $('daily_progress_bar');
+  const weeklyProgressBar = $('weekly_progress_bar');
+  const dailyCompletionMsg = $('daily_completion_message');
+  const weeklyCompletionMsg = $('weekly_completion_message');
 
-  const toggleCustomTask = (el, categoryId, isHold = false) => {
-    const taskId = el.dataset.id;
-    const category = customCategories[categoryId];
-    if (!category) return;
-    const task = category.tasks.find(t => t.id === taskId);
-    if (!task) return;
-    const max = task.maxProgress || 1;
-    const current = getCustomTaskCount(categoryId, taskId);
-    let newCount;
-    if (current < max) {
-      if (isHold && max > 1 && current >= max - 2) return;
-      newCount = current + 1;
-    } else {
-      if (isHold) return;
-      newCount = 0;
-    }
-    setCustomTaskCount(categoryId, taskId, newCount);
-    updateTaskUI(el, newCount, max);
-    renderCategories();
-  };
+  let hideCompletedState = { daily: true, weekly: true };
 
-  const decrementCustomTask = (el, categoryId) => {
-    const taskId = el.dataset.id;
-    const category = customCategories[categoryId];
-    if (!category) return;
-    const task = category.tasks.find(t => t.id === taskId);
-    if (!task) return;
-    const current = getCustomTaskCount(categoryId, taskId);
-    if (current > 0) {
-      const newCount = current - 1;
-      setCustomTaskCount(categoryId, taskId, newCount);
-      updateTaskUI(el, newCount, task.maxProgress || 1);
-      renderCategories();
-    }
-  };
-
-  // --- Tasks toggle/decrement ---
-  const toggleTask = (el, section, isHold = false) => {
-    const id = el.dataset.id;
-    const taskData = section === 'daily' ? dailyTaskData : weeklyTaskData;
-    const task = taskData.find(t => t.id === id);
-    if (!task) return;
-    const max = task.maxProgress || 1;
-    const current = getCount(id, section);
-    let newCount;
-    if (current < max) {
-      if (isHold && max > 1 && current >= max - 1) return;
-      newCount = current + 1;
-    } else {
-      if (isHold) return;
-      newCount = 0;
-    }
-    if (section === 'daily') setDailyCount(id, newCount); else setWeeklyCount(id, newCount);
-    updateTaskUI(el, newCount, max);
-    updateCounter(section);
-    applyCompletedFilter(section);
-  };
-
-  const decrementTask = (el, section) => {
-    const id = el.dataset.id;
-    const taskData = section === 'daily' ? dailyTaskData : weeklyTaskData;
-    const task = taskData.find(t => t.id === id);
-    if (!task) return;
-    const current = getCount(id, section);
-    if (current > 0) {
-      const newCount = current - 1;
-      if (section === 'daily') setDailyCount(id, newCount); else setWeeklyCount(id, newCount);
-      updateTaskUI(el, newCount, task.maxProgress || 1);
-      updateCounter(section);
-      applyCompletedFilter(section);
-    }
-  };
-
-  // --- Renderers ---
   const renderTasks = (container, data, section) => {
     container.innerHTML = '';
     data.forEach(t => container.appendChild(createTaskElement(t, section)));
@@ -1043,7 +887,6 @@
     customCategoriesContainer.innerHTML = '';
     const ids = Object.keys(customCategories);
 
-    // --- Apply layout class: odd => single-column, even => two-column ---
     if (ids.length === 0) {
       customCategoriesContainer.classList.remove('columns-1', 'columns-2');
     } else if (ids.length % 2 === 1) {
@@ -1086,6 +929,7 @@
         customTaskReset.value = 'permanent';
         addCustomTaskModal.style.display = 'flex';
         setTimeout(() => customTaskLabel.focus(), 100);
+        scrollModalIntoView(addCustomTaskModal);
       };
 
       const deleteBtn = document.createElement('button');
@@ -1133,7 +977,6 @@
     if (weeklyFilterInput) weeklyFilterInput.value = '';
   };
 
-  // --- Counters & Progress UI ---
   const updateCounter = (section) => {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     const counter = section === 'daily' ? dailyCounter : weeklyCounter;
@@ -1169,7 +1012,6 @@
     }
   };
 
-  // --- Filters & select all ---
   const applyCompletedFilter = (section) => {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
     const input = section === 'daily' ? dailyFilterInput : weeklyFilterInput;
@@ -1184,7 +1026,7 @@
 
   const selectAll = (section) => {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
-    if (container.children.length === 0) return; // ← NEW: prevent crash when no tasks
+    if (container.children.length === 0) return;
 
     const data = section === 'daily' ? dailyTaskData : weeklyTaskData;
     container.querySelectorAll('.task').forEach(t => {
@@ -1200,7 +1042,7 @@
 
   const deselectAll = (section) => {
     const container = section === 'daily' ? dailyContainer : weeklyContainer;
-    if (container.children.length === 0) return; // ← NEW: prevent crash when no tasks
+    if (container.children.length === 0) return;
 
     const data = section === 'daily' ? dailyTaskData : weeklyTaskData;
     container.querySelectorAll('.task').forEach(t => {
@@ -1213,7 +1055,167 @@
     updateCounter(section); applyCompletedFilter(section);
   };
 
-  // --- Import/Export ---
+  // --- DOM Elements & Event Listeners ---
+  const toggleDailyBtn = $('toggleDaily');
+  const toggleWeeklyBtn = $('toggleWeekly');
+  const dailyFilterInput = $('daily_filter');
+  const weeklyFilterInput = $('weekly_filter');
+  const btnSelectAllDaily = $('btnSelectAllDaily');
+  const btnDeselectAllDaily = $('btnDeselectAllDaily');
+  const btnSelectAllWeekly = $('btnSelectAllWeekly');
+  const btnDeselectAllWeekly = $('btnDeselectAllWeekly');
+  const gdprModal = $('gdpr-modal');
+  const acceptBtn = $('accept-gdpr');
+  const rejectBtn = $('reject-gdpr');
+  const importExportBtn = $('importExportBtn');
+  const importFile = $('importFile');
+  const importExportModal = $('import-export-modal');
+  const importProgressBtn = $('importProgressBtn');
+  const exportProgressBtn = $('exportProgressBtn');
+  const cancelImportExport = $('cancelImportExport');
+  const profilesModal = $('profiles-modal');
+  const profilesBtn = $('profilesBtn');
+  const currentProfileNameEl = $('current-profile-name');
+  const profilesListEl = $('profiles-list');
+  const newProfileNameInput = $('new-profile-name');
+  const createProfileBtn = $('create-profile-btn');
+  const closeProfilesModal = $('close-profiles-modal');
+  const addCategoryBtn = $('addCategoryBtn');
+  const addCategoryModal = $('add-category-modal');
+  const newCategoryNameInput = $('new-category-name');
+  const createCategoryBtn = $('create-category-btn');
+  const closeCategoryModal = $('close-category-modal');
+  const addCustomTaskModal = $('add-custom-task-modal');
+  const customTaskLabel = $('custom-task-label');
+  const customTaskColor = $('custom-task-color');
+  const customTaskMaxProgress = $('custom-task-maxProgress');
+  const customTaskReset = $('custom-task-reset');
+  const categoryNameDisplay = $('category-name-display');
+  const addCustomTaskBtn = $('add-custom-task-btn');
+  const closeCustomTaskModal = $('close-custom-task-modal');
+  const newsBtn = $('newsBtn');
+  const newsModal = $('news-modal');
+  const changelogsContent = $('changelogs-content');
+  const closeNewsModal = $('close-news-modal');
+  const versionEl = $('version');
+  const resetSiteDataBtn = $('resetSiteDataBtn');
+
+  // --- Profile UI ---
+  const renderProfilesList = () => {
+    profilesListEl.innerHTML = '';
+    profiles.list.sort().forEach(name => {
+      const li = document.createElement('li');
+
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = name;
+      nameSpan.className = 'profile-name';
+      if (name === profiles.current) nameSpan.style.fontWeight = 'bold';
+
+      nameSpan.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const oldName = name;
+        const input = prompt('New profile name (max 20 characters):', oldName);
+        if (!input || input.trim() === '' || input.trim() === oldName) return;
+        if (input.length > 20) return alert('Maximum 20 characters.');
+        if (profiles.list.includes(input.trim())) return alert('Name already exists');
+
+        const newName = input.trim();
+
+        profiles.list = profiles.list.map(n => n === oldName ? newName : n);
+        profiles.data[newName] = profiles.data[oldName];
+        delete profiles.data[oldName];
+        if (profiles.current === oldName) profiles.current = newName;
+
+        const avatar = localStorage.getItem('bp_portrait_' + oldName);
+        if (avatar) {
+          localStorage.setItem('bp_portrait_' + newName, avatar);
+          localStorage.removeItem('bp_portrait_' + oldName);
+        }
+
+        saveProfiles();
+        profilesBtn.click();
+      });
+
+      li.appendChild(nameSpan);
+
+      const switchBtn = document.createElement('button');
+      switchBtn.textContent = name === profiles.current ? 'Current' : 'Switch';
+      switchBtn.disabled = name === profiles.current;
+      switchBtn.onclick = () => {
+        profiles.current = name;
+        saveProfiles();
+        reloadCurrentProfileData();
+        profilesModal.style.display = 'none';
+      };
+      li.appendChild(switchBtn);
+
+      if (profiles.list.length > 1) {
+        const delBtn = document.createElement('button');
+        delBtn.textContent = 'Delete';
+        delBtn.onclick = () => {
+          if (!confirm(`Delete "${name}" and all its progress?`)) return;
+
+          delete profiles.data[name];
+          localStorage.removeItem('bp_portrait_' + name);
+          profiles.list = profiles.list.filter(n => n !== name);
+          if (profiles.current === name) profiles.current = profiles.list[0] || 'default';
+
+          saveProfiles();
+          reloadCurrentProfileData();
+
+          profilesBtn.click(); 
+        };
+        li.appendChild(delBtn);
+      }
+
+      profilesListEl.appendChild(li);
+    });
+  };
+
+  profilesBtn && (profilesBtn.onclick = () => {
+    currentProfileNameEl.textContent = profiles.current;
+    renderProfilesList();
+    profilesModal.style.display = 'flex';
+	scrollModalIntoView(profilesModal);
+  });
+  
+  closeProfilesModal && (closeProfilesModal.onclick = () => profilesModal.style.display = 'none');
+
+  createProfileBtn && (createProfileBtn.onclick = () => {
+    if (profiles.list.length >= 5) {
+      alert('Maximum of 5 profiles allowed.');
+      return;
+    }
+    let name = newProfileNameInput.value.trim();
+
+    if (!name || name.length === 0) {
+      alert('Please enter a valid profile name');
+      return;
+    }
+
+    if (name.length > 20) {
+      alert('Profile name must be 20 characters or less');
+      newProfileNameInput.value = name.substring(0, 20);
+      newProfileNameInput.focus();
+      return;
+    }
+
+    if (profiles.list.includes(name)) {
+      alert('A profile with this name already exists');
+      newProfileNameInput.select();
+      return;
+    }
+
+    profiles.list.push(name);
+    profiles.data[name] = { weekly_tasks: {} };
+    profiles.current = name;
+    saveProfiles();
+    newProfileNameInput.value = '';
+    renderProfilesList();
+    reloadCurrentProfileData();
+  });
+
+  // --- Backup System ---
   const exportProgress = () => {
     if (!isStorageAllowed) return alert('Storage disabled');
     const pd = getProfileData();
@@ -1255,9 +1257,176 @@
     reader.readAsText(file);
   };
 
-  // --- Custom Category Modal ---
-  if (addCategoryBtn) addCategoryBtn.onclick = () => { newCategoryNameInput.value = ''; addCategoryModal.style.display = 'flex'; setTimeout(()=>newCategoryNameInput.focus(),100); };
-    if (createCategoryBtn) createCategoryBtn.onclick = () => {
+  importExportBtn && (importExportBtn.onclick = () => {
+  if (importExportModal) {
+    importExportModal.style.display = 'flex';
+    scrollModalIntoView(importExportModal);
+    }
+  });
+  
+  importProgressBtn && (importProgressBtn.onclick = () => { importExportModal && (importExportModal.style.display = 'none'); importFile && importFile.click(); });
+  exportProgressBtn && (exportProgressBtn.onclick = () => { importExportModal && (importExportModal.style.display = 'none'); exportProgress(); });
+  cancelImportExport && (cancelImportExport.onclick = () => importExportModal && (importExportModal.style.display = 'none'));
+  importFile && (importFile.onchange = handleImport);
+  
+  (() => {
+    const REMIND_DAYS = 7;
+    const MS_PER_DAY = 24 * 60 * 60 * 1000;
+    const BACKUP_BTN_ID = 'importExportBtn';
+    const WRAP_CHECK_INTERVAL_MS = 300;
+    const WRAP_CHECK_TIMEOUT_MS = 5000;
+
+    const addBadge = (btn) => {
+      if (!btn) return;
+      if (btn.querySelector('.backup-exclaim')) return;
+      const span = document.createElement('span');
+      span.className = 'backup-exclaim';
+      span.setAttribute('aria-hidden', 'true');
+      span.textContent = '!';
+      btn.appendChild(span);
+    };
+
+    const removeBadge = (btn) => {
+      if (!btn) return;
+      const b = btn.querySelector('.backup-exclaim');
+      if (b) b.remove();
+    };
+
+    const shouldShowBadgeForCurrentProfile = () => {
+      try {
+        if (!isStorageAllowed) return false;
+        const pd = getProfileData();
+        if (!pd) return false;
+        pd.backup_meta ||= {};
+        const last = Number(pd.backup_meta.last_backup_ts || 0);
+        if (!last) return true;
+        const days = (Date.now() - last) / MS_PER_DAY;
+        return days >= REMIND_DAYS;
+      } catch (e) {
+        console.error('shouldShowBadgeForCurrentProfile error', e);
+        return false;
+      }
+    };
+
+    const updateBadgeForCurrentProfile = () => {
+      try {
+        const btn = document.getElementById(BACKUP_BTN_ID) || document.getElementById('importExportBtn');
+        if (!btn) return;
+        if (shouldShowBadgeForCurrentProfile()) addBadge(btn);
+        else removeBadge(btn);
+      } catch (e) {
+        console.error('updateBadgeForCurrentProfile error', e);
+      }
+    };
+
+    const tryWrapExport = () => {
+      try {
+        if (window.__backupBadgeWrapped) return true;
+        const orig = window.exportProgress;
+        if (typeof orig !== 'function') return false;
+
+        window.exportProgress = function wrappedExportProgress(...args) {
+          try {
+            if (isStorageAllowed) {
+              const pd = getProfileData();
+              pd.backup_meta ||= {};
+              pd.backup_meta.last_backup_ts = Date.now();
+              saveProfiles();
+            }
+          } catch (err) {
+            console.warn('Failed to mark backup timestamp before export', err);
+          }
+          const res = orig.apply(this, args);
+          setTimeout(updateBadgeForCurrentProfile, 200);
+          return res;
+        };
+
+        window.__backupBadgeWrapped = true;
+        return true;
+      } catch (e) {
+        console.error('tryWrapExport error', e);
+        return false;
+      }
+    };
+
+    const waitAndWrapExportIfNeeded = () => {
+      if (tryWrapExport()) return;
+      const start = Date.now();
+      const int = setInterval(() => {
+        if (tryWrapExport() || Date.now() - start > WRAP_CHECK_TIMEOUT_MS) {
+          clearInterval(int);
+        }
+      }, WRAP_CHECK_INTERVAL_MS);
+    };
+
+    const attachFallbackButtonHook = () => {
+      const btn = document.getElementById(BACKUP_BTN_ID) || document.getElementById('importExportBtn');
+      if (!btn) return;
+      if (btn.__backupFallbackAttached) return;
+      btn.addEventListener('click', () => {
+        try {
+          if (isStorageAllowed) {
+            const pd = getProfileData();
+            pd.backup_meta ||= {};
+            pd.backup_meta.last_backup_ts = Date.now();
+            saveProfiles();
+          }
+        } catch (e) { /* ignore */ }
+        setTimeout(updateBadgeForCurrentProfile, 200);
+      });
+      btn.__backupFallbackAttached = true;
+    };
+
+    const onReady = () => {
+      waitAndWrapExportIfNeeded();
+      attachFallbackButtonHook();
+      setTimeout(updateBadgeForCurrentProfile, 200);
+      setInterval(updateBadgeForCurrentProfile, 60 * 60 * 1000);
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'checklist_profiles') {
+          setTimeout(updateBadgeForCurrentProfile, 200);
+        }
+      });
+    };
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', onReady);
+    else onReady();
+
+    window.updateBackupBadge = updateBadgeForCurrentProfile;
+  })();  
+
+  // --- Filters & Buttons --- 
+  toggleDailyBtn && (toggleDailyBtn.onclick = () => {
+    hideCompletedState.daily = !hideCompletedState.daily;
+    toggleDailyBtn.textContent = hideCompletedState.daily ? 'Show Completed' : 'Hide Completed';
+    toggleDailyBtn.setAttribute('aria-pressed', (!hideCompletedState.daily).toString());
+    applyCompletedFilter('daily');
+  });
+
+  toggleWeeklyBtn && (toggleWeeklyBtn.onclick = () => {
+    hideCompletedState.weekly = !hideCompletedState.weekly;
+    toggleWeeklyBtn.textContent = hideCompletedState.weekly ? 'Show Completed' : 'Hide Completed';
+    toggleWeeklyBtn.setAttribute('aria-pressed', (!hideCompletedState.weekly).toString());
+    applyCompletedFilter('weekly');
+  });
+
+  btnSelectAllDaily && (btnSelectAllDaily.onclick = () => selectAll('daily'));
+  btnDeselectAllDaily && (btnDeselectAllDaily.onclick = () => deselectAll('daily'));
+  btnSelectAllWeekly && (btnSelectAllWeekly.onclick = () => selectAll('weekly'));
+  btnDeselectAllWeekly && (btnDeselectAllWeekly.onclick = () => deselectAll('weekly'));
+
+  if (dailyFilterInput) dailyFilterInput.oninput = () => applyCompletedFilter('daily');
+  if (weeklyFilterInput) weeklyFilterInput.oninput = () => applyCompletedFilter('weekly');
+
+  // --- Custom Category Modals ---
+  if (addCategoryBtn) addCategoryBtn.onclick = () => {
+    newCategoryNameInput.value = '';
+    addCategoryModal.style.display = 'flex';
+    setTimeout(() => newCategoryNameInput.focus(), 100);
+    scrollModalIntoView(addCategoryModal);
+  };
+  
+  if (createCategoryBtn) createCategoryBtn.onclick = () => {
     let name = newCategoryNameInput.value.trim();
     if (!name) return alert('Please enter a category name');
 
@@ -1276,7 +1445,6 @@
     renderCategories();
   };
 
-  // --- Custom Task Modal ---
   if (addCustomTaskBtn) addCustomTaskBtn.onclick = () => {
     if (!currentCategoryId) return;
 
@@ -1285,21 +1453,21 @@
     const maxProgress = Math.max(1, Math.min(1000, parseInt(customTaskMaxProgress.value) || 1));
     const resetType = customTaskReset.value;
 
-  if (!label) return alert('Please enter a task label');
+    if (!label) return alert('Please enter a task label');
 
-  if (label.length > 50) {
-    alert('Task label must be 50 characters or less.');
-    label = label.substring(0, 50);
-    customTaskLabel.value = label;
-    customTaskLabel.focus();
-    return;
-  }
+    if (label.length > 50) {
+      alert('Task label must be 50 characters or less.');
+      label = label.substring(0, 50);
+      customTaskLabel.value = label;
+      customTaskLabel.focus();
+      return;
+    }
 
-  const task = addTaskToCategory(currentCategoryId, label, color, maxProgress, resetType);
-  if (!task) return;
+    const task = addTaskToCategory(currentCategoryId, label, color, maxProgress, resetType);
+    if (!task) return;
 
-  addCustomTaskModal.style.display = 'none';
-  renderCategories();
+    addCustomTaskModal.style.display = 'none';
+    renderCategories();
   };
   if (closeCustomTaskModal) closeCustomTaskModal.onclick = () => addCustomTaskModal.style.display = 'none';
   
@@ -1318,13 +1486,410 @@
     };
   }
 
-  // --- Title and version ---
+  // --- Reset Data ---
+  resetSiteDataBtn && (resetSiteDataBtn.onclick = () => {
+    const sure = confirm('Are you sure you want to reset ALL site data? (localStorage)\nThis action is irreversible.');
+    if (!sure) return;
+    localStorage.clear();
+    alert('All site data has been cleared!\nThe page will now reload.');
+    location.reload();
+  });
+
+  // --- Timers & Server Time ---
+  const pageTitle = document.getElementById('page-title');
+  let dayCountMode = localStorage.getItem('dayCountMode') || 'global';
+  const getRegion = () => dayCountMode === 'sea' ? 'SEA' : 'NA';
+  
+  const getDailyResetHour = () => getRegion() === 'SEA' ? 22 : 7;
+
+  const getWeeklyResetDay = () => getRegion() === 'SEA' ? 0 : 1;
+
+  const getWeeklyResetHour = () => getRegion() === 'SEA' ? 22 : 7;
+
   const updateTitle = () => {
-    const launch = new Date('2025-10-09T05:00:00-02:00');
     const now = new Date();
-    const day = Math.floor((now - launch) / 86400000) + 1;
-    $('page-title').textContent = `Blue Protocol: Star Resonance Checklist (Day #${day})`;
+
+    let day;
+    let prefix;
+
+    if (dayCountMode === 'sea') {
+      const seaRelease = new Date('2025-12-17T22:00:00Z');
+      day = Math.floor((now - seaRelease) / 86400000) + 1;
+      prefix = 'SEA';
+    } else {
+      const globalLaunch = new Date('2025-10-09T07:00:00Z');
+      day = Math.floor((now - globalLaunch) / 86400000) + 1;
+      prefix = 'Global';
+    }
+    pageTitle.textContent = `Blue Protocol: Star Resonance Checklist (${prefix} Day #${day})`;
   };
+
+  const saveDayCountMode = () => {
+    localStorage.setItem('dayCountMode', dayCountMode);
+  };
+
+  updateTitle();
+
+  pageTitle.addEventListener('click', (e) => {
+    e.preventDefault();
+    dayCountMode = dayCountMode === 'sea' ? 'global' : 'sea';
+    saveDayCountMode();
+    updateTitle();
+	timers.forEach(t => t.update());
+  });
+
+  pageTitle.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    dayCountMode = dayCountMode === 'sea' ? 'global' : 'sea';
+    saveDayCountMode();
+    updateTitle();
+	timers.forEach(t => t.update());
+  });
+
+  class EventTimer {
+    constructor(id, configId, baseLabel) {
+      this.el = $(id);
+      this.cfg = EVENT_CONFIGS.find(c => c.id === configId);
+      this.baseLabel = baseLabel;
+      this.nameEl = this.el.querySelector('.name');
+      this.cnt = this.el.querySelector('.countdown');
+    }
+
+    update(now = new Date()) {
+      if (!this.cfg) {
+        this.cnt.textContent = 'Error';
+        return;
+      }
+
+      const region = getRegion();
+      const regionLabel = region === 'NA' ? 'Global' : 'SEA';
+      this.nameEl.textContent = `${this.baseLabel} (${regionLabel})`;
+
+      const nextStart = calculateNextEventTime(this.cfg, region);
+      const currentEnd = calculateCurrentEventEnd(this.cfg, region);
+      const active = isEventActive(this.cfg, region);
+
+      const target = active && currentEnd ? currentEnd : nextStart;
+      const diff = Math.max(0, target - now);
+
+      const o = {
+        d: Math.floor(diff / 86400000),
+        h: Math.floor((diff % 86400000) / 3600000),
+        m: Math.floor((diff % 3600000) / 60000),
+      s: Math.floor((diff % 60000) / 1000)
+      };
+
+      const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m` :
+                        o.h > 0 ? `${o.h}h ${o.m}m ${o.s}s` :
+                        o.m > 0 ? `${o.m}m ${o.s}s` : `${o.s}s`;
+
+      this.cnt.textContent = active ? `${formatted} left` : `${formatted} until ${this.baseLabel.includes('Reset') || this.baseLabel.includes('Vaults') ? 'reset' : 'start'}`;
+      this.el.classList.toggle('active', active);
+    }
+  }
+
+  const DEFAULT_REGION = 'NA';
+
+  const EVENT_CONFIGS = [
+    {
+      id: 'daily-reset',
+      schedule: {
+        NA: { days: [0,1,2,3,4,5,6], hour: 7, minute: 0 },
+        SEA: { days: [0,1,2,3,4,5,6], hour: 22, minute: 0 }
+      }
+    },
+    {
+      id: 'weekly-reset',
+      schedule: {
+        NA: { days: [1], hour: 7, minute: 0 },
+        SEA: { days: [0], hour: 22, minute: 0 }
+      }
+    },
+    {
+      id: 'world-boss',
+      schedule: {
+        NA: { days: [0,1,2,3,4,5,6], hour: 18, minute: 0, durationHours: 6 },
+        SEA: { days: [0,1,2,3,4,5,6], hour: 13, minute: 30, durationHours: 1, durationMinutes: 30 }
+      }
+    },
+    {
+      id: 'guild-hunt',
+      schedule: {
+        NA: { days: [5,6,0], hour: 16, minute: 0, durationHours: 14 },
+        SEA: { days: [5,6,0], hour: 3, minute: 0, durationHours: 14 }
+      }
+    },
+    {
+      id: 'guild-dance',
+      schedule: {
+        NA: { days: [5], hour: 17, minute: 30, durationHours: 12 },
+        SEA: { days: [5], hour: 12, minute: 30, durationMinutes: 25 }
+      }
+    },
+    {
+      id: 'stimen-vaults',
+      schedule: {
+        NA: { days: [1], hour: 4, minute: 0, durationHours: 3, intervalWeeks: 2, referenceDate: '2025-10-20', inverted: true },
+        SEA: { days: [0], hour: 19, minute: 0, durationHours: 3, intervalWeeks: 2, referenceDate: '2025-12-08', inverted: true }
+      }
+    }
+  ];
+
+  const getWeeksSinceReference = (referenceDate, targetDate) => {
+    const ref = new Date(referenceDate + 'T00:00:00Z');
+    const diff = targetDate.getTime() - ref.getTime();
+    return Math.floor(diff / (7 * 24 * 60 * 60 * 1000));
+  };
+
+  const isValidIntervalWeek = (cfg, date, region) => {
+    const sch = cfg.schedule[region] || cfg.schedule.NA;
+    if (!sch.intervalWeeks || sch.intervalWeeks <= 1 || !sch.referenceDate) return true;
+    const weeks = getWeeksSinceReference(sch.referenceDate, date);
+    return weeks % sch.intervalWeeks === 0;
+  };
+
+  const addDurationToDate = (date, sch) => {
+    const res = new Date(date);
+    res.setUTCHours(res.getUTCHours() + (sch.durationHours || 0));
+    res.setUTCMinutes(res.getUTCMinutes() + (sch.durationMinutes || 0));
+    res.setUTCSeconds(0, 0);
+    return res;
+  };
+
+  const checkEventActiveForDay = (cfg, sch, now, dayOffset, region) => {
+    const currentDay = now.getUTCDay();
+    const targetDay = (currentDay + dayOffset + 7) % 7;
+    if (!sch.days.includes(targetDay)) return null;
+
+    const start = new Date(now);
+    start.setUTCDate(start.getUTCDate() + dayOffset);
+    start.setUTCHours(sch.hour, sch.minute, 0, 0);
+
+    const end = addDurationToDate(start, sch);
+
+    if (isValidIntervalWeek(cfg, start, region) && now >= start && now < end) {
+      return { isActive: true, start, end };
+    }
+    return null;
+  };
+
+  const calculateNextEventTime = (cfg, region = 'NA') => {
+    const sch = cfg.schedule[region] || cfg.schedule.NA;
+    const now = new Date();
+    const currentDay = now.getUTCDay();
+
+    let target = new Date(now);
+    target.setUTCHours(sch.hour, sch.minute, 0, 0);
+
+    const passed = now.getUTCHours() > sch.hour || (now.getUTCHours() === sch.hour && now.getUTCMinutes() >= sch.minute);
+
+    let daysToAdd = 0;
+    if (!sch.days.includes(currentDay) || passed) {
+      for (let i = 1; i <= 7; i++) {
+        if (sch.days.includes((currentDay + i) % 7)) {
+          daysToAdd = i;
+          break;
+        }
+      }
+    }
+
+    target.setUTCDate(target.getUTCDate() + daysToAdd);
+
+    if (sch.intervalWeeks && sch.intervalWeeks > 1 && sch.referenceDate) {
+      const weeks = getWeeksSinceReference(sch.referenceDate, target);
+      const rem = weeks % sch.intervalWeeks;
+      if (rem !== 0) {
+        target.setUTCDate(target.getUTCDate() + (sch.intervalWeeks - rem) * 7);
+      }
+    }
+
+    return target;
+  };
+
+  const calculateCurrentEventEnd = (cfg, region = 'NA') => {
+    const sch = cfg.schedule[region] || cfg.schedule.NA;
+    if (!sch.durationHours && !sch.durationMinutes) return null;
+    const now = new Date();
+    let check = checkEventActiveForDay(cfg, sch, now, 0, region);
+    if (check?.isActive) return check.end;
+    check = checkEventActiveForDay(cfg, sch, now, -1, region);
+    if (check?.isActive) return check.end;
+    return null;
+  };
+
+  const isEventActive = (cfg, region = 'NA') => {
+    const sch = cfg.schedule[region] || cfg.schedule.NA;
+    if (!sch.durationHours && !sch.durationMinutes) return false;
+    const now = new Date();
+    const today = checkEventActiveForDay(cfg, sch, now, 0, region);
+    const yesterday = checkEventActiveForDay(cfg, sch, now, -1, region);
+    let active = today?.isActive || yesterday?.isActive;
+    if (sch.inverted) active = !active;
+    return active;
+  };
+
+  const timers = [
+    new EventTimer('daily_reset_timer', 'daily-reset', '🔆 Daily Reset'),
+    new EventTimer('wb_crusade_timer', 'world-boss', '⚔️ World Boss'),
+    new EventTimer('weekly_reset_timer', 'weekly-reset', '⏳ Weekly Reset'),
+    new EventTimer('guild_hunt_timer', 'guild-hunt', '🏹 Guild Hunt'),
+    new EventTimer('guild_dance_timer', 'guild-dance', '🎉 Guild Dance'),
+    new EventTimer('stimen_vaults_timer', 'stimen-vaults', '💎 Stimen Vaults')
+  ];
+
+  const startTimerUpdates = () => {
+    const updateAll = () => timers.forEach(t => t.update());
+    updateAll();
+    setInterval(updateAll, 1000);
+  };
+
+  const timeDisplay = document.getElementById('timeDisplay');
+  const serverTimeEl = document.getElementById('serverTime');
+
+  const TZ_STORAGE_KEY = 'serverTimeTZ';
+  const DEFAULT_TZ = 'America/Noronha';
+  let currentTZ = localStorage.getItem(TZ_STORAGE_KEY) || DEFAULT_TZ;
+
+  const formatTimeInTZ = (tz) => {
+    return new Date().toLocaleTimeString('en-US', {
+      timeZone: tz,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  };
+
+  const TZ_LABELS = {
+    'America/Noronha': 'Global Time:',
+    'Asia/Bangkok': 'SEA Time:'
+  };
+
+  const updateServerTime = () => {
+    const label = TZ_LABELS[currentTZ] || 'Time:';
+    timeDisplay.textContent = `${label} ${formatTimeInTZ(currentTZ)}`;
+  };
+
+  serverTimeEl?.addEventListener('click', () => {
+    currentTZ = currentTZ === 'Asia/Bangkok' ? 'America/Noronha' : 'Asia/Bangkok';
+    localStorage.setItem(TZ_STORAGE_KEY, currentTZ);
+    updateServerTime();
+  });
+
+  updateServerTime();
+
+  const now = new Date();
+  const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+
+  setTimeout(() => {
+    updateServerTime();
+    setInterval(updateServerTime, 60000);
+  }, msUntilNextMinute);
+
+  setInterval(() => {
+    const dailyDone = dailyContainer.querySelectorAll('.task.completed').length;
+    const dailyTotal = dailyTaskData.length || 1;
+    const weeklyDone = weeklyContainer.querySelectorAll('.task.completed').length;
+    const weeklyTotal = weeklyTaskData.length || 1;
+
+    const dailyPct = Math.round((dailyDone / dailyTotal) * 100);
+    const weeklyPct = Math.round((weeklyDone / weeklyTotal) * 100);
+
+    document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
+  }, 5000);
+
+  // --- Loading Bar on first visit ---
+  if (!localStorage.getItem('visited')) {
+    document.body.innerHTML = `<div style="position:fixed;inset:0;background:#0a0a1f;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#506aff;font-family:sans-serif;z-index:99999;"><h1>Loading BPSR Checklist...</h1><div style="width:300px;height:8px;background:#333;border-radius:4px;margin-top:20px;overflow:hidden;"><div id="bar" style="width:0;height:100%;background:linear-gradient(90deg,#506aff,#ffb800);transition:width 0.1s;"></div></div><p id="pct">0%</p></div>`;
+    let p = 0;
+    const int = setInterval(() => {
+      p += Math.random() * 12;
+      if (p >= 100) { clearInterval(int); localStorage.setItem('visited','true'); location.reload(); }
+      document.getElementById('bar').style.width = p + '%';
+      document.getElementById('pct').textContent = Math.round(p) + '%';
+    }, 80);
+  }
+
+  // --- GDPR & Version Check ---
+  const IPAPI_CACHE_KEY = 'ipapi_cache';
+  const IPAPI_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000;
+  const gdprBlocker = document.getElementById('gdpr-blocker');
+
+  const showGdprModal = () => {
+    if (gdprModal) {
+      gdprModal.style.display = 'flex';
+      if (gdprBlocker) {
+        gdprBlocker.style.display = 'block';
+        setTimeout(() => gdprBlocker.classList.add('visible'), 10);
+      }
+    }
+  };
+
+  const hideGdprModalAndBlocker = () => {
+    if (gdprModal) gdprModal.style.display = 'none';
+    if (gdprBlocker) {
+      gdprBlocker.classList.remove('visible');
+      gdprBlocker.style.display = 'none';
+    }
+  };
+
+  const checkGDPR = async () => {
+    try {
+      const cached = localStorage.getItem(IPAPI_CACHE_KEY);
+      if (cached) {
+        const data = JSON.parse(cached);
+        if (Date.now() - data.timestamp < IPAPI_CACHE_EXPIRY_MS) {
+          if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+            showGdprModal();
+          }
+          return;
+        }
+      }
+
+      const res = await fetch('https://ipapi.co/json/');
+      if (res.status === 429) {
+        console.warn('Rate limit hit for ipapi.co');
+        if (cached) {
+          const data = JSON.parse(cached);
+          if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+            showGdprModal();
+          }
+        }
+        return;
+      } else if (!res.ok) {
+        console.error('IPAPI error', res.status);
+        return;
+      }
+
+      const json = await res.json();
+      localStorage.setItem(IPAPI_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), continent_code: json.continent_code }));
+
+      if (json.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+        showGdprModal();
+      }
+    } catch (err) {
+      console.error('Failed to check GDPR via IPAPI:', err);
+    }
+  };
+
+  if (acceptBtn) {
+    acceptBtn.onclick = () => {
+      localStorage.setItem('gdpr_consent', 'true');
+      isStorageAllowed = true;
+      hideGdprModalAndBlocker();
+    };
+  }
+
+  if (rejectBtn) {
+    rejectBtn.onclick = () => {
+      localStorage.setItem('gdpr_optout', 'true');
+      localStorage.clear();
+      isStorageAllowed = false;
+      hideGdprModalAndBlocker();
+      setTimeout(() => {
+        document.body.innerHTML = `<div style="position:fixed;inset:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:sans-serif;text-align:center;z-index:9999"><h1>Session Closed</h1><p>Privacy opt-out. Enable localStorage to use.</p><button onclick="window.close()" style="margin-top:20px;padding:10px 20px;background:#506aff;color:#fff;border:none;border-radius:5px;cursor:pointer">Close Tab</button></div>`;
+      }, 100);
+    };
+  }
 
   const getLatestVersion = async () => {
     try {
@@ -1338,148 +1903,7 @@
     }
   };
 
-  // --- Time and Event Timers ---
-  const parseNoronha = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Noronha' }));
-  const diffSec = (future, now = parseNoronha()) => Math.max(0, Math.floor((future - now) / 1000));
-  const format = o => `${o.d?o.d+'d ':''}${o.h||o.d?o.h+'h ':''}${o.m||o.h||o.d?o.m+'m ':''}${o.s}s`;
-
-  const cloneSet = (base, day, h, m) => {
-    const d = new Date(base); d.setHours(0,0,0,0);
-    while (d.getDay() !== day) d.setDate(d.getDate() + 1);
-    d.setHours(h,m,0,0); return d;
-  };
-
-  const getDailyReset = now => { const r = new Date(now); r.setHours(5,0,0,0); return now >= r ? new Date(r.getTime()+864e5) : r; };
-  const getWeeklyReset = now => { const r = new Date(now); r.setHours(5,0,0,0); const diff = ((1 - r.getDay() + 7) % 7) || (now.getHours() >= 5 ? 7 : 0); r.setDate(r.getDate()+diff); return r; };
-  const getStimenVaults = now => { let r = new Date('2025-11-03T02:00:00'); while (r < now) r.setDate(r.getDate()+14); return r; };
-
-  const getGuildHuntPeriod = now => {
-    const days = [5,6,0];
-    for (const day of days) {
-      const start = cloneSet(now, day, 14, 0);
-      const end = new Date(start); end.setDate(end.getDate()+1); end.setHours(4,0,0,0);
-      if (now >= start && now < end) return { start, end };
-    }
-    const next = days.map(d => cloneSet(now, d, 14, 0)).map(dt => (dt <= now ? new Date(dt.getTime()+7*864e5) : dt)).sort((a,b)=>a-b)[0];
-    const end = new Date(next); end.setDate(end.getDate()+1); end.setHours(4,0,0,0);
-    return { start: next, end };
-  };
-
-  const getGuildDancePeriod = now => {
-    const start = cloneSet(now, 5, 15, 30);
-    const end = new Date(start); end.setDate(end.getDate()+1); end.setHours(3,30,0,0);
-    if (now >= start && now < end) return { start, end };
-    const next = new Date(start.getTime() + (start <= now ? 7*864e5 : 0));
-    const nextEnd = new Date(next); nextEnd.setDate(nextEnd.getDate()+1); nextEnd.setHours(3,30,0,0);
-    return { start: next, end: nextEnd };
-  };
-
-  const getWorldBossCrusadePeriod = now => {
-    const start = new Date(now); start.setHours(16,0,0,0);
-    const end = new Date(now); end.setHours(22,0,0,0);
-    if (now >= start && now < end) return { start, end };
-    if (now < start) return { start, end };
-    start.setDate(start.getDate()+1); end.setDate(end.getDate()+1); return { start, end };
-  };
-
-  class EventTimer {
-    constructor(id, getPeriod, label) { this.el = $(id); this.getPeriod = getPeriod; this.label = label; this.cnt = this.el.querySelector('.countdown'); }
-    update(now = parseNoronha()) {
-      let period;
-      try { period = this.getPeriod(now); } catch { this.cnt.textContent = 'Error'; return; }
-      const { start, end } = period.start === undefined ? { start: null, end: period } : period;
-      const target = now >= start && now < end ? end : start || end;
-      const diff = diffSec(target, now);
-      const d = Math.floor(diff/86400), h = Math.floor(diff%86400/3600), m = Math.floor(diff%3600/60), s = diff%60;
-      const active = now >= start && now < end;
-      this.cnt.textContent = active ? `${format({d,h,m,s})} left` : `${format({d,h,m,s})} until ${this.label.includes('Reset')||this.label.includes('Vaults') ? 'reset' : 'start'}`;
-      this.el.classList.toggle('active', active);
-    }
-  }
-
-  const timers = [
-    new EventTimer('daily_reset_timer', getDailyReset, 'Daily Reset'),
-    new EventTimer('wb_crusade_timer', getWorldBossCrusadePeriod, 'World Boss Crusade'),
-    new EventTimer('weekly_reset_timer', getWeeklyReset, 'Weekly Reset'),
-    new EventTimer('guild_hunt_timer', getGuildHuntPeriod, 'Guild Hunt'),
-    new EventTimer('guild_dance_timer', getGuildDancePeriod, 'Guild Dance'),
-    new EventTimer('stimen_vaults_timer', getStimenVaults, 'Stimen Vaults')
-  ];
-
-  const startTimerUpdates = () => {
-    const updateAll = () => timers.forEach(t => t.update());
-    updateAll();
-    setInterval(updateAll, 1000);
-  };
-
-  // --- Server Time ---
-  const timeDisplay = document.getElementById('timeDisplay');
-  const serverTimeEl = document.getElementById('serverTime');
-
-  let use24h = localStorage.getItem('serverTime24h') === 'true'; // default = false → 12h
-
-  const updateServerTime = () => {
-    const time = new Date().toLocaleTimeString('en-US', {
-      timeZone: 'America/Noronha',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: !use24h
-    });
-    timeDisplay.textContent = time;
-  };
-
-  serverTimeEl?.addEventListener('click', () => {
-    use24h = !use24h;
-    localStorage.setItem('serverTime24h', use24h);
-    updateServerTime(); // instant feedback
-  });
-
-  updateServerTime();
-
-  const now = new Date();
-  const msUntilNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-
-  setTimeout(() => {
-    updateServerTime();
-    setInterval(updateServerTime, 60000);
-  }, msUntilNextMinute);
-
-  // --- GDPR + IPAPI caching ---
-  const IPAPI_CACHE_KEY = 'ipapi_cache';
-  const IPAPI_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000;
-
-  const checkGDPR = async () => {
-    try {
-      const cached = localStorage.getItem(IPAPI_CACHE_KEY);
-      if (cached) {
-        const data = JSON.parse(cached);
-        if (Date.now() - data.timestamp < IPAPI_CACHE_EXPIRY_MS) {
-          if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) gdprModal && (gdprModal.style.display = 'flex');
-          return;
-        }
-      }
-      const res = await fetch('https://ipapi.co/json/');
-      if (res.status === 429) {
-        console.warn('Rate limit hit for ipapi.co');
-        if (cached) {
-          const data = JSON.parse(cached);
-          if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) gdprModal && (gdprModal.style.display = 'flex');
-        }
-        return;
-      } else if (!res.ok) { console.error('IPAPI error', res.status); return; }
-      const json = await res.json();
-      localStorage.setItem(IPAPI_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), continent_code: json.continent_code }));
-      if (json.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) gdprModal && (gdprModal.style.display = 'flex');
-    } catch (err) { console.error('Failed to check GDPR via IPAPI:', err); }
-  };
-
-  if (acceptBtn) acceptBtn.onclick = () => { localStorage.setItem('gdpr_consent', 'true'); isStorageAllowed = true; gdprModal.style.display = 'none'; };
-  if (rejectBtn) rejectBtn.onclick = () => {
-    localStorage.setItem('gdpr_optout', 'true'); localStorage.clear(); isStorageAllowed = false; gdprModal.style.display = 'none';
-    setTimeout(() => { document.body.innerHTML = `<div style="position:fixed;inset:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:sans-serif;text-align:center;z-index:9999"><h1>Session Closed</h1><p>Privacy opt-out. Enable localStorage to use.</p><button onclick="window.close()" style="margin-top:20px;padding:10px 20px;background:#506aff;color:#fff;border:none;border-radius:5px;cursor:pointer">Close Tab</button></div>`; }, 100);
-  };
-
-  // --- News modal ---
+  // --- News Modal ---
   const loadChangelogs = async () => {
     if (!changelogsContent) return;
     changelogsContent.textContent = 'Loading changelogs...';
@@ -1489,7 +1913,13 @@
       let html = '';
       (releases || []).slice(0,10).forEach(r => {
         const date = new Date(r.published_at || r.created_at).toLocaleDateString();
-        html += `<h4>${r.tag_name} (${date})</h4><div class="release-body">${marked.parse(r.body || 'No details')}</div>`;
+        html += `
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin:25px 0 15px">
+            <h1 style="margin:0;color:#ffb800;font-size:1.5rem">${r.tag_name}</h1>
+            <span style="color:#888;font-size:1.1rem;white-space:nowrap">${date}</span>
+          </div>
+          <div class="release-body" style="margin-bottom:35px">${marked.parse(r.body || 'No details')}</div>
+        `;
       });
       changelogsContent.innerHTML = html || '<p>No updates found.</p>';
     } catch (err) {
@@ -1498,33 +1928,271 @@
     }
   };
 
-  newsBtn && (newsBtn.onclick = () => { loadChangelogs(); newsModal.style.display = 'flex'; });
+   newsBtn && (newsBtn.onclick = () => {
+    loadChangelogs();
+    newsModal.style.display = 'flex';
+    scrollModalIntoView(newsModal);
+  });
   closeNewsModal && (closeNewsModal.onclick = () => newsModal.style.display = 'none');
   newsModal && (newsModal.onclick = (e) => { if (e.target === newsModal) newsModal.style.display = 'none'; });
   importExportModal && (importExportModal.onclick = (e) => { if (e.target === importExportModal) importExportModal.style.display = 'none'; });
   profilesModal && (profilesModal.onclick = (e) => { if (e.target === profilesModal) profilesModal.style.display = 'none'; });
 
-  // --- Reset data ---
-  resetSiteDataBtn && (resetSiteDataBtn.onclick = () => {
-    const sure = confirm('Are you sure you want to reset ALL site data? (localStorage)\nThis action is irreversible.');
-    if (!sure) return;
-    localStorage.clear();
-    alert('All site data has been cleared!\nThe page will now reload.');
-    location.reload();
-  });
+  // --- Custom Backgrounds ---
+  {
+    const modal = document.getElementById('wallpaper-modal');
+    const btn = document.getElementById('wallpaperBtn');
+    const input = document.getElementById('wallpaper-url');
+    const previewImg = document.getElementById('preview-img');
+    const apply = document.getElementById('apply-wallpaper');
+    const reset = document.getElementById('reset-wallpaper');
+    const close = document.getElementById('close-wallpaper-modal');
+
+    const KEY = 'custom_wallpaper';
+    let url = localStorage.getItem(KEY);
+
+    const applyWallpaper = (newUrl) => {
+      document.body.style.backgroundImage = newUrl ? `url("${newUrl}")` : '';
+      document.body.classList.toggle('custom-wallpaper', !!newUrl);
+      if (newUrl) {
+        localStorage.setItem(KEY, newUrl);
+      } else {
+        localStorage.removeItem(KEY);
+      }
+      url = newUrl;
+    };
+
+    if (url) {
+      applyWallpaper(url);
+    }
+
+    const updatePreview = (imageUrl) => {
+      if (imageUrl) {
+        previewImg.src = imageUrl;
+        previewImg.style.display = 'block';
+      } else {
+        previewImg.style.display = 'none';
+        previewImg.src = '';
+      }
+    };
+
+    input.addEventListener('input', () => {
+      const val = input.value.trim();
+      updatePreview(val);
+    });
+
+    previewImg.onerror = () => {
+      previewImg.style.display = 'none';
+      previewImg.src = '';
+    };
+
+    btn.onclick = () => {
+      input.value = url || '';
+      updatePreview(url || '');
+      modal.style.display = 'flex';
+      setTimeout(() => input.focus(), 50);
+    };
+
+    modal.onclick = (e) => {
+      if (e.target === modal || e.target === close) {
+        modal.style.display = 'none';
+      }
+    };
+
+    apply.onclick = () => {
+      const val = input.value.trim();
+
+      if (!val) {
+        alert('Enter an image/gif URL');
+        return;
+      }
+
+      try {
+        const urlObj = new URL(val);
+        const pathname = urlObj.pathname.toLowerCase();
+        const hasImageExt = /\.(jpe?g|png|gif|webp|bmp|avif|svg)$/i.test(pathname);
+
+        if (!hasImageExt) {
+          alert('Please provide a direct link (.jpg, .png, .gif, .webp, .bpm, .avif, .svg)');
+          return;
+        }
+
+        const blockedHosts = ['imgur.com', 'flickr.com', 'deviantart.com'];
+        const isBlockedHost = blockedHosts.some(host => urlObj.hostname.includes(host));
+
+        if (isBlockedHost && !hasImageExt) {
+          alert('This appears to be a gallery/page link, not a direct link. Please use the direct URL.');
+          return;
+        }
+      } catch (e) {
+        alert('Invalid URL. Please enter a valid direct link.');
+        return;
+      }
   
-  // --- Tab % of Daily | Weekly ---
-  setInterval(() => {
-    const dailyDone = dailyContainer.querySelectorAll('.task.completed').length;
-    const dailyTotal = dailyTaskData.length || 1;
-    const weeklyDone = weeklyContainer.querySelectorAll('.task.completed').length;
-    const weeklyTotal = weeklyTaskData.length || 1;
+      applyWallpaper(val);
+      modal.style.display = 'none';
+    };
 
-    const dailyPct = Math.round((dailyDone / dailyTotal) * 100);
-    const weeklyPct = Math.round((weeklyDone / weeklyTotal) * 100);
+    reset.onclick = () => {
+      applyWallpaper(null);
+      input.value = '';
+      updatePreview('');
+      modal.style.display = 'none';
+    };
+  }
 
-    document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
-  }, 5000);
+  // --- Profile Portraits ---
+  (() => {
+    const PORTRAIT_KEY = 'bp_portrait_';
+
+    const injectPortraits = () => {
+      const list = document.getElementById('profiles-list');
+      if (!list) return;
+
+      list.querySelectorAll('li').forEach(li => {
+        if (li.querySelector('.profile-portrait')) return;
+
+        const nameSpan = li.querySelector('span');
+        if (!nameSpan) return;
+        const profileName = nameSpan.textContent.trim();
+
+        const portrait = document.createElement('div');
+        portrait.className = 'profile-portrait';
+
+        const saved = localStorage.getItem(PORTRAIT_KEY + profileName);
+        if (saved) {
+          portrait.style.backgroundImage = `url(${saved})`;
+        } else {
+          portrait.classList.add('default');
+        }
+
+        portrait.onclick = (e) => {
+          e.stopPropagation();
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/*';
+          input.onchange = ev => {
+            const file = ev.target.files[0];
+            if (!file) return;
+            if (file.size > 150 * 1024) {
+              alert('File too large! Maximum allowed size is 150KB.');
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = e => {
+              const url = e.target.result;
+              portrait.style.backgroundImage = `url(${url})`;
+              portrait.classList.remove('default');
+              localStorage.setItem(PORTRAIT_KEY + profileName, url);
+            };
+            reader.readAsDataURL(file);
+          };
+          input.click();
+        };
+
+        li.insertBefore(portrait, li.firstChild);
+      });
+    };
+
+    const originalProfilesBtn = profilesBtn.onclick;
+    profilesBtn.onclick = () => {
+      originalProfilesBtn();
+      setTimeout(injectPortraits, 50);
+    };
+
+    const originalCreateProfileBtn = createProfileBtn.onclick;
+    createProfileBtn.onclick = () => {
+      originalCreateProfileBtn();
+      setTimeout(injectPortraits, 100);
+    };
+
+    setTimeout(injectPortraits, 100);
+  })();
+
+  // --- Back to Top Button ---
+  const backToTopBtn = $('backToTop');
+
+  const toggleBackToTop = () => {
+    if (window.scrollY > 600) {
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  };
+
+  if (backToTopBtn) {
+    backToTopBtn.onclick = () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.addEventListener('scroll', toggleBackToTop);
+    toggleBackToTop();
+  }
+
+  // --- WelcomeTips ---
+  const showWelcomeTips = () => {
+    if (!isStorageAllowed || localStorage.getItem('seenTips')) return;
+
+    const gdprModal = $('gdpr-modal');
+    if (gdprModal && gdprModal.style.display !== 'none') {
+      const checkInterval = setInterval(() => {
+        if (gdprModal.style.display === 'none') {
+          clearInterval(checkInterval);
+          startWelcomeTimer();
+        }
+      }, 500);
+    } else {
+      startWelcomeTimer();
+    }
+  };
+
+  const startWelcomeTimer = () => {
+    setTimeout(() => {
+      document.body.insertAdjacentHTML('beforeend', `
+        <div id="welcomeTip" role="dialog" aria-labelledby="welcomeTitle" aria-modal="true">
+          <div class="welcome-content">
+            <center><h3 id="welcomeTitle">Welcome to BPSR Checklist...</h3></center>
+            <p>
+              <center><h3>Desktop Controls:</h3></center>
+              <center><h2>• Left-Click or Hold → add (+1)</h2></center>
+              <center><h2>• Right-Click or Hold → remove (-1)</h2></center>
+              <center><h3>Mobile Controls:</h3></center>
+              <center><h2>• Tap or Hold → add (+1)</h2></center>
+              <center><h2>• Double Tap + Hold → remove (-1)</h2></center>
+            </p>
+            <button id="welcomeClose" aria-label="Close welcome tips">Got it!</button>
+          </div>
+        </div>
+      `);
+
+      const tip = document.getElementById('welcomeTip');
+      const closeBtn = document.getElementById('welcomeClose');
+
+      const closeTip = () => {
+        if (window.innerWidth >= 640) {
+          tip.classList.add('closing-desktop');
+        } else {
+          tip.classList.add('closing-mobile');
+        }
+
+        tip.addEventListener('animationend', () => {
+          tip.remove();
+          localStorage.setItem('seenTips', 'true');
+        }, { once: true });
+      };
+
+      closeBtn.onclick = closeTip;
+
+      tip.onclick = (e) => { if (e.target === tip) closeTip(); };
+
+      document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') {
+          closeTip();
+          document.removeEventListener('keydown', escHandler);
+        }
+      });
+    }, 2500);
+  };
 
   // --- Init ---
   const init = async () => {
@@ -1538,201 +2206,59 @@
       versionEl.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank');
     }
 
-  (() => {
-    const versionEl = document.getElementById('version');
-    if (!versionEl?.textContent?.trim() || versionEl.textContent.includes('?')) return;
+    (() => {
+      const versionEl = document.getElementById('version');
+      if (!versionEl?.textContent?.trim() || versionEl.textContent.includes('?')) return;
 
-    const current = versionEl.textContent.trim();
+      const current = versionEl.textContent.trim();
 
-    const checkNewVersion = async () => {
-      try {
-        const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {cache: "no-store"});
-        const d = await r.json();
-        if (d.tag_name && d.tag_name !== current) location.reload(true);
-      } catch(e) {}
-    };
+      const checkNewVersion = async () => {
+        try {
+          const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {cache: "no-store"});
+          const d = await r.json();
+          if (d.tag_name && d.tag_name !== current) location.reload(true);
+        } catch(e) {}
+      };
 
-    setInterval(checkNewVersion, 60 * 60 * 1000);
+      setInterval(checkNewVersion, 60 * 60 * 1000);
 
-    window.checkNewVersion = checkNewVersion;
-  })();
+      window.checkNewVersion = checkNewVersion;
+    })();
 
     loadProfiles();
-	cleanupOrphanedKeys();
+    cleanupOrphanedKeys();
     reloadCurrentProfileData();
     startTimerUpdates();
-	
-// ======= Christmas Theme (18th December - 5th January) =======
-	
-    (function(){
-      const pageTitle=document.getElementById('page-title');
-      if(pageTitle)pageTitle.textContent=`❄️ ${pageTitle.textContent.replace(/^❄️\s*/,'')}`;
-      if(window.innerWidth<768)return;
-      const canvas=document.createElement('canvas');
-      canvas.style.position='fixed';
-      canvas.style.top='0';
-      canvas.style.left='0';
-      canvas.style.pointerEvents='none';
-      canvas.style.zIndex='-1';
-      document.body.insertBefore(canvas,document.body.firstChild);
-      const ctx=canvas.getContext('2d');
-      let width=canvas.width=window.innerWidth;
-      let height=canvas.height=window.innerHeight;
-      window.addEventListener('resize',()=>{
-        width=canvas.width=window.innerWidth;
-        height=canvas.height=window.innerHeight;
-        if(window.innerWidth<768)ctx.clearRect(0,0,width,height);
-      });
-      const flakeCount=30;
-      const flakes=[];
-      for(let i=0;i<flakeCount;i++){
-        flakes.push({
-          x:Math.random()*width,
-          y:Math.random()*height,
-          radius:Math.random()*3+1,
-          speed:Math.random()*1.8+1,
-          drift:Math.random()*0.6-0.3,
-          opacity:Math.random()*0.4+0.6
-        });
-      }
-      let animationId=null;
-      let snowEnabled=true;
-      function startSnow(){
-        if(animationId||window.innerWidth<768)return;
-        function animate(){
-          ctx.clearRect(0,0,width,height);
-          flakes.forEach(flake=>{
-            ctx.beginPath();
-            ctx.arc(flake.x,flake.y,flake.radius,0,Math.PI*2);
-            ctx.fillStyle=`rgba(255,255,255,${flake.opacity})`;
-            ctx.fill();
-            flake.y+=flake.speed;
-            flake.x+=flake.drift;
-            if(flake.y>height){flake.y=-10;flake.x=Math.random()*width;}
-          });
-          animationId=requestAnimationFrame(animate);
-        }
-        animate();
-      }
-      function stopSnow(){
-        if(animationId){
-          cancelAnimationFrame(animationId);
-          animationId=null;
-          ctx.clearRect(0,0,width,height);
-        }
-      }
-      const toggleBtn=document.getElementById('snowToggleBtn');
-      if(toggleBtn){
-        toggleBtn.textContent='❄️ Snow: On';
-        toggleBtn.onclick=()=>{
-          snowEnabled=!snowEnabled;
-          toggleBtn.textContent=snowEnabled?'❄️ Snow: On':'❄️ Snow: Off';
-          snowEnabled?startSnow():stopSnow();
-        };
-      }
-      startSnow();
-    })();
-	
-// =============================================================
-
-    importExportBtn && (importExportBtn.onclick = () => importExportModal && (importExportModal.style.display = 'flex'));
-    importProgressBtn && (importProgressBtn.onclick = () => { importExportModal && (importExportModal.style.display = 'none'); importFile && importFile.click(); });
-    exportProgressBtn && (exportProgressBtn.onclick = () => { importExportModal && (importExportModal.style.display = 'none'); exportProgress(); });
-    cancelImportExport && (cancelImportExport.onclick = () => importExportModal && (importExportModal.style.display = 'none'));
-    importFile && (importFile.onchange = handleImport);
-
-    toggleDailyBtn && (toggleDailyBtn.onclick = () => {
-      hideCompletedState.daily = !hideCompletedState.daily;
-      toggleDailyBtn.textContent = hideCompletedState.daily ? 'Show Completed' : 'Hide Completed';
-      toggleDailyBtn.setAttribute('aria-pressed', (!hideCompletedState.daily).toString());
-      applyCompletedFilter('daily');
-    });
-
-    toggleWeeklyBtn && (toggleWeeklyBtn.onclick = () => {
-      hideCompletedState.weekly = !hideCompletedState.weekly;
-      toggleWeeklyBtn.textContent = hideCompletedState.weekly ? 'Show Completed' : 'Hide Completed';
-      toggleWeeklyBtn.setAttribute('aria-pressed', (!hideCompletedState.weekly).toString());
-      applyCompletedFilter('weekly');
-    });
-
-    btnSelectAllDaily && (btnSelectAllDaily.onclick = () => selectAll('daily'));
-    btnDeselectAllDaily && (btnDeselectAllDaily.onclick = () => deselectAll('daily'));
-    btnSelectAllWeekly && (btnSelectAllWeekly.onclick = () => selectAll('weekly'));
-    btnDeselectAllWeekly && (btnDeselectAllWeekly.onclick = () => deselectAll('weekly'));
-
-    if (dailyFilterInput) dailyFilterInput.oninput = () => applyCompletedFilter('daily');
-    if (weeklyFilterInput) weeklyFilterInput.oninput = () => applyCompletedFilter('weekly');
+    showWelcomeTips();
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
-  
-  (() => {
-  const PORTRAIT_KEY = 'bp_portrait_';
-
-  const injectPortraits = () => {
-    const list = document.getElementById('profiles-list');
-    if (!list) return;
-
-    list.querySelectorAll('li').forEach(li => {
-      if (li.querySelector('.profile-portrait')) return;
-
-      const nameSpan = li.querySelector('span');
-      if (!nameSpan) return;
-      const profileName = nameSpan.textContent.trim();
-
-      const portrait = document.createElement('div');
-      portrait.className = 'profile-portrait';
-
-      const saved = localStorage.getItem(PORTRAIT_KEY + profileName);
-      if (saved) {
-        portrait.style.backgroundImage = `url(${saved})`;
-      } else {
-        portrait.classList.add('default');
-      }
-
-      portrait.onclick = (e) => {
-        e.stopPropagation();
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = ev => {
-          const file = ev.target.files[0];
-          if (!file) return;
-          if (file.size > 150 * 1024) {
-            alert('File too large! Maximum size is 150KB.');
-            return;
-          }
-          const reader = new FileReader();
-          reader.onload = e => {
-            const url = e.target.result;
-            portrait.style.backgroundImage = `url(${url})`;
-            portrait.classList.remove('default');
-            localStorage.setItem(PORTRAIT_KEY + profileName, url);
-          };
-          reader.readAsDataURL(file);
-        };
-        input.click();
-      };
-
-      li.insertBefore(portrait, li.firstChild);
-    });
-  };
-
-  const originalProfilesBtn = profilesBtn.onclick;
-  profilesBtn.onclick = () => {
-    originalProfilesBtn();
-    setTimeout(injectPortraits, 50);
-  };
-
-  const originalCreateProfileBtn = createProfileBtn.onclick;
-  createProfileBtn.onclick = () => {
-    originalCreateProfileBtn();
-    setTimeout(injectPortraits, 100);
-  };
-
-  setTimeout(injectPortraits, 100);
-})();
 
 })();
 
+
+// Season 2 countdown — paste this AFTER the final })(); of script.js
+
+document.addEventListener('DOMContentLoaded', () => {
+  const season2Date = new Date('2026-01-15T00:00:00Z');
+
+  const countdownEl = document.getElementById('season2_countdown');
+  if (!countdownEl) return;
+
+  const updateCountdown = (now = new Date()) => {
+    const diffMs = season2Date - now;
+    if (diffMs <= 0) {
+      countdownEl.textContent = 'Season 2 is live!';
+      countdownEl.style.color = '#00ff00';
+      return;
+    }
+
+    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    countdownEl.textContent = `Season 2 starts in ${days} day${days === 1 ? '' : 's'}`;
+  };
+
+  updateCountdown();
+
+  setInterval(updateCountdown, 3600000);
+});

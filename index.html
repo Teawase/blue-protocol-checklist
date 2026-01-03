@@ -35,6 +35,8 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="styles.css">
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="preload" href="script.js" as="script">
 </head>
 <body>
   <!-- Github Corner -->
@@ -46,49 +48,45 @@
     </svg>
   </a>
   
-  <! ======= Christmas Theme (18th December - 5th January) ======= >
-  
-  <div class="news">
-    <button id="snowToggleBtn">❄️ Snow: On/Off</button>
-  </div>
-  
-  <! ============================================================= >
-  
   <!-- Import/Export & Profiles Buttons -->
   <div class="import-export">
     <button id="importExportBtn" aria-label="Backup: Import or Export your progress">💾 Backup</button>
+	<button id="wallpaperBtn" aria-label="Change background">🖼️ Background</button>
     <button id="profilesBtn" aria-label="Manage profiles">👥 Profiles</button>
     <input type="file" id="importFile" accept=".json" style="display: none;">
   </div>
   
   <main>
+  <!-- Season 2 Countdown -->
+  <center><span id="season2_countdown" style="font-size:1.4rem; font-weight:700; background:linear-gradient(90deg, #ff8c00, #ffb800, #ffd700); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; vertical-align:middle;""></span></center>
+  
   <!-- Page Title -->
-  <h1 id="page-title">Blue Protocol: Star Resonance Checklist</h1>
+  <h1 id="page-title" title="Toggle between Global/SEA">Blue Protocol: Star Resonance Checklist</h1>
 
   <!-- Event Timers -->
   <div id="event_timers" class="event-timers" aria-live="polite">
-    <div id="daily_reset_timer" class="event-timer">
-      <div class="name">Daily Reset</div>
+    <div id="daily_reset_timer" class="event-timer" title="Refresh All Timers">
+      <div class="name">🔆 Daily Reset</div>
       <div class="countdown">Loading…</div>
     </div>
-    <div id="wb_crusade_timer" class="event-timer">
-      <div class="name">World Boss Crusade</div>
+    <div id="wb_crusade_timer" class="event-timer" title="Refresh All Timers">
+      <div class="name">⚔️ World Boss</div>
       <div class="countdown">Loading…</div>
     </div>
-    <div id="weekly_reset_timer" class="event-timer">
-      <div class="name">Weekly Reset</div>
+    <div id="weekly_reset_timer" class="event-timer" title="Refresh All Timers">
+      <div class="name">⏳ Weekly Reset</div>
       <div class="countdown">Loading…</div>
     </div>
-    <div id="guild_hunt_timer" class="event-timer">
-      <div class="name">Guild Hunt</div>
+    <div id="guild_hunt_timer" class="event-timer" title="Refresh All Timers">
+      <div class="name">🏹 Guild Hunt</div>
       <div class="countdown">Loading…</div>
     </div>
-    <div id="guild_dance_timer" class="event-timer">
-      <div class="name">Guild Dance</div>
+    <div id="guild_dance_timer" class="event-timer" title="Refresh All Timers">
+      <div class="name">🎉 Guild Dance</div>
       <div class="countdown">Loading…</div>
     </div>
-    <div id="stimen_vaults_timer" class="event-timer">
-      <div class="name">Stimen Vaults</div>
+    <div id="stimen_vaults_timer" class="event-timer" title="Refresh All Timers">
+      <div class="name">💎 Stimen Vaults</div>
       <div class="countdown">Loading…</div>
     </div>
   </div>
@@ -96,8 +94,25 @@
   <!-- Server Time -->
   <div class="server-time" 
      id="serverTime" 
-     aria-label="Current Server Time (UTC-2)" title="Toggle 12h/24h format (UTC-2)">
-     Server Time: <span id="timeDisplay">04:20 AM</span>
+     aria-label="Global Server Time (UTC-2)" title="Toggle between Global/SEA Server Time">
+     <span id="timeDisplay">04:20 AM</span>
+  </div>
+ 
+  <!-- Custom Background Modal -->
+  <div id="wallpaper-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="max-width: 420px;">
+      <h2>Custom Background</h2>
+      <p style="font-size:0.9rem; opacity:0.9;">Paste a direct link (.jpg, .png, .gif, .webp, .bpm, .avif, .svg)</p>
+      <img id="preview-img" src="" alt="Background Preview" 
+           style="display:none; max-width:100%; max-height:400px; object-fit:contain; border-radius:9px; margin:15px 0; background:#333;">
+      <input type="text" id="wallpaper-url" placeholder="Example: https://i.imgur.com/RXANjLd.png" 
+             style="width:85%; padding:10px; background:#333; border:none; border-radius:9px; color:#eee; margin:15px 0;">
+      <div style="display:flex; gap:15px; justify-content:center;">
+        <button id="apply-wallpaper">Apply</button>
+        <button id="reset-wallpaper" style="background:#B5101A;">Reset</button>
+        <button id="close-wallpaper-modal" style="background:#666;">Close (Exit)</button>
+      </div>
+    </div>
   </div>
 
   <!-- Main Categories Modal -->
@@ -166,28 +181,29 @@
   <!-- GDPR Consent Modal -->
   <div id="gdpr-modal" class="modal" style="display: none;">
     <div class="modal-content">
-      <h3>Privacy Notice</h3>
+      <h2>Privacy Notice</h2>
       <p>This website uses your browser's localStorage to save your progress across sessions. We respect your privacy and do not store any of your data.</p>
       <button id="accept-gdpr">Accept</button>
       <button id="reject-gdpr">Decline (Exit)</button>
     </div>
   </div>
+  <div id="gdpr-blocker"></div>
 
   <!-- Import/Export Modal -->
   <div id="import-export-modal" class="modal" style="display: none;">
     <div class="modal-content">
-      <h3>Import/Export [Current Profile]</h3>
+      <h2>Import/Export [Current Profile]</h2>
       <p>Would you like to import or export your progress?</p>
       <button id="importProgressBtn">Import Progress</button>
       <button id="exportProgressBtn">Export Progress</button>
-      <button id="cancelImportExport">Cancel (Exit)</button>
+      <button id="cancelImportExport" style="background:#666666;">Cancel (Exit)</button>
     </div>
   </div>
 
   <!-- Profiles Modal -->
   <div id="profiles-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 400px;">
-      <h3>Manage Profiles</h3>
+      <h2>Manage Profiles</h2>
       <p>Current profile: <strong id="current-profile-name"></strong></p>
       <ul id="profiles-list" style="list-style: none; padding: 0; margin: 10px 0; max-height: 300px; overflow-y: auto;"></ul>
       <div style="margin-top: 20px; display: flex; gap: 10px;">
@@ -201,7 +217,7 @@
   <!-- Add Custom Category Modal -->
   <div id="add-category-modal" class="modal" style="display: none;">
     <div class="modal-content">
-      <h3>Create New Category</h3>
+      <h2>Create New Category</h2>
       <input type="text" id="new-category-name" placeholder="Category name..." style="padding: 8px; background:#333; border:none; border-radius:6px; color:#eee; width: 100%; box-sizing: border-box;">
       <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
         <button id="create-category-btn">Create</button>
@@ -213,7 +229,7 @@
   <!-- Add Custom Task Modal -->
   <div id="add-custom-task-modal" class="modal" style="display: none;">
     <div class="modal-content">
-      <h3>Add Task to [<span id="category-name-display"></span>]</h3>
+      <h2>Add Task to [<span id="category-name-display"></span>]</h2>
       <div style="display: flex; flex-direction: column; gap: 10px;">
         <input type="text" id="custom-task-label" placeholder="Task name..." style="padding: 8px; background:#333; border:none; border-radius:9px; color:#eee;">
         <select id="custom-task-color" style="padding: 8px; background:#333; border:none; border-radius:6px; color:#eee;">
@@ -250,7 +266,7 @@
   <!-- News / Changelog Modal -->
   <div id="news-modal" class="modal" style="display: none;">
     <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow: auto;">
-      <h2>Changelogs</h2>
+      <h2>Releases</h2>
       <div id="changelogs-content">Loading...</div>
       <button id="close-news-modal" style="margin-top: 20px;">Close (Exit)</button>
     </div>
@@ -260,9 +276,27 @@
   <div class="reset-data">
     <button id="resetSiteDataBtn" aria-label="Clear all site data (irreversible)">⚠️ Clear Data</button>
   </div>
+  
+  <!-- Back to Top Button -->
+  <button id="backToTop" aria-label="Back to top" title="Back to top">↑</button> 
+  
+  <!-- Version -->
+  <div class="version">
+    Version: <span id="version">Loading...</span>
+  </div>
 
-  <!-- Footer -->
+  <!-- Contact -->
+  <div class="contact">
+  <small>
+    <address>
+      <a href="https://discordredirect.discordsafe.com/users/96620826689822720" target="_blank" title="Contact @Teawase on Discord" rel="noopener noreferrer">Made with ❤️ by Teawase</a>
+    </address>
+  </small>
+  </div> 
+
+  <!-- Resources -->
 <footer class="resources-footer">
+  <h2>Useful Resources</h2>
   <div class="resources-grid">
     <a href="https://bp-db.de/" target="_blank" rel="noopener noreferrer" class="resource-link" title="Made by Lunixx" data-tooltip="Players Database">
       <span class="link-icon">👥</span>
@@ -270,7 +304,11 @@
     </a>
     <a href="https://bptimer.com/" target="_blank" rel="noopener noreferrer" class="resource-link" title="Made by Wohee" data-tooltip="Boss Timers">
       <span class="link-icon">⚡</span>
-      <span class="link-text">Boss Spawn Timers</span>
+      <span class="link-text">Boss Timers</span>
+    </a>
+	<a href="https://bpevents.poofcakes.com/" target="_blank" rel="noopener noreferrer" class="resource-link" title="Made by Poofcakes" data-tooltip="Event Tracker">
+      <span class="link-icon">📆</span>
+      <span class="link-text">Event Tracker</span>
     </a>
     <a href="https://bpsr.app/" target="_blank" rel="noopener noreferrer" class="resource-link" title="Made by deusexitium" data-tooltip="DPS Meter">
       <span class="link-icon">⚔️</span>
@@ -280,49 +318,24 @@
       <span class="link-icon">🧩</span>
       <span class="link-text">Module Optimizer</span>
     </a>
-	<a href="https://bpevents.poofcakes.com/" target="_blank" rel="noopener noreferrer" class="resource-link" title="Made by Poofcakes" data-tooltip="BP:SR Event Tracker">
-      <span class="link-icon">📆</span>
-      <span class="link-text">BP:SR Event Tracker</span>
-    </a>
-    <a href="https://maxroll.gg/blue-protocol/" target="_blank" rel="noopener noreferrer" class="resource-link" data-tooltip="Maxroll Guides">
+	<a href="https://starresonance.th.gl/" target="_blank" rel="noopener noreferrer" class="resource-link" title="Made by DevLeon" data-tooltip="Interactive Maps">
+      <span class="link-icon">🗺️</span>
+      <span class="link-text">Interactive Maps</span>
+    </a>	
+	<a href="https://maxroll.gg/blue-protocol/" target="_blank" rel="noopener noreferrer" class="resource-link" data-tooltip="Maxroll Guides">
       <span class="link-icon">📘</span>
       <span class="link-text">Maxroll Guides</span>
     </a>
-    <a href="https://prydwen.gg/blue-protocol/" target="_blank" rel="noopener noreferrer" class="resource-link" data-tooltip="Prydwen Wiki">
-      <span class="link-icon">🔬</span>
+	<a href="https://www.prydwen.gg/blue-protocol/" target="_blank" rel="noopener noreferrer" class="resource-link" data-tooltip="Prydwen Wiki">
+      <span class="link-icon">📚</span>
       <span class="link-text">Prydwen Wiki</span>
-    </a>
-    <a href="https://blueprotocol.interactivemap.app/" target="_blank" rel="noopener noreferrer" class="resource-link" data-tooltip="Interactive Maps">
-      <span class="link-icon">🗺️</span>
-      <span class="link-text">Interactive Maps</span>
     </a>
   </div>
 </footer>
-  
-  <!-- Version Display -->
-  <div class="version">
-    Version: <span id="version">Loading...</span>
-  </div>
-
-  <!-- Contact -->
-  <div class="contact">
-  <small>
-    <address>
-      <a href="https://discordredirect.discordsafe.com/users/96620826689822720" target="_blank" title="Contact @Teawase on Discord" rel="noopener noreferrer">Made with ❤️ by Teawase </a>
-    </address>
-  </small>
-  </div>
 
   <!-- Scripts --> 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked@latest/lib/marked.umd.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
-
-
-
-
-
-
-
