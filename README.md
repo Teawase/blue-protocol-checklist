@@ -8,21 +8,23 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 ## ✨ https://teawase.github.io/blue-protocol-checklist/ ✨
 | Feature                                | Description                                                                                         |
 |----------------------------------------|-----------------------------------------------------------------------------------------------------|
-| 🎯 Dynamic Title                       | Displays the current server day (“Day #XX”) next to the page title.                                |
-| 🕰️ Automatic Daily/Weekly Reset        | Tasks reset exactly at 5 AM -03:00 (Noronha) daily or weekly.                                      |
-| 👤 Multiple Profiles                   | Independent tracking for each alt or account — switch between profiles instantly.                  |
-| ⏰ Event Timers                        | Accurate timers for World Bosses, Guild Hunts, Stimen Vaults, and more.                            |
-| 🎨 Custom Categories & Tasks           | Create your own sections, choose any color, and set custom reset rules (daily, weekly, never).     |
+| 🎯 Dynamic Title + Event Timers        | Switch between “Global” & “SEA” server day next on the page title · Timers switch automatically.   |
+| 🕰️ Automatic Daily/Weekly Reset        | Region-specific resets: Global & SEA.                                                              |
+| 🌐 Dual Timezone Display               | Click the server time to switch between Global and SEA timezone.                                   |
+| 👤 Multiple Profiles                   | Up to 5 independent profiles with custom names and avatars.                                        |
+| 🎨 Custom Categories & Tasks           | Up to 10 categories, each with 20 tasks + custom labels, colors, max progress, and reset rules.    |
+| 🖼️ Custom Backgrounds                  | Use your own images as website backgrounds (direct URL with validation and preview).               |
+| 🔍 Live Search                         | Real-time filtering of daily/weekly tasks.                                                         |
 | ⚡ Rapid Increment/Decrement Counters  | Left-click (or hold) to add increments · Right-click (or hold) to undo — fast and forgiving.       |
 | 💾 Fully Offline & Data Portability    | Works offline and in incognito mode · One-click export/import and backup/restore.                  |
 | 📱 Mobile UI Support                   | Responsive design with perfectly functioning timers and counters on every device.                  |
-| ⚡ Lightweight & Future-Proof          | Built with vanilla JavaScript and only two tiny dependencies — blazing fast and built to last.     |
+| ⚡ Lightweight & Future-Proof          | Built with vanilla JavaScript and only two tiny dependencies.                                      |
 
 <p align="center">
   <table>
     <tr>
-      <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/privacynotice.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
       <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/mainpage.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/custombackground.png" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
     </tr>
     <tr>
       <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/customcategory.png" width="473" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
@@ -39,6 +41,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Daily Tasks:** Track your daily activities with color-coded categories.
 - **Weekly Tasks:** Track your weekly activities with similar color-coding and organization.
 - **Custom Categories + Tasks:** Create your own categories and tasks with customizable colors, tracking, and reset options (daily, weekly, or permanent). You can also reorder them however you like.
+- **Custom Background:** Change the website background with your own images to match your style or mood.
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
 - **Multiple Profiles:** Save your progress between multiple profiles/characters with independent progress tracking. You can also add an avatar to each and rename them whenever you want.
 - **Incremental Progress:** Keep track of how many dungeon runs you've completed, how many times you've fought the bane lord or others.
@@ -60,15 +63,14 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Persistent Storage:** Uses localStorage to save task states across sessions. Daily progress resets at (5:00 AM Noronha timezone); Weekly progress resets every Monday at (5:00 AM Noronha timezone).
 
 ## Event Timers
-- **Real-Time Countdowns:** Dynamic timers for key game events, all timezone-aware (America/Noronha):
-  - Daily Reset (5:00 AM).
-  - World Boss Crusade (4:00 PM - 10:00 PM daily).
-  - Weekly Reset (Monday 5:00 AM).
-  - Guild Hunt (Fri-Sun 2:00 PM - 4:00 AM next day).
-  - Guild Dance (Fri 3:30 PM - 3:30 AM next day).
-  - Stimen Vaults (Bi-weekly reset).
+- **Real-Time Countdowns:** Dynamic timers for key game events, all timezone-aware (Global/SEA):
+  - Daily Reset
+  - World Boss Crusade
+  - Weekly Reset
+  - Guild Hunt
+  - Guild Dance
+  - Stimen Vaults
 - **Smart Updates:** Refreshes every second when visible, every 5 seconds when tabbed away.
-- **Timer pulse:** Active timers have a glowing effect.
 - **Clickable Refresh:** Click any timer name to force-update all of them.
 
 ## User Experience & Accessibility
@@ -78,12 +80,16 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Accessibility Features:**
   - ARIA labels/roles for screen readers.
   - Keyboard-focusable tasks with outline rings.
-- **Dynamic Page Title:** Updates to "Blue Protocol: Star Resonance Checklist (Day #X)" based on days since Oct 9, 2025 launch.
+- **Dynamic Page Title:** Updates to "Blue Protocol: Star Resonance Checklist (Day #X)" based on how many days have been since launch with a toggle for Global or SEA region.
+- **Live Search:** Instantly filter daily and weekly tasks as you type.
+- **Current Server Time:** Toggles between Global (Noronha) and SEA (Bangkok) time by clicking the server time display.
+- **Back to Top:** Back to top arrow (appears after scrolling).
 
 ## Privacy & Edge Cases
 - **Data Privacy:** Auto-detects EU visitors via IP API; shows a modal for consent. Opting out deletes all data and closes the tab.
 - **Incognito Mode Support:** Detects private browsing and prompts to clear unsaved progress on unload; auto-clears if confirmed.
 - **Error Handling:** Fallback for storage failures, timezone parsing, or API errors.
+- **Backup reminder:** A '!' badge appears if you haven't backed up in 7+ days.
 
 ## Resources & Extras
 - **Footer Links:** Quick access to community resources.
@@ -94,7 +100,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **CSS3:** Flexbox, gradients, animations, dark theme.
 - **JavaScript (ES6+):** Vanilla JS with async/await, debouncing, and timezone handling. No frameworks.
 - **External:** Only **canvas-confetti** for celebrations and **marked** for markdown rendering.
->  Note: Some code in this project was generated with AI assistance and subsequently reviewed and refined by the developer.
+> Note: Some code in this project was generated with AI assistance and subsequently reviewed and refined by the developer.
 
 ## Contact
 - **Discord:** [Teawase](https://discordredirect.discordsafe.com/users/96620826689822720)
