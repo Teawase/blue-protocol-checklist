@@ -12,7 +12,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 | 🕰️ Automatic Daily/Weekly Reset        | Region-specific resets: Global & SEA.                                                              |
 | 🌐 Dual Timezone Display               | Click the server time to switch between Global and SEA timezone.                                   |
 | 👤 Multiple Profiles                   | Up to 5 independent profiles with custom names and avatars.                                        |
-| 🎨 Custom Categories & Tasks           | Up to 10 categories, each with 20 tasks + custom labels, colors, max progress, and reset rules.    |
+| 🎨 Custom Categories & Tasks           | Up to 10 categories per profile, each with 20 tasks + colors, max progress, and reset rules.       |
 | 🖼️ Custom Backgrounds                  | Use your own images as website backgrounds (direct URL with validation and preview).               |
 | 🔍 Live Search                         | Real-time filtering of daily/weekly tasks.                                                         |
 | ⚡ Rapid Increment/Decrement Counters  | Left-click (or hold) to add increments · Right-click (or hold) to undo — fast and forgiving.       |
