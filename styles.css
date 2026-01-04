@@ -64,8 +64,11 @@ body.custom-wallpaper::before {
 }
 
 #page-title {
-  margin: 0 !important;
-  margin-bottom: 10px !important;
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 0px !important;
   font-weight: 900;
   font-size: 2.2rem;
   text-align: center;
@@ -77,6 +80,53 @@ body.custom-wallpaper::before {
   will-change: filter;
   cursor: pointer;
   user-select: none;
+  transition: all 0.3s ease;
+}
+
+#page-title:hover {
+  opacity: 0.9;
+  transform: translateY(1px) scale(1.02);
+  text-shadow: 
+    0 0 30px rgba(80, 106, 255, 0.8),
+    0 0 50px rgba(255, 184, 0, 0.6);
+}
+
+#page-title::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: -4px;
+  left: 50%;
+  background: linear-gradient(90deg, #506aff, #ffb800);
+  border-radius: 2px;
+  transition: all 0.4s ease;
+  transform: translateX(-50%);
+}
+
+#page-title:hover::after {
+  width: 80%;
+}
+
+#page-title + small {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.95rem;
+  opacity: 0.9;
+  color: #b0c8ff;
+  text-shadow: 0 0 8px rgba(80, 106, 255, 0.25);
+  letter-spacing: 0.5px;
+  transition: opacity 0.3s ease;
+}
+
+#page-title + small strong {
+  color: #ffb800;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 184, 0, 0.4);
+}
+
+#page-title:hover + small {
+  opacity: 0.6;
 }
 
 h2 {
