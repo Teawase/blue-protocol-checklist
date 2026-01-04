@@ -1845,20 +1845,16 @@
         }
       }
 
-      const res = await fetch('https://ipapi.co/json/');
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+      clearTimeout(timeoutId);
+
       if (res.status === 429) {
-        console.warn('Rate limit hit for ipapi.co');
-        if (cached) {
-          const data = JSON.parse(cached);
-          if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
-            showGdprModal();
-          }
-        }
-        return;
-      } else if (!res.ok) {
-        console.error('IPAPI error', res.status);
-        return;
+        console.warn('ipapi.co rate limited - skipping GDPR check');
       }
+      if (!res.ok) throw new Error('Failed');
 
       const json = await res.json();
       localStorage.setItem(IPAPI_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), continent_code: json.continent_code }));
@@ -1867,7 +1863,7 @@
         showGdprModal();
       }
     } catch (err) {
-      console.error('Failed to check GDPR via IPAPI:', err);
+      console.warn('GDPR check failed or timed out (safe to ignore):', err);
     }
   };
 
@@ -1893,12 +1889,24 @@
 
   const getLatestVersion = async () => {
     try {
-      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest');
-      if (!res.ok) throw new Error('Failed');
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest', { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 429) {
+          console.warn('GitHub rate limited');
+          versionEl.textContent = 'v?.?.?';
+          return;
+        }
+        throw new Error('Failed');
+      }
       const latest = await res.json();
       versionEl.textContent = `v${latest.tag_name}`;
     } catch (err) {
-      console.error('Failed to fetch latest version:', err);
+      console.warn('Version check failed:', err);
       versionEl.textContent = 'v?.?.?';
     }
   };
@@ -1906,9 +1914,29 @@
   // --- News Modal ---
   const loadChangelogs = async () => {
     if (!changelogsContent) return;
-    changelogsContent.textContent = 'Loading changelogs...';
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+  let res;
+  try {
+    res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases', { signal: controller.signal });
+  } catch (abortErr) {
+    changelogsContent.textContent = 'Changelogs unavailable (timed out)';
+    console.warn('Changelogs fetch timed out');
+    return;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+
+  if (!res.ok) {
+    if (res.status === 403 || res.status === 429) {
+      changelogsContent.textContent = 'Changelogs unavailable (rate limited)';
+      return;
+    }
+    changelogsContent.textContent = 'Failed to load changelogs';
+    return;
+  }
     try {
-      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases');
       const releases = await res.json();
       let html = '';
       (releases || []).slice(0,10).forEach(r => {
@@ -2199,7 +2227,7 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     updateTitle();
     await checkGDPR();
-    await getLatestVersion();
+    setTimeout(getLatestVersion, 3000);
     if (versionEl) {
       versionEl.style.cursor = 'pointer';
       versionEl.title = 'Open releases on GitHub';
