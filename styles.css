@@ -1224,7 +1224,7 @@ button:hover, button:focus {
 }
 
 #close-category-modal, #close-custom-task-modal,
-#cancelImportExport, #close-profiles-modal, #close-news-modal {
+#cancelImportExport, #reject-gdpr, #close-profiles-modal, #close-news-modal {
   background: #666;
 }
 
@@ -1237,7 +1237,7 @@ button:hover, button:focus {
   background: #506aff;
 }
 
-#cancelImportExport, #close-profiles-modal, #close-news-modal {
+#cancelImportExport, #reject-gdpr, #close-profiles-modal, #close-news-modal {
   background: #666;
 }
 
@@ -1245,7 +1245,7 @@ button:hover, button:focus {
   background: #3b59dc;
 }
 
-#close-profiles-modal:hover, #close-news-modal:hover {
+#reject-gdpr:hover, #close-profiles-modal:hover, #close-news-modal:hover {
   background: #555;
 }
 
@@ -1353,6 +1353,21 @@ button:hover,
   animation: counterChange 0.8s forwards;
   color: #ffb800;
   text-shadow: 0 0 12px rgba(255, 184, 0, 0.6);
+}
+
+#gdpr-blocker {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99998;
+  display: none;
+  pointer-events: all;
+  transition: opacity 0.3s ease;
+}
+
+#gdpr-modal {
+  z-index: 99999;
+  pointer-events: all;
 }
 
 .task::before {
