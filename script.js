@@ -1838,13 +1838,14 @@
       }
 
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
 
       const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
       clearTimeout(timeoutId);
 
       if (res.status === 429) {
         console.warn('ipapi.co rate limited - skipping GDPR check');
+        return;
       }
       if (!res.ok) throw new Error('Failed');
 
@@ -1882,7 +1883,7 @@
   const getLatestVersion = async () => {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
 
       const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest', { signal: controller.signal });
       clearTimeout(timeoutId);
@@ -1906,29 +1907,22 @@
   // --- News Modal ---
   const loadChangelogs = async () => {
     if (!changelogsContent) return;
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-  let res;
-  try {
-    res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases', { signal: controller.signal });
-  } catch (abortErr) {
-    changelogsContent.textContent = 'Changelogs unavailable (timed out)';
-    console.warn('Changelogs fetch timed out');
-    return;
-  } finally {
-    clearTimeout(timeoutId);
-  }
-
-  if (!res.ok) {
-    if (res.status === 403 || res.status === 429) {
-      changelogsContent.textContent = 'Changelogs unavailable (rate limited)';
-      return;
-    }
-    changelogsContent.textContent = 'Failed to load changelogs';
-    return;
-  }
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases', { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 429) {
+          changelogsContent.textContent = 'Changelogs unavailable (rate limited)';
+          return;
+        }
+        changelogsContent.textContent = 'Failed to load changelogs';
+        return;
+      }
+
       const releases = await res.json();
       let html = '';
       (releases || []).slice(0,10).forEach(r => {
@@ -1943,8 +1937,8 @@
       });
       changelogsContent.innerHTML = html || '<p>No updates found.</p>';
     } catch (err) {
-      changelogsContent.textContent = 'Failed to load. Check console.';
-      console.error(err);
+      changelogsContent.textContent = 'Changelogs unavailable';
+      console.warn('Changelogs load failed:', err);
     }
   };
 
@@ -2259,7 +2253,6 @@
 
 
 // Season 2 countdown
-
 document.addEventListener('DOMContentLoaded', () => {
   const season2Date = new Date('2026-01-15T00:00:00Z');
 
