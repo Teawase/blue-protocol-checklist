@@ -2287,6 +2287,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   updateCountdown();
+
   setInterval(updateCountdown, 3600000);
 });
-
