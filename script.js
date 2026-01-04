@@ -1499,7 +1499,7 @@
     location.reload();
   });
 
-  // --- Timers & Server Time ---
+  // --- Switching (Global/SEA) ---
   const pageTitle = document.getElementById('page-title');
   let dayCountMode = localStorage.getItem('dayCountMode') || 'global';
   const getRegion = () => dayCountMode === 'sea' ? 'SEA' : 'NA';
@@ -1542,6 +1542,45 @@
     localStorage.setItem(TZ_STORAGE_KEY, currentTZ);
     updateServerTime();
     timers.forEach(t => t.update());
+
+    const showToast = (message) => {
+      const toast = document.createElement('div');
+      toast.textContent = message;
+      toast.style.position = 'fixed';
+      toast.style.bottom = '30px';
+      toast.style.left = '50%';
+      toast.style.transform = 'translateX(-50%) scale(0.9)';
+      toast.style.padding = '14px 28px';
+      toast.style.borderRadius = '16px';
+      toast.style.color = '#fff';
+      toast.style.fontWeight = '700';
+      toast.style.fontSize = '1rem';
+      toast.style.zIndex = '10000';
+      toast.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.6)';
+      toast.style.opacity = '0';
+      toast.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      toast.style.pointerEvents = 'none';
+
+      const isSEA = message.includes('SEA');
+      toast.style.background = isSEA
+        ? 'linear-gradient(135deg, #ff6b6b, #ee5a24)'
+        : 'linear-gradient(135deg, #506aff, #7b9fff)';
+
+      document.body.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateX(-50%) scale(1)';
+      });
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) scale(0.95)';
+        toast.addEventListener('transitionend', () => toast.remove());
+      }, 2200);
+    };
+
+    showToast(`✅ Switched to ${dayCountMode === 'sea' ? 'SEA' : 'Global'}!`);
   };
 
   pageTitle.addEventListener('click', (e) => {
