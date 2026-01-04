@@ -131,7 +131,8 @@
     data: { default: { weekly_tasks: {} } }
   };
 
-  let isStorageAllowed = true;
+  let isStorageAllowed = localStorage.getItem('gdpr_optout') !== 'true';
+
   const saveProfiles = () => {
     if (isStorageAllowed) localStorage.setItem('checklist_profiles', JSON.stringify(profiles));
   };
@@ -1063,6 +1064,9 @@
   const btnDeselectAllDaily = $('btnDeselectAllDaily');
   const btnSelectAllWeekly = $('btnSelectAllWeekly');
   const btnDeselectAllWeekly = $('btnDeselectAllWeekly');
+  const gdprModal = $('gdpr-modal');
+  const acceptBtn = $('accept-gdpr');
+  const rejectBtn = $('reject-gdpr');
   const importExportBtn = $('importExportBtn');
   const importFile = $('importFile');
   const importExportModal = $('import-export-modal');
@@ -1805,7 +1809,84 @@
     }, 80);
   }
 
-  // --- Version Check ---
+  // --- GDPR & Version Check ---
+  const IPAPI_CACHE_KEY = 'ipapi_cache';
+  const IPAPI_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000;
+  const gdprBlocker = document.getElementById('gdpr-blocker');
+
+  const showGdprModal = () => {
+    if (gdprModal) {
+      gdprModal.style.display = 'flex';
+      if (gdprBlocker) {
+        gdprBlocker.style.display = 'block';
+        setTimeout(() => gdprBlocker.classList.add('visible'), 10);
+      }
+    }
+  };
+
+  const hideGdprModalAndBlocker = () => {
+    if (gdprModal) gdprModal.style.display = 'none';
+    if (gdprBlocker) {
+      gdprBlocker.classList.remove('visible');
+      gdprBlocker.style.display = 'none';
+    }
+  };
+
+  const checkGDPR = async () => {
+    try {
+      const cached = localStorage.getItem(IPAPI_CACHE_KEY);
+      if (cached) {
+        const data = JSON.parse(cached);
+        if (Date.now() - data.timestamp < IPAPI_CACHE_EXPIRY_MS) {
+          if (data.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+            showGdprModal();
+          }
+          return;
+        }
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const res = await fetch('https://ipapi.co/json/', { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      if (res.status === 429) {
+        console.warn('ipapi.co rate limited - skipping GDPR check');
+      }
+      if (!res.ok) throw new Error('Failed');
+
+      const json = await res.json();
+      localStorage.setItem(IPAPI_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), continent_code: json.continent_code }));
+
+      if (json.continent_code === 'EU' && !localStorage.getItem('gdpr_consent')) {
+        showGdprModal();
+      }
+    } catch (err) {
+      console.warn('GDPR check failed or timed out (safe to ignore):', err);
+    }
+  };
+
+  if (acceptBtn) {
+    acceptBtn.onclick = () => {
+      localStorage.setItem('gdpr_consent', 'true');
+      isStorageAllowed = true;
+      hideGdprModalAndBlocker();
+    };
+  }
+
+  if (rejectBtn) {
+    rejectBtn.onclick = () => {
+      localStorage.setItem('gdpr_optout', 'true');
+      localStorage.clear();
+      isStorageAllowed = false;
+      hideGdprModalAndBlocker();
+      setTimeout(() => {
+        document.body.innerHTML = `<div style="position:fixed;inset:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;flex-direction:column;font-family:sans-serif;text-align:center;z-index:9999"><h1>Session Closed</h1><p>Privacy opt-out. Enable localStorage to use.</p><button onclick="window.close()" style="margin-top:20px;padding:10px 20px;background:#506aff;color:#fff;border:none;border-radius:5px;cursor:pointer">Close Tab</button></div>`;
+      }, 100);
+    };
+  }
+
   const getLatestVersion = async () => {
     try {
       const controller = new AbortController();
@@ -2080,7 +2161,17 @@
   const showWelcomeTips = () => {
     if (!isStorageAllowed || localStorage.getItem('seenTips')) return;
 
-    startWelcomeTimer();
+    const gdprModal = $('gdpr-modal');
+    if (gdprModal && gdprModal.style.display !== 'none') {
+      const checkInterval = setInterval(() => {
+        if (gdprModal.style.display === 'none') {
+          clearInterval(checkInterval);
+          startWelcomeTimer();
+        }
+      }, 500);
+    } else {
+      startWelcomeTimer();
+    }
   };
 
   const startWelcomeTimer = () => {
@@ -2135,6 +2226,7 @@
   const init = async () => {
     document.addEventListener('contextmenu', e => e.preventDefault());
     updateTitle();
+    await checkGDPR();
     setTimeout(getLatestVersion, 3000);
     if (versionEl) {
       versionEl.style.cursor = 'pointer';
