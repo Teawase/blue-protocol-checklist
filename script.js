@@ -1623,7 +1623,7 @@
       id: 'guild-dance',
       schedule: {
         NA: { days: [5], hour: 17, minute: 30, durationHours: 12 },
-        SEA: { days: [5], hour: 12, minute: 30, durationMinutes: 25 }
+        SEA: { days: [5], hour: 12, minute: 30, durationHours: 0, durationMinutes: 25 }
       }
     },
     {
