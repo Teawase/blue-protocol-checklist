@@ -1801,43 +1801,6 @@
     document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
   }, 5000);
 
-  // --- Loading Bar on first visit ---
-  if (!localStorage.getItem('visited')) {
-    const loadingOverlay = document.createElement('div');
-    loadingOverlay.style.position = 'fixed';
-    loadingOverlay.style.inset = '0';
-    loadingOverlay.style.background = '#0a0a1f';
-    loadingOverlay.style.display = 'flex';
-    loadingOverlay.style.flexDirection = 'column';
-    loadingOverlay.style.alignItems = 'center';
-    loadingOverlay.style.justifyContent = 'center';
-    loadingOverlay.style.color = '#506aff';
-    loadingOverlay.style.fontFamily = 'sans-serif';
-    loadingOverlay.style.zIndex = '99999';
-    loadingOverlay.style.transition = 'opacity 0.5s ease';
-    loadingOverlay.innerHTML = `
-      <h1>Loading BPSR Checklist...</h1>
-      <div style="width:300px;height:8px;background:#333;border-radius:4px;margin-top:20px;overflow:hidden;">
-        <div id="bar" style="width:0;height:100%;background:linear-gradient(90deg,#506aff,#ffb800);transition:width 0.1s;"></div>
-      </div>
-      <p id="pct">0%</p>
-    `;
-    document.body.appendChild(loadingOverlay);
-
-    let p = 0;
-    const int = setInterval(() => {
-      p += Math.random() * 12;
-      if (p >= 100) {
-        clearInterval(int);
-        localStorage.setItem('visited', 'true');
-        loadingOverlay.style.opacity = '0';
-        setTimeout(() => loadingOverlay.remove(), 500);
-      }
-      document.getElementById('bar').style.width = p + '%';
-      document.getElementById('pct').textContent = Math.round(p) + '%';
-    }, 80);
-  }
-
   // --- GDPR & Version Check ---
   const IPAPI_CACHE_KEY = 'ipapi_cache';
   const IPAPI_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000;
