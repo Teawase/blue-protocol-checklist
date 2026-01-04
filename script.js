@@ -2221,17 +2221,23 @@
     }
 
     (() => {
-      const versionEl = document.getElementById('version');
-      if (!versionEl?.textContent?.trim() || versionEl.textContent.includes('?')) return;
-
-      const current = versionEl.textContent.trim();
-
       const checkNewVersion = async () => {
         try {
-          const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {cache: "no-store"});
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+          const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {
+            cache: "no-store",
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+
+          if (!r.ok) return;
+
           const d = await r.json();
           if (d.tag_name && d.tag_name !== current) location.reload(true);
-        } catch(e) {}
+        } catch (e) {
+        }
       };
 
       setInterval(checkNewVersion, 60 * 60 * 1000);
@@ -2253,6 +2259,7 @@
 
 
 // Season 2 countdown
+
 document.addEventListener('DOMContentLoaded', () => {
   const season2Date = new Date('2026-01-15T00:00:00Z');
 
