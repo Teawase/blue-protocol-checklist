@@ -1004,7 +1004,11 @@
       if (msg) msg.style.display = 'block';
       if (progress && !progress.dataset.confettiDone) {
         progress.dataset.confettiDone = 'true';
-        confetti({ particleCount: 250, spread: 360, origin: { x: 0.5, y: -0.5 } });
+        if (typeof confetti === 'function') {
+          confetti({ particleCount: 250, spread: 360, origin: { x: 0.5, y: -0.5 } });
+        } else {
+          console.warn('Confetti not loaded yet - skipping animation');
+        }
       }
     } else {
       if (msg) msg.style.display = 'none';
@@ -1796,18 +1800,6 @@
 
     document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
   }, 5000);
-
-  // --- Loading Bar on first visit ---
-  if (!localStorage.getItem('visited')) {
-    document.body.innerHTML = `<div style="position:fixed;inset:0;background:#0a0a1f;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#506aff;font-family:sans-serif;z-index:99999;"><h1>Loading BPSR Checklist...</h1><div style="width:300px;height:8px;background:#333;border-radius:4px;margin-top:20px;overflow:hidden;"><div id="bar" style="width:0;height:100%;background:linear-gradient(90deg,#506aff,#ffb800);transition:width 0.1s;"></div></div><p id="pct">0%</p></div>`;
-    let p = 0;
-    const int = setInterval(() => {
-      p += Math.random() * 12;
-      if (p >= 100) { clearInterval(int); localStorage.setItem('visited','true'); location.reload(); }
-      document.getElementById('bar').style.width = p + '%';
-      document.getElementById('pct').textContent = Math.round(p) + '%';
-    }, 80);
-  }
 
   // --- GDPR & Version Check ---
   const IPAPI_CACHE_KEY = 'ipapi_cache';
