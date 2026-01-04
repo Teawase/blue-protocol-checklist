@@ -2219,32 +2219,6 @@
       versionEl.title = 'Open releases on GitHub';
       versionEl.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank');
     }
-
-    (() => {
-      const checkNewVersion = async () => {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-          const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {
-            cache: "no-store",
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
-
-          if (!r.ok) return;
-
-          const d = await r.json();
-          if (d.tag_name && d.tag_name !== current) location.reload(true);
-        } catch (e) {
-        }
-      };
-
-      setInterval(checkNewVersion, 60 * 60 * 1000);
-
-      window.checkNewVersion = checkNewVersion;
-    })();
-
     loadProfiles();
     cleanupOrphanedKeys();
     reloadCurrentProfileData();
