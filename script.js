@@ -1534,20 +1534,24 @@
 
   updateTitle();
 
-  pageTitle.addEventListener('click', (e) => {
-    e.preventDefault();
+  const toggleMode = () => {
     dayCountMode = dayCountMode === 'sea' ? 'global' : 'sea';
     saveDayCountMode();
     updateTitle();
-	timers.forEach(t => t.update());
+    currentTZ = dayCountMode === 'sea' ? 'Asia/Bangkok' : 'America/Noronha';
+    localStorage.setItem(TZ_STORAGE_KEY, currentTZ);
+    updateServerTime();
+    timers.forEach(t => t.update());
+  };
+
+  pageTitle.addEventListener('click', (e) => {
+    e.preventDefault();
+    toggleMode();
   });
 
   pageTitle.addEventListener('touchstart', (e) => {
     e.preventDefault();
-    dayCountMode = dayCountMode === 'sea' ? 'global' : 'sea';
-    saveDayCountMode();
-    updateTitle();
-	timers.forEach(t => t.update());
+    toggleMode();
   });
 
   class EventTimer {
