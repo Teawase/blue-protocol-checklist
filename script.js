@@ -2266,7 +2266,7 @@
 })();
 
 
-// Season 2 countdown — paste this AFTER the final })(); of script.js
+// Season 2 countdown
 
 document.addEventListener('DOMContentLoaded', () => {
   const season2Date = new Date('2026-01-15T00:00:00Z');
@@ -2287,6 +2287,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   updateCountdown();
-
   setInterval(updateCountdown, 3600000);
 });
+
