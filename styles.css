@@ -645,6 +645,21 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
   min-height: 44px;
 }
 
+.reorder-btn {
+  filter: grayscale(100%) brightness(2) contrast(1.2);
+}
+
+
+.delete-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+}
+
+.delete-btn:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
 .action-buttons button {
   background: rgba(80, 106, 255, 0.08);
   border: 1px solid rgba(80, 106, 255, 0.16);
