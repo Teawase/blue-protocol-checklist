@@ -181,9 +181,10 @@
 
   const getProfileData = () => profiles.data[profiles.current] || (profiles.data[profiles.current] = { weekly_tasks: {} });
 
-  // --- Custom Categories ---
+  // --- Custom Categories & Tasks ---
   let customCategories = {};
   let currentCategoryId = null;
+  let currentTaskId = null;
 
   const loadCustomCategories = () => {
     const pd = getProfileData();
@@ -255,6 +256,26 @@
       const key = `custom_${categoryId}_${taskId}`;
       delete pd[key];
       saveProfiles();
+    }
+
+    saveCustomCategories();
+  };
+  
+  const editTaskInCategory = (categoryId, taskId, label, color, maxProgress, resetType) => {
+    if (!customCategories[categoryId]) return;
+
+    const tasks = customCategories[categoryId].tasks;
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    task.label = label;
+    task.color = color;
+    task.maxProgress = Math.max(1, Math.min(1000, maxProgress));
+    task.resetType = resetType;
+
+    const current = getCustomTaskCount(categoryId, taskId);
+    if (current > task.maxProgress) {
+      setCustomTaskCount(categoryId, taskId, task.maxProgress);
     }
 
     saveCustomCategories();
@@ -836,28 +857,52 @@
       else if (e.key === 'ArrowDown') { e.preventDefault(); if (div.nextElementSibling) div.nextElementSibling.focus(); }
     };
 
-    const controlsDiv = document.createElement('div');
-    controlsDiv.className = 'task-controls';
-    const upBtn = document.createElement('button');
-    upBtn.textContent = '↑'; upBtn.className = 'reorder-btn'; upBtn.title = 'Move up';
-    upBtn.onclick = (e) => { e.stopPropagation(); e.preventDefault(); e.stopImmediatePropagation(); moveTaskInCategory(categoryId, task.id, 'up'); renderCategories(); };
-    upBtn.onmousedown = (e) => { e.stopPropagation(); e.preventDefault(); };
-    upBtn.onmouseup = (e) => { e.stopPropagation(); e.preventDefault(); };
-    const downBtn = document.createElement('button');
-    downBtn.textContent = '↓'; downBtn.className = 'reorder-btn'; downBtn.title = 'Move down';
-    downBtn.onclick = (e) => { e.stopPropagation(); e.preventDefault(); e.stopImmediatePropagation(); moveTaskInCategory(categoryId, task.id, 'down'); renderCategories(); };
-    downBtn.onmousedown = (e) => { e.stopPropagation(); e.preventDefault(); };
-    downBtn.onmouseup = (e) => { e.stopPropagation(); e.preventDefault(); };
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '✕'; deleteBtn.className = 'delete-btn'; deleteBtn.title = 'Delete task';
-    deleteBtn.onclick = (e) => { e.stopPropagation(); e.preventDefault(); e.stopImmediatePropagation(); if (confirm(`Delete "${task.label}"?`)) { deleteTaskFromCategory(categoryId, task.id); renderCategories(); } };
-    deleteBtn.onmousedown = (e) => { e.stopPropagation(); e.preventDefault(); };
-    deleteBtn.onmouseup = (e) => { e.stopPropagation(); e.preventDefault(); };
+  const controlsDiv = document.createElement('div');
+  controlsDiv.className = 'task-controls';
+  const upBtn = document.createElement('button');
+  upBtn.textContent = '↑'; upBtn.className = 'reorder-btn'; upBtn.title = 'Move up';
+  upBtn.onclick = (e) => { e.stopPropagation(); e.preventDefault(); e.stopImmediatePropagation(); moveTaskInCategory(categoryId, task.id, 'up'); renderCategories(); };
+  upBtn.onmousedown = (e) => { e.stopPropagation(); e.preventDefault(); };
+  upBtn.onmouseup = (e) => { e.stopPropagation(); e.preventDefault(); };
+  const downBtn = document.createElement('button');
+  downBtn.textContent = '↓'; downBtn.className = 'reorder-btn'; downBtn.title = 'Move down';
+  downBtn.onclick = (e) => { e.stopPropagation(); e.preventDefault(); e.stopImmediatePropagation(); moveTaskInCategory(categoryId, task.id, 'down'); renderCategories(); };
+  downBtn.onmousedown = (e) => { e.stopPropagation(); e.preventDefault(); };
+  downBtn.onmouseup = (e) => { e.stopPropagation(); e.preventDefault(); };
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = '✕'; deleteBtn.className = 'reorder-btn'; deleteBtn.title = 'Delete task';
+  deleteBtn.onclick = (e) => { e.stopPropagation(); e.preventDefault(); e.stopImmediatePropagation(); if (confirm(`Delete "${task.label}"?`)) { deleteTaskFromCategory(categoryId, task.id); renderCategories(); } };
+  deleteBtn.onmousedown = (e) => { e.stopPropagation(); e.preventDefault(); };
+  deleteBtn.onmouseup = (e) => { e.stopPropagation(); e.preventDefault(); };
 
-    controlsDiv.appendChild(upBtn);
-    controlsDiv.appendChild(downBtn);
-    controlsDiv.appendChild(deleteBtn);
-    div.appendChild(controlsDiv);
+  const editBtn = document.createElement('button');
+  editBtn.textContent = '✏️';
+  editBtn.className = 'reorder-btn';
+  editBtn.title = 'Edit task';
+  editBtn.onclick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    currentCategoryId = categoryId;
+    currentTaskId = task.id;
+    categoryNameDisplay.textContent = customCategories[categoryId].name;
+    customTaskLabel.value = task.label;
+    customTaskColor.value = task.color;
+    customTaskMaxProgress.value = task.maxProgress;
+    customTaskReset.value = task.resetType;
+    addCustomTaskModal.style.display = 'flex';
+    addCustomTaskBtn.textContent = 'Save Changes';
+    setTimeout(() => customTaskLabel.focus(), 100);
+    scrollModalIntoView(addCustomTaskModal);
+  };
+  editBtn.onmousedown = (e) => { e.stopPropagation(); e.preventDefault(); };
+  editBtn.onmouseup = (e) => { e.stopPropagation(); e.preventDefault(); };
+
+  controlsDiv.appendChild(upBtn);
+  controlsDiv.appendChild(downBtn);
+  controlsDiv.appendChild(editBtn);
+  controlsDiv.appendChild(deleteBtn);
+  div.appendChild(controlsDiv);
 
     return div;
   };
@@ -920,17 +965,20 @@
       const addTaskBtn = document.createElement('button');
       addTaskBtn.textContent = '➕'; addTaskBtn.className = 'icon-btn';
       addTaskBtn.title = 'Add task';
-      addTaskBtn.onclick = () => {
-        currentCategoryId = catId;
-        categoryNameDisplay.textContent = cat.name;
-        customTaskLabel.value = '';
-        customTaskColor.value = 'grey';
-        customTaskMaxProgress.value = '1';
-        customTaskReset.value = 'permanent';
-        addCustomTaskModal.style.display = 'flex';
-        setTimeout(() => customTaskLabel.focus(), 100);
-        scrollModalIntoView(addCustomTaskModal);
-      };
+
+    addTaskBtn.onclick = () => {
+      currentCategoryId = catId;
+      currentTaskId = null;
+      categoryNameDisplay.textContent = cat.name;
+      customTaskLabel.value = '';
+      customTaskColor.value = 'grey';
+      customTaskMaxProgress.value = '1';
+      customTaskReset.value = 'permanent';
+      addCustomTaskBtn.textContent = 'Add Task';
+      addCustomTaskModal.style.display = 'flex';
+      setTimeout(() => customTaskLabel.focus(), 100);
+      scrollModalIntoView(addCustomTaskModal);
+    };
 
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = '🗑️'; deleteBtn.className = 'icon-btn delete-icon-btn';
@@ -1467,14 +1515,25 @@
       return;
     }
 
-    const task = addTaskToCategory(currentCategoryId, label, color, maxProgress, resetType);
-    if (!task) return;
+    if (currentTaskId) {
+      editTaskInCategory(currentCategoryId, currentTaskId, label, color, maxProgress, resetType);
+    } else {
+      const task = addTaskToCategory(currentCategoryId, label, color, maxProgress, resetType);
+      if (!task) return;
+    }
 
     addCustomTaskModal.style.display = 'none';
+    currentTaskId = null;
+    addCustomTaskBtn.textContent = 'Add Task';
     renderCategories();
   };
-  if (closeCustomTaskModal) closeCustomTaskModal.onclick = () => addCustomTaskModal.style.display = 'none';
-  
+
+  if (closeCustomTaskModal) closeCustomTaskModal.onclick = () => {
+    addCustomTaskModal.style.display = 'none';
+    currentTaskId = null;
+    addCustomTaskBtn.textContent = 'Add Task';
+  };
+
   if (closeCategoryModal) {
     closeCategoryModal.onclick = () => {
       addCategoryModal.style.display = 'none';
@@ -2300,27 +2359,26 @@
 
 })();
 
-// Season 2 countdown
-document.addEventListener('DOMContentLoaded', () => {
-  const season2Date = new Date('2026-01-15T00:00:00Z');
+  // Season 2 countdown
+  document.addEventListener('DOMContentLoaded', () => {
+    const season2Date = new Date('2026-01-15T00:00:00Z');
 
-  const countdownEl = document.getElementById('season2_countdown');
-  if (!countdownEl) return;
+    const countdownEl = document.getElementById('season2_countdown');
+    if (!countdownEl) return;
 
-  const updateCountdown = (now = new Date()) => {
-    const diffMs = season2Date - now;
-    if (diffMs <= 0) {
-      countdownEl.textContent = 'Season 2 is live!';
-      countdownEl.style.color = '#00ff00';
-      return;
-    }
+    const updateCountdown = (now = new Date()) => {
+      const diffMs = season2Date - now;
+      if (diffMs <= 0) {
+        countdownEl.textContent = 'Season 2 is live!';
+        countdownEl.style.color = '#00ff00';
+        return;
+      }
 
-    const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    countdownEl.textContent = `Season 2 starts in ${days} day${days === 1 ? '' : 's'}`;
-  };
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      countdownEl.textContent = `Season 2 starts in ${days} day${days === 1 ? '' : 's'}`;
+    };
 
-  updateCountdown();
+    updateCountdown();
 
-  setInterval(updateCountdown, 3600000);
-});
-
+    setInterval(updateCountdown, 3600000);
+  });
