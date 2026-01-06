@@ -123,6 +123,14 @@
       });
     }, 100);
   };
+  
+  const debounce = (fn, delay = 300) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn(...args), delay);
+    };
+  };
 
   // --- Profile System ---
   let profiles = {
@@ -1467,8 +1475,8 @@
   btnSelectAllWeekly && (btnSelectAllWeekly.onclick = () => selectAll('weekly'));
   btnDeselectAllWeekly && (btnDeselectAllWeekly.onclick = () => deselectAll('weekly'));
 
-  if (dailyFilterInput) dailyFilterInput.oninput = () => applyCompletedFilter('daily');
-  if (weeklyFilterInput) weeklyFilterInput.oninput = () => applyCompletedFilter('weekly');
+  if (dailyFilterInput) dailyFilterInput.oninput = debounce(() => applyCompletedFilter('daily'));
+  if (weeklyFilterInput) weeklyFilterInput.oninput = debounce(() => applyCompletedFilter('weekly'));
 
   // --- Custom Category Modals ---
   if (addCategoryBtn) addCategoryBtn.onclick = () => {
@@ -1685,9 +1693,9 @@
       s: Math.floor((diff % 60000) / 1000)
       };
 
-      const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m` :
-                        o.h > 0 ? `${o.h}h ${o.m}m ${o.s}s` :
-                        o.m > 0 ? `${o.m}m ${o.s}s` : `${o.s}s`;
+const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
+                  o.h > 0 ? `${o.h}h ${o.m}m ${o.s}s` :
+                  o.m > 0 ? `${o.m}m ${o.s}s` : `${o.s}s`;
 
       this.cnt.textContent = active ? `${formatted} left` : `${formatted} until ${this.baseLabel.includes('Reset') || this.baseLabel.includes('Vaults') ? 'reset' : 'start'}`;
       this.el.classList.toggle('active', active);
