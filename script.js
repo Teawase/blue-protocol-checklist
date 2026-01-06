@@ -1477,6 +1477,25 @@
 
   if (dailyFilterInput) dailyFilterInput.oninput = debounce(() => applyCompletedFilter('daily'));
   if (weeklyFilterInput) weeklyFilterInput.oninput = debounce(() => applyCompletedFilter('weekly'));
+   
+  $('daily_section').addEventListener('click', (e) => {
+    if (!e.target.closest('.task') && !e.target.closest('button') && !e.target.closest('input')) {
+      dailyFilterInput.focus();
+    }
+  });
+
+  $('weekly_section').addEventListener('click', (e) => {
+    if (!e.target.closest('.task') && !e.target.closest('button') && !e.target.closest('input')) {
+      weeklyFilterInput.focus();
+    }
+  });
+
+  if (dailyFilterInput) {
+    dailyFilterInput.addEventListener('focus', () => dailyFilterInput.select());
+  }
+  if (weeklyFilterInput) {
+    weeklyFilterInput.addEventListener('focus', () => weeklyFilterInput.select());
+  }
 
   // --- Custom Category Modals ---
   if (addCategoryBtn) addCategoryBtn.onclick = () => {
@@ -2017,6 +2036,31 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
   // --- News Modal ---
   const loadChangelogs = async () => {
     if (!changelogsContent) return;
+  
+    changelogsContent.innerHTML = `
+      <div class="skeleton-release">
+        <div class="skeleton-loader skeleton-title"></div>
+        <div class="skeleton-loader skeleton-date"></div>
+        <div class="skeleton-loader skeleton-line"></div>
+        <div class="skeleton-loader skeleton-line short"></div>
+        <div class="skeleton-loader skeleton-line medium"></div>
+        <div class="skeleton-loader skeleton-line"></div>
+      </div>
+      <div class="skeleton-release">
+        <div class="skeleton-loader skeleton-title"></div>
+        <div class="skeleton-loader skeleton-date"></div>
+        <div class="skeleton-loader skeleton-line medium"></div>
+        <div class="skeleton-loader skeleton-line"></div>
+        <div class="skeleton-loader skeleton-line short"></div>
+      </div>
+      <div class="skeleton-release">
+        <div class="skeleton-loader skeleton-title"></div>
+        <div class="skeleton-loader skeleton-date"></div>
+        <div class="skeleton-loader skeleton-line"></div>
+        <div class="skeleton-loader skeleton-line medium"></div>
+      </div>
+    `;
+
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -2047,7 +2091,7 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
       });
       changelogsContent.innerHTML = html || '<p>No updates found.</p>';
     } catch (err) {
-      changelogsContent.textContent = 'Changelogs unavailable';
+      changelogsContent.innerHTML = '<p style="color:#aaa;text-align:center;">Changelogs unavailable</p>';
       console.warn('Changelogs load failed:', err);
     }
   };
@@ -2367,26 +2411,91 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
 
 })();
 
-  // Season 2 countdown
+  // Season 2 Countdown (15th January, 2026)
   document.addEventListener('DOMContentLoaded', () => {
-    const season2Date = new Date('2026-01-15T00:00:00Z');
-
     const countdownEl = document.getElementById('season2_countdown');
     if (!countdownEl) return;
 
+    const pageTitle = document.getElementById('page-title');
+
+    const getSeason2LaunchTime = () => {
+      const launchDate = new Date(Date.UTC(2026, 0, 15));
+      const region = localStorage.getItem('dayCountMode') === 'sea' ? 'SEA' : 'NA';
+      const resetHour = region === 'SEA' ? 22 : 7;
+      launchDate.setUTCHours(resetHour, 0, 0, 0);
+      return launchDate;
+    };
+
+    let intervalId = null;
+
     const updateCountdown = (now = new Date()) => {
-      const diffMs = season2Date - now;
+      const launchTime = getSeason2LaunchTime();
+    const diffMs = launchTime - now;
+
       if (diffMs <= 0) {
         countdownEl.textContent = 'Season 2 is live!';
         countdownEl.style.color = '#00ff00';
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
         return;
       }
 
       const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-      countdownEl.textContent = `Season 2 starts in ${days} day${days === 1 ? '' : 's'}`;
+      countdownEl.textContent = `Season 2 starts in ${days} day${days === 1 ? '' : 's'} – January 15th, 2026`;
+      countdownEl.style.color = '';
     };
 
     updateCountdown();
 
-    setInterval(updateCountdown, 3600000);
+    const scheduleSyncedHourly = () => {
+      const now = new Date();
+      const launchTime = getSeason2LaunchTime();
+
+      if (launchTime - now <= 0) return;
+
+      const nextHour = new Date(now);
+      nextHour.setUTCMinutes(0, 0, 0);
+      nextHour.setUTCHours(nextHour.getUTCHours() + 1);
+
+      let msUntilNextHour = nextHour - now;
+      if (msUntilNextHour <= 0) msUntilNextHour = 3600000;
+
+      setTimeout(() => {
+        updateCountdown();
+        intervalId = setInterval(updateCountdown, 3600000);
+      }, msUntilNextHour);
+    };
+
+    scheduleSyncedHourly();
+
+    if (pageTitle) {
+      const triggerUpdate = () => {
+        setTimeout(updateCountdown, 100);
+      };
+      pageTitle.addEventListener('click', triggerUpdate);
+      pageTitle.addEventListener('touchstart', triggerUpdate);
+    }
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'dayCountMode') {
+        updateCountdown();
+      }
+    });
+
+    const scheduleFinalUpdate = () => {
+      const now = new Date();
+      const launchTime = getSeason2LaunchTime();
+      const msUntilLaunch = launchTime - now;
+
+      if (msUntilLaunch > 0 && msUntilLaunch < 86400000 * 2) {
+        setTimeout(() => {
+          updateCountdown();
+          if (intervalId) clearInterval(intervalId);
+        }, msUntilLaunch + 1000);
+      }
+    };
+
+    scheduleFinalUpdate();
   });
