@@ -222,6 +222,21 @@
   };
 
   const deleteCategory = (categoryId) => {
+    if (!customCategories[categoryId]) return;
+    if (isStorageAllowed) {
+      const pd = getProfileData();
+      if (pd) {
+        const cat = customCategories[categoryId];
+        if (cat && cat.tasks) {
+          cat.tasks.forEach(task => {
+            const key = getCustomTaskCountKey(categoryId, task.id);
+            delete pd[key];
+          });
+        }
+        saveProfiles();
+      }
+    }
+
     delete customCategories[categoryId];
     saveCustomCategories();
   };
@@ -1214,16 +1229,16 @@
         delBtn.textContent = 'Delete';
         delBtn.onclick = () => {
           if (!confirm(`Delete "${name}" and all its progress?`)) return;
-
-          delete profiles.data[name];
           localStorage.removeItem('bp_portrait_' + name);
+          delete profiles.data[name];
           profiles.list = profiles.list.filter(n => n !== name);
-          if (profiles.current === name) profiles.current = profiles.list[0] || 'default';
 
+          if (profiles.current === name) {
+            profiles.current = profiles.list[0] || 'default';
+          }
           saveProfiles();
           reloadCurrentProfileData();
-
-          profilesBtn.click(); 
+          profilesBtn.click();
         };
         li.appendChild(delBtn);
       }
