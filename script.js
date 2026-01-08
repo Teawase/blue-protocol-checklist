@@ -2383,36 +2383,74 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
     updateTitle();
     await checkGDPR();
     setTimeout(getLatestVersion, 3000);
-    if (versionEl) {
-      versionEl.style.cursor = 'pointer';
-      versionEl.title = 'Open releases on GitHub';
-      versionEl.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank');
+
+  const versionSpan = $('version');
+    if (versionSpan) {
+      const versionContainer = versionSpan.parentElement;
+
+      if (versionContainer) {
+        versionContainer.style.cursor = 'pointer';
+        versionContainer.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank');
+        versionContainer.title = 'Fetching last update...';
+
+        fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist')
+          .then(res => res.ok ? res.json() : Promise.reject())
+          .then(data => {
+            if (data.pushed_at) {
+              const date = new Date(data.pushed_at);
+              const formatter = new Intl.DateTimeFormat(undefined, {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+                timeZoneName: 'short'
+              });
+              versionContainer.title = `Last updated on ${formatter.format(date)}`;
+            } else {
+              versionContainer.title = 'Last updated: Unknown';
+            }
+          })
+          .catch(() => {
+            versionContainer.title = 'Last updated: Unknown';
+          });
+      }
     }
 
-    (() => {
-      const checkNewVersion = async () => {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 5000);
+  (() => {
+    let currentVersion = versionEl.textContent.trim();
 
-          const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {
-            cache: "no-store",
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
+    const checkNewVersion = async () => {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-          if (!r.ok) return;
+        const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {
+          cache: "no-store",
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
 
-          const d = await r.json();
-          if (d.tag_name && d.tag_name !== current) location.reload(true);
-        } catch (e) {
+        if (!r.ok) return;
+
+        const d = await r.json();
+        const newVersion = `v${d.tag_name}`;
+        if (newVersion !== currentVersion) {
+          currentVersion = newVersion;
+          if (confirm(`New version available: ${newVersion}\nReload page to update?`)) {
+            location.reload(true);
+          }
         }
-      };
+      } catch (e) {
+		
+      }
+    };
 
-      setInterval(checkNewVersion, 60 * 60 * 1000);
-
-      window.checkNewVersion = checkNewVersion;
-    })();
+    setInterval(checkNewVersion, 60 * 60 * 1000);
+    window.checkNewVersion = checkNewVersion;
+  })();
 
     loadProfiles();
     cleanupOrphanedKeys();
