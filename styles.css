@@ -514,8 +514,12 @@ h3 {
 }
 
 .task:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(80, 106, 255, 0.3);
+  transform: translateY(-1px) scale(1.01);
+  background: linear-gradient(135deg, var(--hover2, #38383c), var(--hover1, #424246));
+  box-shadow: 0 8px 20px rgba(80, 106, 255, 0.35);
+  border-color: rgba(80, 106, 255, 0.45);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  z-index: 10;
 }
 
 .blue { --base1:#1f5faf; --base2:#2977d7; --hover1:#4590f9; }
@@ -529,6 +533,18 @@ h3 {
 .purple { --base1:#4643a4; --base2: #595fb8; --hover1:#7a80ce; }
 .red { --base1:#b22222; --base2:#d93b3b; --hover1:#fa4e4e; }
 .yellow { --base1:#b9972c; --base2:#d2b430; --hover1:#e7c94f; }
+
+.task.pearl:hover {
+  color: #fff;
+}
+
+.task.pearl .progress-badge {
+  color: #333;
+}
+
+.task.pearl:hover .progress-badge {
+  color: #ffd700;
+}
 
 .task-controls {
   display: flex;
