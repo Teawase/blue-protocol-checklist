@@ -494,6 +494,7 @@ h3 {
 
 .task {
   background: linear-gradient(135deg, var(--base1, #333) 0%, var(--base2, #2a2a2a) 100%);
+  background-clip: padding-box;
   padding: 0.75rem 1.125rem;
   border-radius: 9px;
   display: flex;
@@ -502,7 +503,10 @@ h3 {
   min-height: 52px;
   overflow: hidden;
   margin: 4px 0;
+  padding-left: calc(0.75rem + 1px);
+  padding-right: calc(1.125rem + 1px);
   outline: none;
+  border-left: none !important;
   border: 1px solid rgba(80, 106, 255, 0.20);
   border-radius: 12px;
   box-sizing: border-box;
