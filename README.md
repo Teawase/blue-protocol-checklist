@@ -49,10 +49,10 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Custom Background:** Change the website background with your own images to match your style or mood.
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
 - **Incremental Progress:** Keep track of how many dungeon runs you've completed, how many times you've fought the bane lord or others.
-> **Left Click (MB1):** Increase by 1<br/>
-> **Hold Left Click (MB1):** Increase quickly (continuous increment) | Mobile: Hold Tap<br/>
-> **Right Click (MB2):** Decrease by 1<br/>
-> **Hold Right Click (MB2):** Decrease quickly (continuous decrement) | Mobile: Double Tap + Hold<br/>
+  > **Left Click (MB1):** Increase by 1<br/>
+  > **Hold Left Click (MB1):** Increase quickly (continuous increment) | Mobile: Hold Tap<br/>
+  > **Right Click (MB2):** Decrease by 1<br/>
+  > **Hold Right Click (MB2):** Decrease quickly (continuous decrement) | Mobile: Double Tap + Hold<br/>
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
 - **Show/Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
 - **Real-time counters** (e.g., "6 / 9 complete").
@@ -69,16 +69,16 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Back to Top Button:** Smooth-scroll button appears after scrolling for quick navigation to the top.
 
 ## History Tracking
-- **Persistent Storage:** Uses localStorage to save task states across sessions. Daily progress resets at (5:00 AM Noronha timezone); Weekly progress resets every Monday at (5:00 AM Noronha timezone).
+- **Persistent Storage:** Uses localStorage to save task states across sessions.
 
 ## Event Timers
-- **Real-Time Countdowns:** Dynamic timers for key game events, all timezone-aware (Global/SEA):
-  - Daily Reset
-  - World Boss Crusade
-  - Weekly Reset
-  - Guild Hunt
-  - Guild Dance
-  - Stimen Vaults
+- **Real-Time Countdowns:** Dynamic timers for key game events, all timezone-aware:
+  - _**Daily Reset** (Global & SEA)_
+  - _**World Boss Crusade** (Global & SEA)_
+  - _**Weekly Reset** (Global & SEA)_
+  - _**Guild Hunt** (Global & SEA)_
+  - _**Guild Dance** (Global & SEA)_
+  - _**Stimen Vaults** (Global & SEA)_
 - **Smart Updates:** Refreshes every second when visible, every 5 seconds when tabbed away.
 - **Clickable Refresh:** Click any timer name to force-update all of them.
 
@@ -87,7 +87,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Color-Coded UI:** Tasks use distinct backgrounds for quick visual grouping.
 - **Animations & Feedback:** Smooth transitions for task hovers, counter updates (fade/slide), and progress fills.
 - **Dynamic Page Title:** Updates to "Blue Protocol: Star Resonance Checklist (Day #X)" based on how many days have been since launch with a toggle for Global or SEA region; also shows progress percentages (e.g., "Daily 50% | Weekly 75%").
-- **Current Server Time:** Toggles between Global (Noronha) and SEA (Bangkok) time by clicking the server time display.
+- **Current Server Time:** Toggles between Global and SEA time by clicking the server time display.
 - **Version Display:** Shows current version with a clickable link to releases and tooltip for last updated time.
 - **Accessibility Features:**
   - ARIA labels/roles for screen readers.
@@ -95,9 +95,8 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 
 ## Privacy & Edge Cases
 - **Data Privacy:** Auto-detects EU visitors via IP API; shows a modal for consent. Opting out deletes all data and closes the tab.
-- **Incognito Mode Support:** Detects private browsing and prompts to clear unsaved progress on unload; auto-clears if confirmed.
-- **Error Handling:** Fallback for storage failures, timezone parsing, or API errors.
 - **Backup reminder:** A '!' badge appears if you haven't backed up in 7+ days.
+- **Error Handling:** Fallback for storage failures, timezone parsing, or API errors.
 
 ## Resources & Extras
 - **Footer Links:** Quick access to community resources.
@@ -112,8 +111,8 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 
 ## Contact
 - **Discord:** [@Teawase](https://discordredirect.discordsafe.com/users/96620826689822720)
-- **Guild Name/ID:** Mooncake (ID: 2048)
 - **In-game UID (Global):** #225964
+- **Guild Name/ID (Global):** Mooncake (ID: 2048)
 <img width="1920" height="1080" alt="ProfilePhoto" src="https://github.com/user-attachments/assets/68100abc-2938-446f-9c2e-bf3a9f40f6c6" />
 
 <div align="center">
