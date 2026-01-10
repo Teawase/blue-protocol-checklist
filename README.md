@@ -27,7 +27,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 <p align="center">
   <table>
     <tr>
-      <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/mainpage.png" alt="Main Page View" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/mainpage-v1-3-0.png" alt="Main Page View" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
       <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/custombackground.png" alt="Custom Backgrounds" width="473" style="border-radius:14px; box-shadow:0 8px 25px rgba(0,0,0,0.22); margin:14px auto;" /></td>
     </tr>
     <tr>
