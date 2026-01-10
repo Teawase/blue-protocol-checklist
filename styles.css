@@ -20,8 +20,7 @@ body {
   line-height: 1.6;
   background: #000;
   color: #eee;
-  margin: 0;
-  padding: 0 !important;
+  padding-bottom: 1rem;
   position: relative;
   min-height: 100vh;
   box-sizing: border-box;
@@ -31,8 +30,8 @@ body {
 }
 
 main {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 body::before {
