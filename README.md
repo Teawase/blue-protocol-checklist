@@ -110,7 +110,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 > Note: Some code in this project was generated with AI assistance and subsequently reviewed and refined by the developer.
 
 ## Contact
-- **Discord:** [@Teawase](https://discordredirect.discordsafe.com/users/96620826689822720)
+- **Discord:** [@Teawase](https://discord.com/users/96620826689822720)
 - **In-game UID (Global):** #225964
 - **Guild Name/ID (Global):** Mooncake (ID: 2048)
 <img width="1920" height="1080" alt="ProfilePhoto" src="https://github.com/user-attachments/assets/68100abc-2938-446f-9c2e-bf3a9f40f6c6" />
