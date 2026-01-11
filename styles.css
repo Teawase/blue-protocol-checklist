@@ -770,8 +770,19 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
 }
 
 .event-timer:hover {
-  transform: scale(1.01);
-  box-shadow: 0 4px 12px rgba(80, 106, 255, 0.3);
+  transform: translateY(-2px);
+  background: rgba(38, 38, 68, 0.7);
+  border-color: rgba(80, 106, 255, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.event-timer:hover .name,
+.event-timer:hover .countdown {
+  background: linear-gradient(90deg, #b0cfff, #ffffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 8px rgba(140, 170, 255, 0.55);
+  font-weight: 700;
 }
 
 .resource-link {
