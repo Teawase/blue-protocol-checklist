@@ -29,7 +29,6 @@
     { id: "weekly_reputation_store", label: '📈 Reputation Store (Will Wish Coin, "Revive" Candy and/or Healing Aromatics)', color: "grey", maxProgress: 1 },
     { id: "weekly_guild_store", label: "🔰 Guild Store (Focus Potions, Supply Chests & Burl Shards)", color: "grey", maxProgress: 1 },
     { id: "weekly_event_store", label: "🎉 Event Store (If available)", color: "grey", maxProgress: 1 },
-    { id: "weekly_life_skill_quests", label: "🌾 Life Skill Exchange Quests", color: "green", maxProgress: 12 },
     { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Resets every 2 weeks) > Check Timer ^", color: "pearl", maxProgress: 1 },
     { id: "weekly_ice_dragon_normal", label: "❄️ Ice Dragon Raid - Easy (12710+ Ability Score)", color: "blue", maxProgress: 1 },
     { id: "weekly_ice_dragon_hard", label: "❄️ Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue", maxProgress: 1 },
