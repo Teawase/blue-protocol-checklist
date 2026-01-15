@@ -770,7 +770,7 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
 }
 
 .event-timer:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   background: rgba(38, 38, 68, 0.7);
   border-color: rgba(80, 106, 255, 0.45);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
@@ -782,7 +782,7 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 8px rgba(140, 170, 255, 0.55);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .resource-link {
@@ -880,17 +880,30 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
   animation: modalPop 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
 }
 
+#news-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
 #news-modal .modal-content {
   width: min(94vw, 720px);
-  max-width: 800px;
+  max-width: 1400px;
   min-width: 300px;
-  max-height: 94vh;
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  border-radius: 14px;
-  background: #1a1a1a;
-  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.8), 0 0 30px rgba(80, 106, 255, 0.2);
-  overflow-y: auto;
-  animation: modalPop 0.38s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+  max-height: 88vh;
+  gap: 20px;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: rgba(20,20,30,0.5);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  overflow: hidden;
+  display: flex;
+  animation: modalGlassPop 0.4s cubic-bezier(0.18,0.89,0.32,1.28) forwards;
   line-height: 1.6;
 }
 
@@ -899,7 +912,14 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
 }
 
 #news-modal .modal-content h2 {
+  margin: 4px 0 8px;
   text-align: center;
+  position: sticky;
+  font-size: 1rem;
+  top: 0;
+  background: #1a1a1a;
+  padding: 6px 0;
+  z-index: 1;
 }
 
 #news-modal .modal-content h3 {
@@ -908,6 +928,42 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
 
 #news-modal .modal-content h4 {
   text-align: right;
+}
+
+#news-modal .modal-content > div {
+  flex: 1 1 45%;
+  width: 100% !important;
+  border-right: none !important;
+  border-bottom: 1px solid #444;
+  padding: 6px 4px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+#news-modal .modal-content > div:first-child {
+  border-right: 1px solid #444;
+}
+
+#news-modal .modal-content > div:last-child {
+  border-bottom: none;
+}
+
+#news-modal .modal-content h1 { font-size: 1.25rem !important; margin: 8px 0 4px; }
+#news-modal .modal-content h3 { font-size: 1.05rem !important; margin: 12px 0 6px; }
+
+#close-news-modal {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  min-width: 120px;
+  font-size: 0.9rem;
+  padding: 8px 16px;
+}
+
+#close-news-modal:hover {
+  background: #555;
 }
 
 .skeleton-loader {
@@ -1023,6 +1079,12 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
   margin: 20px auto 0;
   width: fit-content;
   padding: 10px 10px;
+}
+
+.release-body {
+  font-size: 0.84rem;
+  line-height: 1.45;
+  margin: 0;
 }
 
 #news-modal .release-body {
@@ -1151,6 +1213,15 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
 
 #backToTop:active {
   transform: translateY(0) scale(.95);
+}
+
+@media (max-width: 480px) {
+  #news-modal .modal-content {
+    padding: 6px;
+    gap: 6px;
+    max-height: 94vh;
+    height: 94vh;
+  }
 }
 
 @media (max-width: 500px) {
@@ -1772,6 +1843,13 @@ button:hover,
   .section { min-width: 100%; min-height: auto; max-height: none; overflow-y: visible; }
 }
 
+@media (min-width: 769px) {
+  #news-modal .modal-content {
+    width: 95vw;
+    max-width: 1800px;
+  }
+}
+
 @media (max-width: 768px) {
   .custom-categories-header {
     flex-direction: column;
@@ -1826,6 +1904,17 @@ button:hover,
     font-size: 0.85rem;
   }
 }
+
+@media (max-width: 768px) {
+  #news-modal .modal-content {
+    flex-direction: column;
+    width: 98vw;
+    max-height: 92vh;
+    height: 92vh;
+    padding: 10px;
+    gap: 8px;
+  }
+
 
 @media (max-width: 600px) {
   .import-export { top: 5px !important; left: 5px !important; padding: 5px; gap: 5px; flex-wrap: wrap; }
