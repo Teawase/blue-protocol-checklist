@@ -14,14 +14,13 @@
 
   const weeklyTaskData = [
     { id: "weekly_pioneer_rewards", label: "🏅 Pioneer Awards (Pioneer NPC in town)", color: "yellow", maxProgress: 1 },
+	{ id: "weekly_seasonpass_store", label: "💰 Season Pass Store (Buy the entire store if possible)", color: "grey", maxProgress: 1 },
     { id: "weekly_reclaim_hub", label: "⏰ Reclaim Hub (If you missed something last week)", color: "grey", maxProgress: 1 },
     { id: "weekly_guild_activity_rewards", label: "👑 Guild Activity Rewards (Reach 7000/7000 Points)", color: "orange", maxProgress: 1 },
     { id: "weekly_guild_hunt_extended", label: "🏹 Guild Hunt (-Friday- | -Saturday- | -Sunday-)", color: "orange", maxProgress: 3 },
     { id: "weekly_guild_dance", label: "💃 Guild Dance (-Friday-)", color: "orange", maxProgress: 1 },
     { id: "weekly_world_boss_crusade_points", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3 },
-    { id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for lv. 40 Reforge Stones", color: "purple", maxProgress: 20 },
-    { id: "weekly_clear_dungeons_master_1_5", label: "🗡️ Dungeons (Master 1-5) | Clear for lv. 60 Reforge Stones", color: "purple", maxProgress: 20 },
-    { id: "weekly_clear_dungeons_master_6_20", label: "🗡️ Dungeons (Master 6-20) | Clear for lv. 80 Reforge Stones", color: "purple", maxProgress: 20 },
+    { id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_fight_bane_lord", label: "😈 Fight the Bane Lord | -Random Dungeon Encounter-", color: "brown", maxProgress: 5 },
     { id: "weekly_gear_exchange_store", label: "🔄 Gear Exchange Stores (Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey", maxProgress: 1 },
     { id: "weekly_honor_store", label: "⚜️ Honor Store (Spend 10000 Honor Points)", color: "grey", maxProgress: 1 },
@@ -29,16 +28,11 @@
     { id: "weekly_reputation_store", label: '📈 Reputation Store (Will Wish Coin, "Revive" Candy and/or Healing Aromatics)', color: "grey", maxProgress: 1 },
     { id: "weekly_guild_store", label: "🔰 Guild Store (Focus Potions, Supply Chests & Burl Shards)", color: "grey", maxProgress: 1 },
     { id: "weekly_event_store", label: "🎉 Event Store (If available)", color: "grey", maxProgress: 1 },
+	{ id: "weekly_phantom_factors", label: "🧬️ Phantom Factors (Farm up to 100 phantom factors inside cocoons in Bahamar)", color: "pearl", maxProgress: 1 },
     { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Resets every 2 weeks) > Check Timer ^", color: "pearl", maxProgress: 1 },
-    { id: "weekly_ice_dragon_normal", label: "❄️ Ice Dragon Raid - Easy (12710+ Ability Score)", color: "blue", maxProgress: 1 },
-    { id: "weekly_ice_dragon_hard", label: "❄️ Ice Dragon Raid - Hard (16140+ Ability Score)", color: "blue", maxProgress: 1 },
-    { id: "weekly_ice_dragon_nightmare", label: "❄️ Ice Dragon Raid - Nightmare (22300+ Ability Score)", color: "blue", maxProgress: 1 },
-    { id: "weekly_dark_dragon_normal", label: "🦴 Bone Dragon Raid - Easy (15210+ Ability Score)", color: "dark_purple", maxProgress: 1 },
-    { id: "weekly_dark_dragon_hard", label: "🦴 Bone Dragon Raid - Hard (19040+ Ability Score)", color: "dark_purple", maxProgress: 1 },
-    { id: "weekly_dark_dragon_nightmare", label: "🦴 Bone Dragon Raid - Nightmare (24180+ Ability Score)", color: "dark_purple", maxProgress: 1 },
-    { id: "weekly_light_dragon_normal", label: "✨ Light Dragon Raid - Easy (16140+ Ability Score)", color: "gold", maxProgress: 1 },
-    { id: "weekly_light_dragon_hard", label: "✨ Light Dragon Raid - Hard (20670+ Ability Score)", color: "gold", maxProgress: 1 },
-    { id: "weekly_light_dragon_nightmare", label: "✨ Light Dragon Raid - Nightmare (27790+ Ability Score)", color: "gold", maxProgress: 1 }
+	{ id: "weekly_dragons_easy", label: "🐉 Dragon Raids -Easy- (16140+ Ability Score)", color: "blue", maxProgress: 3 },
+	{ id: "weekly_dragons_hard", label: "🐉 Dragon Raids -Hard- (20670+ Ability Score)", color: "dark_purple", maxProgress: 3 },
+	{ id: "weekly_dragons_nightmare", label: "🐉 Dragon Raids -Nightmare- (27790+ Ability Score)", color: "gold", maxProgress: 3 },
   ];
 
   const HOLD_INTERVAL_MS = 150;
