@@ -14,7 +14,6 @@
 
   const weeklyTaskData = [
     { id: "weekly_pioneer_rewards", label: "🏅 Pioneer Awards (Pioneer NPC in town)", color: "yellow", maxProgress: 1 },
-	{ id: "weekly_seasonpass_store", label: "💰 Season Pass Store (Buy the entire store if possible)", color: "grey", maxProgress: 1 },
     { id: "weekly_reclaim_hub", label: "⏰ Reclaim Hub (If you missed something last week)", color: "grey", maxProgress: 1 },
     { id: "weekly_guild_activity_rewards", label: "👑 Guild Activity Rewards (Reach 7000/7000 Points)", color: "orange", maxProgress: 1 },
     { id: "weekly_guild_hunt_extended", label: "🏹 Guild Hunt (-Friday- | -Saturday- | -Sunday-)", color: "orange", maxProgress: 3 },
@@ -22,11 +21,12 @@
     { id: "weekly_world_boss_crusade_points", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3 },
     { id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
     { id: "weekly_fight_bane_lord", label: "😈 Fight the Bane Lord | -Random Dungeon Encounter-", color: "brown", maxProgress: 5 },
+	{ id: "weekly_seasonpass_store", label: "💰 Season Pass Store (Buy the entire store if possible)", color: "grey", maxProgress: 1 },	
+    { id: "weekly_guild_store", label: "🔰 Guild Store (Focus Potions, Supply Chests & Burl Shards)", color: "grey", maxProgress: 1 },
     { id: "weekly_gear_exchange_store", label: "🔄 Gear Exchange Stores (Luno Pouches, Alloy Shards & Reforge Stones)", color: "grey", maxProgress: 1 },
     { id: "weekly_honor_store", label: "⚜️ Honor Store (Spend 10000 Honor Points)", color: "grey", maxProgress: 1 },
     { id: "weekly_friendship_store", label: "🤝 Friendship Store (Earn 2000 Friendship Points)", color: "grey", maxProgress: 1 },
     { id: "weekly_reputation_store", label: '📈 Reputation Store (Will Wish Coin, "Revive" Candy and/or Healing Aromatics)', color: "grey", maxProgress: 1 },
-    { id: "weekly_guild_store", label: "🔰 Guild Store (Focus Potions, Supply Chests & Burl Shards)", color: "grey", maxProgress: 1 },
     { id: "weekly_event_store", label: "🎉 Event Store (If available)", color: "grey", maxProgress: 1 },
 	{ id: "weekly_phantom_factors", label: "🧬️ Phantom Factors (Farm up to 100 phantom factors inside cocoons in Bahamar)", color: "pearl", maxProgress: 1 },
     { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Resets every 2 weeks) > Check Timer ^", color: "pearl", maxProgress: 1 },
