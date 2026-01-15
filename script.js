@@ -2024,11 +2024,27 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
   }
 
   const getLatestVersion = async () => {
+    const CACHE_KEY_VERSION = 'bp_latest_version_cache';
+    const CACHE_DURATION_MS = 24 * 60 * 60 * 1000;
+
+    const cached = localStorage.getItem(CACHE_KEY_VERSION);
+    if (cached) {
+      try {
+        const { version, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION_MS) {
+          versionEl.textContent = `v${version}`;
+          return;
+        }
+      } catch {}
+    }
+
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest', { signal: controller.signal });
+      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest', {
+        signal: controller.signal
+      });
       clearTimeout(timeoutId);
 
       if (!res.ok) {
@@ -2039,8 +2055,15 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
         }
         throw new Error('Failed');
       }
+
       const latest = await res.json();
-      versionEl.textContent = `v${latest.tag_name}`;
+      const version = latest.tag_name;
+      versionEl.textContent = `v${version}`;
+
+      localStorage.setItem(CACHE_KEY_VERSION, JSON.stringify({
+        version,
+        timestamp: Date.now()
+      }));
     } catch (err) {
       console.warn('Version check failed:', err);
       versionEl.textContent = 'v?.?.?';
@@ -2049,9 +2072,15 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
 
   // --- News Modal ---
   const loadChangelogs = async () => {
-    if (!changelogsContent) return;
-  
-    changelogsContent.innerHTML = `
+    const releasesContent = document.getElementById('releases-content');
+    const commitsContent = document.getElementById('commits-content');
+    if (!releasesContent || !commitsContent) return;
+
+    const CACHE_KEY_RELEASES = 'bp_news_cache_releases';
+    const CACHE_KEY_COMMITS  = 'bp_news_cache_commits';
+    const CACHE_DURATION_MS  = 4 * 60 * 60 * 1000;
+
+    const skeleton = `
       <div class="skeleton-release">
         <div class="skeleton-loader skeleton-title"></div>
         <div class="skeleton-loader skeleton-date"></div>
@@ -2075,42 +2104,111 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
       </div>
     `;
 
+    releasesContent.innerHTML = skeleton;
+    commitsContent.innerHTML = skeleton;
+
+    const getCached = (key) => {
+      const item = localStorage.getItem(key);
+      if (!item) return null;
+      try {
+        const { data, timestamp } = JSON.parse(item);
+        if (Date.now() - timestamp < CACHE_DURATION_MS) return data;
+      } catch {}
+      localStorage.removeItem(key);
+      return null;
+    };
+
+    let releasesHtml = getCached(CACHE_KEY_RELEASES);
+    let commitsHtml  = getCached(CACHE_KEY_COMMITS);
+
+    if (releasesHtml && commitsHtml) {
+      releasesContent.innerHTML = releasesHtml;
+      commitsContent.innerHTML  = commitsHtml;
+      return;
+    }
+
+    let shouldCache = true;
+    releasesHtml = '';
+    commitsHtml  = '';
+
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      const timeoutId = setTimeout(() => controller.abort(), 7000);
 
-      const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases', { signal: controller.signal });
+      const [releasesRes, commitsRes] = await Promise.all([
+        fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases', { signal: controller.signal }),
+        fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/commits?sha=main&per_page=20', { signal: controller.signal })
+      ]);
+
       clearTimeout(timeoutId);
 
-      if (!res.ok) {
-        if (res.status === 403 || res.status === 429) {
-          changelogsContent.textContent = 'Changelogs unavailable (rate limited)';
-          return;
-        }
-        changelogsContent.textContent = 'Failed to load changelogs';
-        return;
+      if (!releasesRes.ok) {
+        releasesHtml = '<p>Failed to load releases (GitHub may be rate-limited)</p>';
+        shouldCache = false;
+      } else {
+        const releases = await releasesRes.json();
+        (releases || []).slice(0,10).forEach(r => {
+          const date = new Date(r.published_at || r.created_at).toLocaleDateString();
+          releasesHtml += `
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin:25px 0 15px">
+              <h1 style="margin:0;color:#ffb800;font-size:1.5rem">${r.tag_name}</h1>
+              <span style="color:#888;font-size:1.1rem;white-space:nowrap">${date}</span>
+            </div>
+            <div class="release-body" style="margin-bottom:35px">${marked.parse(r.body || 'No details')}</div>
+          `;
+        });
       }
 
-      const releases = await res.json();
-      let html = '';
-      (releases || []).slice(0,10).forEach(r => {
-        const date = new Date(r.published_at || r.created_at).toLocaleDateString();
-        html += `
-          <div style="display:flex;justify-content:space-between;align-items:baseline;margin:25px 0 15px">
-            <h1 style="margin:0;color:#ffb800;font-size:1.5rem">${r.tag_name}</h1>
-            <span style="color:#888;font-size:1.1rem;white-space:nowrap">${date}</span>
-          </div>
-          <div class="release-body" style="margin-bottom:35px">${marked.parse(r.body || 'No details')}</div>
-        `;
-      });
-      changelogsContent.innerHTML = html || '<p>No updates found.</p>';
+      if (!commitsRes.ok) {
+        commitsHtml = '<p>Failed to load commits (GitHub may be rate-limited)</p>';
+        shouldCache = false;
+      } else {
+        const commits = await commitsRes.json();
+        const filteredCommits = commits.filter(c => {
+          const message = c.commit.message;
+          const parts = message.split('\n\n');
+          return parts.slice(1).join('\n\n').trim().length > 0;
+        });
+
+        if (filteredCommits.length === 0) {
+          commitsHtml = '<p>No commits with descriptions found.</p>';
+        } else {
+          filteredCommits.forEach(c => {
+            const date = new Date(c.commit.author.date).toLocaleDateString();
+            const shortSha = c.sha.slice(0,7);
+            const parts = c.commit.message.split('\n\n');
+            const body = parts.slice(1).join('\n\n').trim();
+
+            commitsHtml += `
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin:25px 0 15px">
+                <h3 style="margin:0;color:#a0c4ff;font-size:1.3rem">Commit ${shortSha}</h3>
+                <span style="color:#888;font-size:1.1rem;white-space:nowrap">${date}</span>
+              </div>
+              <div class="release-body" style="margin-bottom:35px">${marked.parse(body || 'No description')}</div>
+            `;
+          });
+        }
+      }
+
+      if (shouldCache) {
+        const cacheObj = { data: null, timestamp: Date.now() };
+        cacheObj.data = releasesHtml;
+        localStorage.setItem(CACHE_KEY_RELEASES, JSON.stringify(cacheObj));
+
+        cacheObj.data = commitsHtml;
+        localStorage.setItem(CACHE_KEY_COMMITS, JSON.stringify(cacheObj));
+      }
     } catch (err) {
-      changelogsContent.innerHTML = '<p style="color:#aaa;text-align:center;">Changelogs unavailable</p>';
-      console.warn('Changelogs load failed:', err);
+      releasesHtml = '<p>Releases unavailable (timeout or network)</p>';
+      commitsHtml  = '<p>Commits unavailable (timeout or network)</p>';
+      console.warn('News fetch failed:', err);
     }
+
+    releasesContent.innerHTML = releasesHtml || '<p>No releases found.</p>';
+    commitsContent.innerHTML  = commitsHtml  || '<p>No commits found.</p>';
   };
 
-   newsBtn && (newsBtn.onclick = () => {
+  newsBtn && (newsBtn.onclick = () => {
     loadChangelogs();
     newsModal.style.display = 'flex';
     scrollModalIntoView(newsModal);
@@ -2384,19 +2482,24 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
     setTimeout(getLatestVersion, 3000);
 
   const versionSpan = $('version');
-    if (versionSpan) {
-      const versionContainer = versionSpan.parentElement;
+  if (versionSpan) {
+    const versionContainer = versionSpan.parentElement;
 
-      if (versionContainer) {
-        versionContainer.style.cursor = 'pointer';
-        versionContainer.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank');
-        versionContainer.title = 'Fetching last update...';
+    if (versionContainer) {
+      versionContainer.style.cursor = 'pointer';
+      versionContainer.onclick = () => window.open('https://github.com/Teawase/blue-protocol-checklist/releases', '_blank');
+      versionContainer.title = 'Fetching last update...';
 
-        fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist')
-          .then(res => res.ok ? res.json() : Promise.reject())
-          .then(data => {
-            if (data.pushed_at) {
-              const date = new Date(data.pushed_at);
+      const CACHE_KEY_REPO_INFO = 'bp_repo_info_cache';
+      const CACHE_DURATION_REPO = 24 * 60 * 60 * 1000;
+
+      const updateRepoLastUpdated = async () => {
+        const cached = localStorage.getItem(CACHE_KEY_REPO_INFO);
+        if (cached) {
+          try {
+            const { pushed_at, timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp < CACHE_DURATION_REPO) {
+              const date = new Date(pushed_at);
               const formatter = new Intl.DateTimeFormat(undefined, {
                 weekday: 'long',
                 year: 'numeric',
@@ -2408,20 +2511,73 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
                 timeZoneName: 'short'
               });
               versionContainer.title = `Last updated on ${formatter.format(date)}`;
-            } else {
-              versionContainer.title = 'Last updated: Unknown';
+              return;
             }
-          })
-          .catch(() => {
-            versionContainer.title = 'Last updated: Unknown';
+          } catch {}
+        }
+
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+          const res = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist', {
+            signal: controller.signal
           });
-      }
+          clearTimeout(timeoutId);
+
+          if (!res.ok) throw new Error('Failed');
+
+          const data = await res.json();
+          if (data.pushed_at) {
+            const date = new Date(data.pushed_at);
+            const formatter = new Intl.DateTimeFormat(undefined, {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+              timeZoneName: 'short'
+          });
+          versionContainer.title = `Last updated on ${formatter.format(date)}`;
+
+            localStorage.setItem(CACHE_KEY_REPO_INFO, JSON.stringify({
+              pushed_at: data.pushed_at,
+              timestamp: Date.now()
+            }));
+          }
+        } catch (err) {
+          versionContainer.title = 'Last updated: Unknown';
+          console.warn('Repo info fetch failed:', err);
+        }
+      };
+
+      updateRepoLastUpdated();
     }
+  }
 
   (() => {
     let currentVersion = versionEl.textContent.trim();
 
+    const CACHE_KEY_NEW_VERSION = 'bp_new_version_check_cache';
+    const CACHE_DURATION_MS = 60 * 60 * 1000;
+
     const checkNewVersion = async () => {
+      const cached = localStorage.getItem(CACHE_KEY_NEW_VERSION);
+      if (cached) {
+        try {
+          const { newVersion, timestamp } = JSON.parse(cached);
+          if (Date.now() - timestamp < CACHE_DURATION_MS && newVersion !== currentVersion) {
+            currentVersion = newVersion;
+            if (confirm(`New version available: ${newVersion}\nReload page to update?`)) {
+              location.reload(true);
+            }
+            return;
+          }
+        } catch {}
+      }
+
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -2436,14 +2592,20 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
 
         const d = await r.json();
         const newVersion = `v${d.tag_name}`;
+
         if (newVersion !== currentVersion) {
           currentVersion = newVersion;
+
+          localStorage.setItem(CACHE_KEY_NEW_VERSION, JSON.stringify({
+            newVersion,
+            timestamp: Date.now()
+          }));
+
           if (confirm(`New version available: ${newVersion}\nReload page to update?`)) {
             location.reload(true);
           }
         }
       } catch (e) {
-		
       }
     };
 
