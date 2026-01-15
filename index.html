@@ -269,10 +269,16 @@
 
   <!-- News / Changelog Modal -->
   <div id="news-modal" class="modal" style="display: none;">
-    <div class="modal-content" style="max-width: 800px; max-height: 80vh; overflow: auto;">
-      <h2>Releases</h2>
-      <div id="changelogs-content">Loading...</div>
-      <button id="close-news-modal" style="margin-top: 20px;">Close (Exit)</button>
+    <div class="modal-content" style="max-width: 1400px; max-height: 88vh; overflow: hidden; display: flex; gap: 30px; padding: 20px;">
+      <div style="flex: 1; overflow-y: auto; padding-right: 10px;">
+        <h2>Releases</h2>
+        <div id="releases-content">Loading...</div>
+      </div>
+      <div style="flex: 1; overflow-y: auto; padding-left: 10px; border-left: 1px solid #444;">
+        <h2>Recent Changes</h2>
+        <div id="commits-content">Loading...</div>
+      </div>
+      <button id="close-news-modal" style="margin-top: 20px; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);">Close (Exit)</button>
     </div>
   </div>
 
