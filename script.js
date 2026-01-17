@@ -20,7 +20,7 @@
     { id: "weekly_guild_dance", label: "💃 Guild Dance (-Friday-)", color: "orange", maxProgress: 1 },
     { id: "weekly_world_boss_crusade_points", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3 },
     { id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
-    { id: "weekly_fight_bane_lord", label: "😈 Fight the Bane Lord | -Random Dungeon Encounter-", color: "brown", maxProgress: 5 },
+    { id: "weekly_fight_bane_lord", label: "😈 Fight the Mischievous Nappo | -Random Dungeon Encounter-", color: "brown", maxProgress: 8 },
 	{ id: "weekly_seasonpass_store", label: "💰 Season Pass Store (Buy the entire store if possible)", color: "grey", maxProgress: 1 },	
     { id: "weekly_guild_store", label: "🔰 Guild Store (Focus Potions, Supply Chests, Moss/Burl/Meteorite Shards)", color: "grey", maxProgress: 1 },
     { id: "weekly_gear_exchange_store", label: "🔄 Gear Exchange Store (Luno Pouch, Reforge Stones)", color: "grey", maxProgress: 1 },
