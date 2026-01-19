@@ -2020,7 +2020,7 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
 
   const getLatestVersion = async () => {
     const CACHE_KEY_VERSION = 'bp_latest_version_cache';
-    const CACHE_DURATION_MS = 24 * 60 * 60 * 1000;
+    const CACHE_DURATION_MS = 60 * 60 * 1000;
 
     const cached = localStorage.getItem(CACHE_KEY_VERSION);
     if (cached) {
@@ -2474,7 +2474,8 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
     document.addEventListener('contextmenu', e => e.preventDefault());
     updateTitle();
     await checkGDPR();
-    setTimeout(getLatestVersion, 3000);
+    getLatestVersion();
+    setInterval(getLatestVersion, 60 * 60 * 1000);
 
   const versionSpan = $('version');
   if (versionSpan) {
