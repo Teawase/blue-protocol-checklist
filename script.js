@@ -2553,58 +2553,80 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
   }
 
   (() => {
-    let currentVersion = versionEl.textContent.trim();
-
     const CACHE_KEY_NEW_VERSION = 'bp_new_version_check_cache';
     const CACHE_DURATION_MS = 60 * 60 * 1000;
 
-    const checkNewVersion = async () => {
-      const cached = localStorage.getItem(CACHE_KEY_NEW_VERSION);
-      if (cached) {
-        try {
-          const { newVersion, timestamp } = JSON.parse(cached);
-          if (Date.now() - timestamp < CACHE_DURATION_MS && newVersion !== currentVersion) {
-            currentVersion = newVersion;
+  const checkNewVersion = async () => {
+    if (!versionEl.textContent || 
+        versionEl.textContent.includes('?') || 
+        versionEl.textContent.includes('Loading...') || 
+        versionEl.textContent.trim() === '') {
+      console.log("[VersionCheck] Skipped: No valid version displayed yet");
+      return;
+    }
+
+    const currentVersion = versionEl.textContent.trim();
+
+    const cached = localStorage.getItem('bp_new_version_check_cache');
+    if (cached) {
+      try {
+        const { newVersion, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION_MS) {
+          if (newVersion !== currentVersion) {
             if (confirm(`New version available: ${newVersion}\nReload page to update?`)) {
               location.reload(true);
             }
-            return;
           }
-        } catch {}
-      }
-
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-        const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {
-          cache: "no-store",
-          signal: controller.signal
-        });
-        clearTimeout(timeoutId);
-
-        if (!r.ok) return;
-
-        const d = await r.json();
-        const newVersion = `v${d.tag_name}`;
-
-        if (newVersion !== currentVersion) {
-          currentVersion = newVersion;
-
-          localStorage.setItem(CACHE_KEY_NEW_VERSION, JSON.stringify({
-            newVersion,
-            timestamp: Date.now()
-          }));
-
-          if (confirm(`New version available: ${newVersion}\nReload page to update?`)) {
-            location.reload(true);
-          }
+          return;
         }
-      } catch (e) {
+      } catch {
       }
-    };
+    }
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {
+        cache: "no-store",
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (!r.ok) {
+        console.warn("GitHub fetch failed:", r.status);
+        return;
+      }
+
+      const d = await r.json();
+      let latestTag = d.tag_name.trim();
+
+      const normalize = (v) => v.startsWith('v') ? v : 'v' + v;
+      const normalizedCurrent = normalize(currentVersion);
+      const normalizedLatest = normalize(latestTag);
+
+      localStorage.setItem('bp_new_version_check_cache', JSON.stringify({
+        newVersion: normalizedLatest,
+        timestamp: Date.now()
+      }));
+
+      console.log("[VersionCheck] Cache updated with:", normalizedLatest);
+
+      if (normalizedLatest !== normalizedCurrent) {
+        if (confirm(`New version available: ${normalizedLatest}\nReload page to update?`)) {
+          location.reload(true);
+        }
+      }
+
+    } catch (e) {
+      console.warn("Version check failed (safe):", e.message);
+    }
+  };
+
+    setTimeout(checkNewVersion, 6000);
 
     setInterval(checkNewVersion, 60 * 60 * 1000);
+
     window.checkNewVersion = checkNewVersion;
   })();
 
