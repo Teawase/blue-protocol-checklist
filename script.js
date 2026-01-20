@@ -2487,7 +2487,7 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
       versionContainer.title = 'Fetching last update...';
 
       const CACHE_KEY_REPO_INFO = 'bp_repo_info_cache';
-      const CACHE_DURATION_REPO = 24 * 60 * 60 * 1000;
+      const CACHE_DURATION_REPO = 4 * 60 * 60 * 1000;
 
       const updateRepoLastUpdated = async () => {
         const cached = localStorage.getItem(CACHE_KEY_REPO_INFO);
