@@ -941,7 +941,12 @@
 
   const renderTasks = (container, data, section) => {
     container.innerHTML = '';
-    data.forEach(t => container.appendChild(createTaskElement(t, section)));
+    const fragment = document.createDocumentFragment();
+    data.forEach(t => {
+      const el = createTaskElement(t, section);
+      fragment.appendChild(el);
+    });
+    container.appendChild(fragment);
     updateCounter(section);
   };
 
@@ -1021,7 +1026,9 @@
         const p = document.createElement('p'); p.className = 'empty-category'; p.textContent = 'No tasks yet. Add one to get started!';
         tasksDiv.appendChild(p);
       } else {
-        cat.tasks.forEach(t => tasksDiv.appendChild(createCustomTaskElement(catId, t)));
+        const tasksFragment = document.createDocumentFragment();
+        cat.tasks.forEach(t => tasksFragment.appendChild(createCustomTaskElement(catId, t)));
+        tasksDiv.appendChild(tasksFragment);
       }
       catDiv.appendChild(tasksDiv);
       customCategoriesContainer.appendChild(catDiv);
@@ -1048,31 +1055,34 @@
     const progress = section === 'daily' ? dailyProgress : weeklyProgress;
     const bar = section === 'daily' ? dailyProgressBar : weeklyProgressBar;
     const msg = section === 'daily' ? dailyCompletionMsg : weeklyCompletionMsg;
-    const done = container.querySelectorAll('.task.completed').length;
-    const total = container.querySelectorAll('.task').length;
+  
+    const tasks = Array.from(container.children);
+    const done = tasks.filter(t => t.classList.contains('completed')).length;
+    const total = tasks.length;
     const pct = total ? (done / total * 100) : 0;
-    if (counter) {
-      counter.textContent = `${done} / ${total} complete`;
-      counter.classList.add('animate');
-      setTimeout(() => counter.classList.remove('animate'), 800);
-    }
-    if (progress) {
-      progress.style.width = `${pct}%`;
-      progress.textContent = `${pct.toFixed(0)}%`;
-    }
-    if (bar) bar.dataset.tooltip = `${done}/${total} (${pct.toFixed(1)}%)`;
-    const lerp = (a,b,t) => a + (b-a)*t;
-    const blue=[80,106,255], gold=[255,184,0];
-    const rgb = blue.map((v,i)=>Math.round(lerp(v,gold[i],pct/100)));
-    if (progress) progress.style.background = `linear-gradient(90deg, rgb(${rgb}), rgb(${rgb}))`;
-    if (done === total && total) {
-      if (msg) msg.style.display = 'block';
-      if (progress && !progress.dataset.confettiDone) {
-        progress.dataset.confettiDone = 'true';
-        if (typeof confetti === 'function') {
-          confetti({ particleCount: 250, spread: 360, origin: { x: 0.5, y: -0.5 } });
-        } else {
-          console.warn('Confetti not loaded yet - skipping animation');
+  
+  if (counter) {
+    counter.textContent = `${done} / ${total} complete`;
+    counter.classList.add('animate');
+    setTimeout(() => counter.classList.remove('animate'), 800);
+  }
+  if (progress) {
+    progress.style.width = `${pct}%`;
+    progress.textContent = `${pct.toFixed(0)}%`;
+  }
+  if (bar) bar.dataset.tooltip = `${done}/${total} (${pct.toFixed(1)}%)`;
+  
+  const lerp = (a,b,t) => a + (b-a)*t;
+  const blue=[80,106,255], gold=[255,184,0];
+  const rgb = blue.map((v,i)=>Math.round(lerp(v,gold[i],pct/100)));
+  if (progress) progress.style.background = `linear-gradient(90deg, rgb(${rgb}), rgb(${rgb}))`;
+  
+  if (done === total && total) {
+    if (msg) msg.style.display = 'block';
+    if (progress && !progress.dataset.confettiDone) {
+      progress.dataset.confettiDone = 'true';
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 250, spread: 360, origin: { x: 0.5, y: -0.5 } });
         }
       }
     } else {
@@ -1086,7 +1096,8 @@
     const input = section === 'daily' ? dailyFilterInput : weeklyFilterInput;
     const hide = hideCompletedState[section];
     const text = input ? input.value.toLowerCase() : '';
-    container.querySelectorAll('.task').forEach(t => {
+  
+    Array.from(container.children).forEach(t => {
       const match = t.textContent.toLowerCase().includes(text);
       const completed = t.classList.contains('completed');
       t.style.display = match && (!completed || !hide) ? '' : 'none';
@@ -1633,10 +1644,17 @@
     dayCountMode = dayCountMode === 'sea' ? 'global' : 'sea';
     saveDayCountMode();
     updateTitle();
+
     currentTZ = dayCountMode === 'sea' ? 'Asia/Bangkok' : 'America/Noronha';
     localStorage.setItem(TZ_STORAGE_KEY, currentTZ);
     updateServerTime();
-    timers.forEach(t => t.update());
+
+    timers.forEach(t => {
+      t.computeStateAndUpdate();
+    });
+
+    cachedTargets = {};
+    timers.forEach(t => recentlyChanged.add(t.cfg.id));
 
     const showToast = (message) => {
       const toast = document.createElement('div');
@@ -1697,35 +1715,29 @@
       this.cnt = this.el.querySelector('.countdown');
     }
 
-    update(now = new Date()) {
-      if (!this.cfg) {
-        this.cnt.textContent = 'Error';
-        return;
-      }
-
+    computeStateAndUpdate() {
       const region = getRegion();
-      const regionLabel = region === 'NA' ? 'Global' : 'SEA';
-      this.nameEl.textContent = `${this.baseLabel} (${regionLabel})`;
-
       const nextStart = calculateNextEventTime(this.cfg, region);
       const currentEnd = calculateCurrentEventEnd(this.cfg, region);
       const active = isEventActive(this.cfg, region);
-
       const target = active && currentEnd ? currentEnd : nextStart;
-      const diff = Math.max(0, target - now);
 
-      const o = {
-        d: Math.floor(diff / 86400000),
-        h: Math.floor((diff % 86400000) / 3600000),
-        m: Math.floor((diff % 3600000) / 60000),
-      s: Math.floor((diff % 60000) / 1000)
-      };
+      this.nameEl.textContent = `${this.baseLabel} (${region === 'NA' ? 'Global' : 'SEA'})`;
 
-const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
-                  o.h > 0 ? `${o.h}h ${o.m}m ${o.s}s` :
-                  o.m > 0 ? `${o.m}m ${o.s}s` : `${o.s}s`;
+      const now = new Date();
+      let diff = Math.max(0, target - now);
 
-      this.cnt.textContent = active ? `${formatted} left` : `${formatted} until ${this.baseLabel.includes('Reset') || this.baseLabel.includes('Vaults') ? 'reset' : 'start'}`;
+      if (diff <= 0) {
+        const forcedNext = calculateNextEventTime(this.cfg, region);
+        diff = Math.max(0, forcedNext - now);
+      }
+
+      const display = formatTimeSmart(diff);
+
+      this.cnt.textContent = active
+        ? `${display} left`
+        : `${display} until ${this.baseLabel.includes('Reset') || this.baseLabel.includes('Vaults') ? 'reset' : 'start'}`;
+
       this.el.classList.toggle('active', active);
     }
   }
@@ -1879,10 +1891,77 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
     new EventTimer('stimen_vaults_timer', 'stimen-vaults', '💎 Stimen Vaults')
   ];
 
-  const startTimerUpdates = () => {
-    const updateAll = () => timers.forEach(t => t.update());
-    updateAll();
-    setInterval(updateAll, 1000);
+  let cachedTargets = {};
+  let timerUpdateInterval = null;
+  let recentlyChanged = new Set();
+
+  const formatTimeSmart = (diffMs) => {
+    if (diffMs <= 0) return "Now";
+
+    const totalSec = Math.floor(diffMs / 1000);
+
+    const days    = Math.floor(totalSec / 86400);
+    const hours   = Math.floor((totalSec % 86400) / 3600);
+    const minutes = Math.floor((totalSec % 3600) / 60);
+
+    if (days > 0) {
+      return `${days}d ${hours}h ${minutes}m`;
+    }
+    if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    }
+    return minutes > 0 ? `${minutes}m` : "Now";
+  };
+
+  const updateAllTimers = (force = false) => {
+    timers.forEach(t => {
+      t.computeStateAndUpdate();
+    });
+
+    if (recentlyChanged.size > 0) {
+      setTimeout(() => {
+        recentlyChanged.clear();
+      }, 65_000);
+    }
+  };
+
+  const startSmartTimerUpdates = () => {
+    updateAllTimers(true);
+
+    const switchTo = (ms) => {
+      if (timerUpdateInterval) clearInterval(timerUpdateInterval);
+      timerUpdateInterval = setInterval(() => updateAllTimers(), ms);
+      timerUpdateInterval._ms = ms;
+    };
+
+    const manageFrequency = () => {
+      const nowSec = new Date().getSeconds();
+
+      if (recentlyChanged.size > 0 || nowSec < 10) {
+        if (!timerUpdateInterval || timerUpdateInterval._ms !== 1000) {
+          switchTo(1000);
+        }
+      } else {
+        if (!timerUpdateInterval || timerUpdateInterval._ms !== 60000) {
+          switchTo(60000);
+        }
+      }
+    };
+
+    const freqCheckId = setInterval(manageFrequency, 5000);
+
+    setTimeout(() => {
+      if (recentlyChanged.size === 0) {
+        switchTo(60000);
+      }
+    }, 120000);
+
+    manageFrequency();
+
+    window.addEventListener('beforeunload', () => {
+      clearInterval(freqCheckId);
+      if (timerUpdateInterval) clearInterval(timerUpdateInterval);
+    });
   };
 
   const timeDisplay = document.getElementById('timeDisplay');
@@ -1937,7 +2016,7 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
     const weeklyPct = Math.round((weeklyDone / weeklyTotal) * 100);
 
     document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
-  }, 5000);
+  }, 30000);
 
   // --- GDPR & Version Check ---
   const IPAPI_CACHE_KEY = 'ipapi_cache';
@@ -2209,7 +2288,18 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
     scrollModalIntoView(newsModal);
   });
   closeNewsModal && (closeNewsModal.onclick = () => newsModal.style.display = 'none');
-  newsModal && (newsModal.onclick = (e) => { if (e.target === newsModal) newsModal.style.display = 'none'; });
+  const closeNewsModalHandler = (e) => { if (e.target === newsModal) newsModal.style.display = 'none'; };
+  newsBtn && (newsBtn.onclick = () => {
+  loadChangelogs();
+  newsModal.style.display = 'flex';
+  scrollModalIntoView(newsModal);
+  newsModal.addEventListener('click', closeNewsModalHandler);
+  });
+  closeNewsModal && (closeNewsModal.onclick = () => {
+  newsModal.style.display = 'none';
+  newsModal.removeEventListener('click', closeNewsModalHandler);
+  });
+  
   importExportModal && (importExportModal.onclick = (e) => { if (e.target === importExportModal) importExportModal.style.display = 'none'; });
   profilesModal && (profilesModal.onclick = (e) => { if (e.target === profilesModal) profilesModal.style.display = 'none'; });
 
@@ -2634,8 +2724,16 @@ const formatted = o.d > 0 ? `${o.d}d ${o.h}h ${o.m}m ${o.s}s` :
     loadProfiles();
     cleanupOrphanedKeys();
     reloadCurrentProfileData();
-    startTimerUpdates();
+    startSmartTimerUpdates();
     showWelcomeTips();
+
+    window.addEventListener('beforeunload', () => {
+      [1, 1000, 5000, 30000, 60000, 3600000].forEach(time => clearInterval(time));
+      stopHoldIncrement();
+      stopHoldDecrement();
+      stopHoldIncrementCustom();
+      stopHoldDecrementCustom();
+    });
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

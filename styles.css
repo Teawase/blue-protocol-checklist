@@ -35,10 +35,6 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 10% 90%, rgba(58,18,136,.5) 0%, transparent 50%),
-    radial-gradient(circle at 90% 10%, rgba(0,34,68,.5) 0%, transparent 50%),
-    radial-gradient(circle at 15% 85%, rgba(30,11,68,.5) 0%, transparent 55%),
-    radial-gradient(circle at 85% 15%, rgba(0,18,51,.5) 0%, transparent 55%),
     radial-gradient(ellipse at center, rgba(20,0,92,.5) 0%, rgba(10,0,34,.5) 40%, transparent 70%),
     #000;
   pointer-events: none;
