@@ -19,7 +19,8 @@
     { id: "weekly_guild_hunt_extended", label: "🏹 Guild Hunt (-Friday- | -Saturday- | -Sunday-)", color: "orange", maxProgress: 3 },
     { id: "weekly_guild_dance", label: "💃 Guild Dance (-Friday-)", color: "orange", maxProgress: 1 },
     { id: "weekly_world_boss_crusade_points", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3 },
-    { id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for Reforge Stones", color: "purple", maxProgress: 20 },
+	{ id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for Reforge Stones Lv.120", color: "purple", maxProgress: 20 },
+    { id: "weekly_clear_dungeons_master", label: "🗡️ Dungeons (Master) | Clear for Reforge Stones Lv.140", color: "purple", maxProgress: 20 },
     { id: "weekly_fight_bane_lord", label: "😈 Fight the Mischievous Nappo | -Random Dungeon Encounter-", color: "brown", maxProgress: 8 },
 	{ id: "weekly_seasonpass_store", label: "💰 Season Pass Store (Buy the entire store if possible)", color: "grey", maxProgress: 1 },	
     { id: "weekly_guild_store", label: "🔰 Guild Store (Focus Potions, Supply Chests, Moss/Burl/Meteorite Shards)", color: "grey", maxProgress: 1 },
@@ -34,6 +35,7 @@
 	{ id: "weekly_dragons_easy", label: "🐉 Dragon Raids -Easy- (16140+ Ability Score)", color: "blue", maxProgress: 3 },
 	{ id: "weekly_dragons_hard", label: "🐉 Dragon Raids -Hard- (20670+ Ability Score)", color: "dark_purple", maxProgress: 3 },
 	{ id: "weekly_dragons_nightmare", label: "🐉 Dragon Raids -Nightmare- (27790+ Ability Score)", color: "gold", maxProgress: 3 },
+	{ id: "weekly_dreambloomraids_easy", label: "🌸 Dreambloom Raids -Easy- (1480+ Illusion Strenght)", color: "blue", maxProgress: 3 },
   ];
 
   const HOLD_INTERVAL_MS = 150;
