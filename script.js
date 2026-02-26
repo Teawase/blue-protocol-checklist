@@ -1030,10 +1030,36 @@
 
       const tasksDiv = document.createElement('div');
       tasksDiv.className = 'category-tasks';
-      if (cat.tasks.length === 0) {
-        const p = document.createElement('p'); p.className = 'empty-category'; p.textContent = 'No tasks yet. Add one to get started!';
-        tasksDiv.appendChild(p);
-      } else {
+
+  if (cat.tasks.length === 0) {
+    tasksDiv.innerHTML = `
+      <div class="empty-category" style="text-align:center;padding:2.5rem 1rem;color:#a0c4ff;">
+        <div style="font-size:3.5rem;margin-bottom:12px;opacity:0.7;">📭</div>
+        <div style="font-weight:600;margin-bottom:8px;">No tasks yet</div>
+        <div style="font-size:0.9rem;opacity:0.8;margin-bottom:18px;">
+          Add your first task to get started!
+        </div>
+        <button class="add-task-empty-btn" 
+                style="background:linear-gradient(135deg,#506aff,#7b9fff);padding:10px 24px;border-radius:999px;font-size:0.95rem;">
+          ➕ Add Task
+        </button>
+      </div>
+    `;
+
+    tasksDiv.querySelector('.add-task-empty-btn').onclick = () => {
+      currentCategoryId = catId;
+      currentTaskId = null;
+      categoryNameDisplay.textContent = cat.name;
+      customTaskLabel.value = '';
+      customTaskColor.value = 'grey';
+      customTaskMaxProgress.value = '1';
+      customTaskReset.value = 'permanent';
+      addCustomTaskBtn.textContent = 'Add Task';
+      addCustomTaskModal.style.display = 'flex';
+      setTimeout(() => customTaskLabel.focus(), 100);
+      scrollModalIntoView(addCustomTaskModal);
+    };
+  } else {
         const tasksFragment = document.createDocumentFragment();
         cat.tasks.forEach(t => tasksFragment.appendChild(createCustomTaskElement(catId, t)));
         tasksDiv.appendChild(tasksFragment);
@@ -2023,7 +2049,7 @@
     const dailyPct = Math.round((dailyDone / dailyTotal) * 100);
     const weeklyPct = Math.round((weeklyDone / weeklyTotal) * 100);
 
-    document.title = `Daily ${dailyPct}% | Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
+    document.title = `Daily ${dailyPct}% • Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
   }, 30000);
 
   // --- GDPR & Version Check ---

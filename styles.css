@@ -1388,6 +1388,21 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
   text-decoration: none;
 }
 
+.task label {
+  line-height: 1.45;
+  display: block;
+}
+
+.counter,
+.category-counter,
+.progress-badge {
+  font-feature-settings: "tnum" !important;
+}
+
+h2, h3 {
+  letter-spacing: 2px !important;
+}
+
 .task.completed label {
   color: #a0c4ff;
   font-weight: 600;
@@ -1911,6 +1926,14 @@ button:hover,
     gap: 8px;
   }
 
+@media (max-width: 600px) {
+  .task {
+    padding: 1.1rem 1.25rem;
+  }
+  .task label {
+    font-size: 1.02rem;
+  }
+}
 
 @media (max-width: 600px) {
   .import-export { top: 5px !important; left: 5px !important; padding: 5px; gap: 5px; flex-wrap: wrap; }
