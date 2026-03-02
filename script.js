@@ -38,6 +38,7 @@
 	{ id: "weekly_dragons_hard", label: "🐉 Dragon Raids -Hard- (20670+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: true },
 	{ id: "weekly_dragons_nightmare", label: "🐉 Dragon Raids -Nightmare- (27790+ Ability Score)", color: "gold", maxProgress: 3, optional: false },
 	{ id: "weekly_dreambloomraids_easy", label: "🌸 Dreambloom Raids -Easy- (1480+ Illusion Strenght)", color: "blue", maxProgress: 3, optional: false },
+	{ id: "weekly_dreambloomraids_hard", label: "🌸 Dreambloom Raids -Hard- (2230+ Illusion Strenght)", color: "dark_purple", maxProgress: 3, optional: false }
   ];
 
   const HOLD_INTERVAL_MS = 150;
