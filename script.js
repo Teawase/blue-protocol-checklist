@@ -38,9 +38,9 @@
 	{ id: "weekly_dragons_easy", label: "🐉 Dragon Raids -Easy- (16140+ Ability Score)", color: "blue", maxProgress: 3, optional: true },
 	{ id: "weekly_dragons_hard", label: "🐉 Dragon Raids -Hard- (20670+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: true },
 	{ id: "weekly_dragons_nightmare", label: "🐉 Dragon Raids -Nightmare- (27790+ Ability Score)", color: "gold", maxProgress: 3, optional: false },
-	{ id: "weekly_dreambloomraids_easy", label: "🌸 Dreambloom Raids -Easy- (1480+ Illusion Strenght)", color: "blue", maxProgress: 3, optional: false },
-	{ id: "weekly_dreambloomraids_hard", label: "🌸 Dreambloom Raids -Hard- (2050+ Illusion Strenght)", color: "dark_purple", maxProgress: 3, optional: false },
-	{ id: "weekly_dreambloomraids_nightmare", label: "🌸 Dreambloom Raids -Nightmare- (2260+ Illusion Strenght)", color: "gold", maxProgress: 3, optional: false }
+	{ id: "weekly_dreambloomraids_easy", label: "🌸 Dreambloom Raids -Easy- (1480+ Illusion Strength)", color: "blue", maxProgress: 3, optional: false },
+	{ id: "weekly_dreambloomraids_hard", label: "🌸 Dreambloom Raids -Hard- (2050+ Illusion Strength)", color: "dark_purple", maxProgress: 3, optional: false },
+	{ id: "weekly_dreambloomraids_nightmare", label: "🌸 Dreambloom Raids -Nightmare- (2260+ Illusion Strength)", color: "gold", maxProgress: 3, optional: false }
   ];
 
   const HOLD_INTERVAL_MS = 150;
