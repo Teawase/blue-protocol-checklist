@@ -19,9 +19,9 @@
     { id: "weekly_guild_hunt_extended", label: "🏹 Guild Hunt (-Friday- | -Saturday- | -Sunday-)", color: "orange", maxProgress: 3, optional: false },
     { id: "weekly_guild_dance", label: "💃 Guild Dance (-Friday-)", color: "orange", maxProgress: 1, optional: false },
     { id: "weekly_world_boss_crusade_points", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3, optional: false },
-	{ id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (Normal/Hard) | Clear for Reforge Stones Lv.120", color: "purple", maxProgress: 20, optional: true },
-    { id: "weekly_clear_dungeons_master", label: "🗡️ Dungeons (Masters 1-5) | Clear for Reforge Stones Lv.140", color: "purple", maxProgress: 20, optional: true },
-    { id: "weekly_clear_dungeons_master+", label: "🗡️ Dungeons (Masters 6-20) | Clear for Reforge Stones Lv.160", color: "purple", maxProgress: 20, optional: false },
+	{ id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (N/H) | Clear for Reforge Stones Lv.120", color: "purple", maxProgress: 20, optional: true },
+    { id: "weekly_clear_dungeons_master", label: "🗡️ Dungeons (M1-5) | Clear for Reforge Stones Lv.140", color: "purple", maxProgress: 20, optional: true },
+    { id: "weekly_clear_dungeons_master+", label: "🗡️ Dungeons (M6-20) | Clear for Reforge Stones Lv.160", color: "purple", maxProgress: 20, optional: false },
     { id: "weekly_fight_bane_lord", label: "😈 Fight the Mischievous Nappo | -Random Dungeon Encounter-", color: "brown", maxProgress: 5, optional: false },
     { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Resets every 2 weeks) > Check Timer ^", color: "pearl", maxProgress: 1, optional: false },
 	{ id: "weekly_seasonpass_store", label: "💰 Season Pass Store (The entire store if possible)", color: "grey", maxProgress: 1, optional: false },
@@ -1821,7 +1821,7 @@
       id: 'stimen-vaults',
       schedule: {
         NA: { days: [1], hour: 4, minute: 0, durationHours: 3, intervalWeeks: 2, referenceDate: '2025-10-20', inverted: true },
-        SEA: { days: [0], hour: 19, minute: 0, durationHours: 3, intervalWeeks: 2, referenceDate: '2025-12-08', inverted: true }
+        SEA: { days: [0], hour: 19, minute: 0, durationHours: 3, intervalWeeks: 2, referenceDate: '2025-12-15', inverted: true }
       }
     }
   ];
