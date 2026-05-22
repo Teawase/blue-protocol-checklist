@@ -20,7 +20,8 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 | 🖼️ Custom Backgrounds                  | Use your own images as website backgrounds (direct URL with validation and preview).               |
 | 🔍 Live Search                         | Real-time filtering of daily/weekly tasks.                                                         |
 | ⚡ Rapid Increment/Decrement Counters  | Left-click (or hold) to add increments · Right-click (or hold) to undo — fast and forgiving.       |
-| 💾 Fully Offline & Data Portability    | Works offline and in incognito mode · One-click export/import and backup/restore.                  |
+| ☁️ Cloud Sync                          | Profiles and tasks can sync across devices using a unique sync code.                               |
+| 💾 Data Portability                    | One-click local export/import and backup/restore.                                                  |
 | 📱 Mobile UI Support                   | Responsive design with perfectly functioning timers and counters on every device.                  |
 | ⚡ Lightweight & Future-Proof          | Built with vanilla JavaScript and only two tiny dependencies.                                      |
 
@@ -100,7 +101,6 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 
 ## Resources & Extras
 - **Footer Links:** Quick access to community resources.
-- **No Internet Required:** Fully offline after initial load; timers use browser Date API.
 
 ## Tech Stack
 - **HTML5:** Semantic structure with modals and live regions.
@@ -111,8 +111,9 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 
 ## Contact
 - **Discord:** [@Teawase](https://discord.com/users/96620826689822720)
+- **Guild (Global):** [Tempestare](https://discord.com/invite/tempesto) (ID: 1649)
 - **In-game UID (Global):** #225964
-<img width="1920" height="1080" alt="ProfilePhoto" src="https://github.com/user-attachments/assets/68100abc-2938-446f-9c2e-bf3a9f40f6c6" />
+<img width="1920" height="1080" alt="ProfilePhoto" src="https://github.com/user-attachments/assets/4b3dfe94-6950-4550-9d94-c5b4e33adaf7" />
 
 <div align="center">
   
