@@ -196,12 +196,49 @@
 
   <!-- Import/Export Modal -->
   <div id="import-export-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <h2>Import/Export [Current Profile]</h2>
-      <p>Would you like to import or export your progress?</p>
-      <button id="importProgressBtn">Import Progress</button>
-      <button id="exportProgressBtn">Export Progress</button>
-      <button id="cancelImportExport" style="background:#666666;">Cancel (Exit)</button>
+    <div class="modal-content" style="max-width: 450px; background: #1a1a1a; color: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);">
+      <div class="cloud-sync-section" style="margin-bottom: 20px;">
+        <h3 style="color: #e2e8f0; margin-bottom: 4px; font-size: 1.1rem;">
+          ☁️ Cloud Sync (Optional)
+        </h3>
+        <p style="font-size: 0.8rem; color: #718096; margin-bottom: 12px; line-height: 1.3;">
+          Enter a custom Sync Code (minimum 8 characters) to back up or sync your progress across devices!
+        </p>
+        <input type="text" id="syncCodeInput" placeholder="Enter your unique Sync Code..." autocomplete="off" 
+               style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #111; color: #fff; margin-bottom: 12px; font-family: monospace; font-size: 1rem; box-sizing: border-box;">
+        <div style="display: flex; gap: 12px;">
+          <button id="cloudUploadBtn" class="btn primary-btn" style="flex: 1; padding: 10px 14px; font-size: 0.85rem; font-weight: 600;">
+            ⬆️ Upload
+          </button>
+          <button id="cloudDownloadBtn" class="btn secondary-btn" style="flex: 1; padding: 10px 14px; font-size: 0.85rem; font-weight: 600; background: #ff9500; color: #000; border-color: #cc7a00;">
+            ⬇️ Download
+          </button>
+        </div>
+        <div id="syncStatus" style="margin-top: 10px; font-size: 0.9rem; text-align: center; font-weight: bold; min-height: 20px; letter-spacing: 0.3px;"></div>
+      </div>
+      <div style="border-top: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px;"></div>
+      <div class="manual-backup-section" style="margin-bottom: 20px;">
+        <h3 style="color: #e2e8f0; margin-bottom: 4px; font-size: 1.1rem;">💾 Manual Backup (Recommended)</h3>
+        <p style="font-size: 0.8rem; color: #718096; margin-bottom: 12px; line-height: 1.3;">
+          Export your progress as a local file or import an existing data file.
+        </p>
+        <div style="display: flex; gap: 12px;">
+          <button id="importProgressBtn" class="btn secondary-btn" style="flex: 1; padding: 10px 14px; font-size: 0.85rem; font-weight: 600;">
+            📂 Import File
+          </button>
+          <button id="exportProgressBtn" class="btn secondary-btn" style="flex: 1; padding: 10px 14px; font-size: 0.85rem; font-weight: 600; background: #ff9500; color: #000; border-color: #cc7a00;">
+            📥 Export File
+          </button>
+        </div>
+      </div>
+      <p style="font-size: 0.9rem; color: #a0c4ff; margin-bottom: 12px; line-height: 1.4; border-left: 3px solid #a0c4ff; padding-left: 10px; background: rgba(160, 196, 255, 0.05); padding: 10px; border-radius: 4px;">
+        <strong style="color: #ffffff;">Tip:</strong> Cloud sync is convenient, but 
+        <strong style="color: #ff9500;">always keep a local backup</strong> and 
+        <strong style="color: #ff9500;">export your data often</strong> to ensure you never lose your progress.
+      </p>
+      <button id="cancelImportExport" class="btn danger-btn" style="background: #666; style="width: 25%; padding: 12px; font-size: 0.9rem; font-weight: bold;">
+        Cancel (Exit)
+      </button>
     </div>
   </div>
 

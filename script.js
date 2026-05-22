@@ -1332,7 +1332,129 @@
     reloadCurrentProfileData();
   });
 
-  // --- Backup System ---
+  // --- Cloud Sync System ---
+  const _0xdbUrlEncoded = 'aHR0cHM6Ly9icC1jaGVja2xpc3QtZGVmYXVsdC1ydGRiLmZpcmViYXNlaW8uY29tLw==';
+  const FIREBASE_DB_URL = atob(_0xdbUrlEncoded);
+
+  const syncCodeInput = $('syncCodeInput');
+  const cloudUploadBtn = $('cloudUploadBtn');
+  const cloudDownloadBtn = $('cloudDownloadBtn');
+  const syncStatus = $('syncStatus');
+
+  const showSyncStatus = (msg, color = '#a0c4ff') => {
+    if(!syncStatus) return;
+    syncStatus.textContent = msg;
+    syncStatus.style.color = color;
+    setTimeout(() => syncStatus.textContent = '', 4000);
+  };
+
+  const sanitizeFirebaseKey = (str) => {
+    return str.replace(/[\.\$\#\[\]]/g, '-').trim();
+  };
+
+  const getOrCreateDeviceToken = () => {
+    let token = localStorage.getItem('sync_device_token');
+    if (!token) {
+      token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      localStorage.setItem('sync_device_token', token);
+    }
+    return token;
+  };
+
+  if (cloudUploadBtn) {
+    cloudUploadBtn.onclick = async () => {
+      let code = syncCodeInput.value.trim();
+      if (!code || code.length < 8) return showSyncStatus('Sync Code must be at least 8 characters.', '#ff6b6b');
+      if (!code || code.length < 8 || code.length > 20) {
+        return showSyncStatus('Sync Code must be between 8 and 20 characters.', '#ff6b6b');
+      }
+  
+      const safeCode = sanitizeFirebaseKey(code);
+      const deviceToken = getOrCreateDeviceToken();
+    
+      cloudUploadBtn.disabled = true;
+      showSyncStatus('Verifying sync code...', '#fff');
+
+      try {
+        const checkRes = await fetch(`${FIREBASE_DB_URL}sync_codes/${safeCode}.json`);
+        if (!checkRes.ok) throw new Error(`Check failed with status: ${checkRes.status}`);
+      
+        const existingData = await checkRes.json();
+      
+        if (existingData !== null) {
+          if (existingData.owner_token !== deviceToken) {
+            showSyncStatus('❌ Code already taken by another user! Try a different one.', '#ff6b6b');
+            return;
+          }
+          showSyncStatus('Updating existing cloud slot...', '#fff');
+        } else {
+          showSyncStatus('Creating new cloud slot...', '#fff');
+        }
+
+        const profilesData = localStorage.getItem('checklist_profiles');
+        if (!profilesData) throw new Error('No profile data found locally to upload.');
+      
+        const res = await fetch(`${FIREBASE_DB_URL}sync_codes/${safeCode}.json`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            checklist_profiles: profilesData,
+            last_updated: Date.now(),
+            owner_token: deviceToken
+          })
+        });
+
+        if (res.ok) {
+          showSyncStatus('✅ Uploaded! You can update this slot anytime from this browser.', '#50d2c2');
+        } else {
+          throw new Error(`Server status: ${res.status}`);
+        }
+      } catch (err) {
+        showSyncStatus('❌ Upload failed. Connection error.', '#ff6b6b');
+        console.error('Firebase Sync Upload Error:', err);
+      } finally {
+        cloudUploadBtn.disabled = false;
+      }
+    };
+  }
+
+  if (cloudDownloadBtn) {
+    cloudDownloadBtn.onclick = async () => {
+      let code = syncCodeInput.value.trim();
+      if (!code || code.length < 8) return showSyncStatus('Enter your 8+ characters Sync Code first.', '#ff6b6b');
+
+      const confirmOverwrite = confirm('⚠️ WARNING: This will OVERWRITE your current local progress with the cloud data. Continue?');
+      if (!confirmOverwrite) return;
+
+      const safeCode = sanitizeFirebaseKey(code);
+      cloudDownloadBtn.disabled = true;
+      showSyncStatus('Downloading from Cloud...', '#fff');
+
+      try {
+        const res = await fetch(`${FIREBASE_DB_URL}sync_codes/${safeCode}.json`);
+        if (!res.ok) throw new Error(`Server status: ${res.status}`);
+      
+        const data = await res.json();
+      
+        if (!data || !data.checklist_profiles) {
+          showSyncStatus('❌ Sync Code not found in the cloud database.', '#ff6b6b');
+          return;
+        }
+
+        localStorage.setItem('checklist_profiles', data.checklist_profiles);
+        showSyncStatus('✅ Downloaded successfully! Refreshing...', '#50d2c2');
+      
+        setTimeout(() => location.reload(), 1500);
+      } catch (err) {
+        showSyncStatus('❌ Sync failed. Check network or code.', '#ff6b6b');
+        console.error('Sync Download Error:', err);
+      } finally {
+        cloudDownloadBtn.disabled = false;
+      }
+    };
+  }
+
+  // --- Manual Backup System ---
   const exportProgress = () => {
     if (!isStorageAllowed) return alert('Storage disabled');
     const pd = getProfileData();
@@ -1510,7 +1632,7 @@
     else onReady();
 
     window.updateBackupBadge = updateBadgeForCurrentProfile;
-  })();  
+  })(); 
 
   // --- Filters & Buttons --- 
   toggleDailyBtn && (toggleDailyBtn.onclick = () => {
