@@ -386,6 +386,7 @@
   };
 
   // --- Storage ---
+  let isInitialLoad = true;
   const getDailyStorage = () => {
     const pd = getProfileData();
     const date = getCurrentDailyDate();
@@ -396,7 +397,9 @@
       pd.daily_tasks = JSON.stringify(stored);
       resetDailyCustomTasks();
       saveProfiles();
-      location.reload();
+      if (!isInitialLoad) {
+        location.reload();
+      }
     }
     return stored;
   };
@@ -440,7 +443,9 @@
       pd.weekly_tasks = {};
       pd.weekly_reset_date = date;
       saveProfiles();
-      location.reload();
+      if (!isInitialLoad) {
+        location.reload();
+      }
     }
   };
 
@@ -2893,6 +2898,8 @@
       stopHoldIncrementCustom();
       stopHoldDecrementCustom();
     });
+
+    isInitialLoad = false;
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
