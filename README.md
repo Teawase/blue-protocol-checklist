@@ -1,10 +1,5 @@
 [![Version](https://img.shields.io/github/v/release/Teawase/blue-protocol-checklist?color=ef4444&style=flat-square&label=Version)](https://github.com/Teawase/blue-protocol-checklist/releases)
 [![Last update](https://img.shields.io/github/last-commit/Teawase/blue-protocol-checklist?color=f59e0b&style=flat-square&label=Last%20update)](https://github.com/Teawase/blue-protocol-checklist/commits/main)
-[![Stars](https://img.shields.io/github/stars/Teawase/blue-protocol-checklist?color=a855f7&style=flat-square&label=Stars&logo=github)](https://github.com/Teawase/blue-protocol-checklist/stargazers)
-[![Watchers](https://img.shields.io/github/watchers/Teawase/blue-protocol-checklist?color=3b82f6&style=flat-square&label=Watchers&logo=github)](https://github.com/Teawase/blue-protocol-checklist/watchers)
-[![Forks](https://img.shields.io/github/forks/Teawase/blue-protocol-checklist?color=22c55e&style=flat-square&label=Forks&logo=github)](https://github.com/Teawase/blue-protocol-checklist/network/members)
-[![Issues](https://img.shields.io/github/issues/Teawase/blue-protocol-checklist?color=ef4444&style=flat-square&label=Issues&logo=github)](https://github.com/Teawase/blue-protocol-checklist/issues)
-[![Commits](https://img.shields.io/github/commit-activity/m/Teawase/blue-protocol-checklist?color=10b981&style=flat-square&label=Commits&logo=github)](https://github.com/Teawase/blue-protocol-checklist/commits/main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
 # ✔️ Blue Protocol: Star Resonance Checklist (Global/SEA)
