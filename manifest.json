@@ -1,7 +1,7 @@
 {
   "name": "Blue Protocol: Star Resonance Checklist",
   "short_name": "BP Checklist",
-  "description": "Blue Protocol: Star Resonance Checklist – track daily and weekly tasks or create custom ones with this responsive, offline-friendly, web-based checklist.",
+  "description": "Blue Protocol: Star Resonance Checklist – updated for Season 3 – track daily and weekly tasks or create custom ones with this responsive, offline-friendly, web-based checklist.",
   "start_url": "/",
   "display": "standalone",
   "display_override": ["window-controls-overlay"],
