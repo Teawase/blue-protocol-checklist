@@ -2,7 +2,7 @@
 [![Last update](https://img.shields.io/github/last-commit/Teawase/blue-protocol-checklist?color=f59e0b&style=flat-square&label=Last%20update)](https://github.com/Teawase/blue-protocol-checklist/commits/main)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/Teawase/blue-protocol-checklist/blob/main/LICENSE)
 
-# ✔️ Blue Protocol: Star Resonance Checklist (Global/SEA)
+# ✔️ Blue Protocol: Star Resonance Checklist | S3 (Global/SEA)
 A simple, responsive web-based checklist for tracking daily and weekly tasks in Blue Protocol: Star Resonance, built with HTML, CSS, and JavaScript, using only confetti.js for celebrations and marked.js for markdown rendering. **The progress is saved locally in your browser (localStorage) and supports import/export functionality for easy backup and transfer. Installable as a Progressive Web App (PWA) for desktop/mobile.**
 ## 🔗✨ https://teawase.github.io/blue-protocol-checklist/ ✨🔗
 | Feature                                | Description                                                                                         |
@@ -32,7 +32,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
     </tr>
     <tr>
       <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/profiles.png" width="473" alt="Custom Profiles" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
-      <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/backup.png" width="473"  alt="Backup (Import/Export)" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
+      <td align="center"><img src="https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/backup.png" width="473" alt="Backup (Import/Export)" style="border-radius:12px; box-shadow:0 7px 22px rgba(0,0,0,0.2); margin:14px auto;" /></td>
     </tr>
   </table>
 </p>
@@ -44,11 +44,11 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Multiple Profiles:** Save your progress between multiple profiles/characters with independent progress tracking. You can also add an avatar to each and rename them whenever you want.
 - **Custom Background:** Change the website background with your own images to match your style or mood.
 - **Completion Toggling:** Click or Keyboard (Enter/Space) functionality to mark tasks as complete/incomplete; with line-through styling and opacity fade for completed items.
-- **Incremental Progress:** Keep track of how many dungeon runs you've completed, how many times you've fought the bane lord or others.
-  > **Left Click (MB1):** Increase by 1<br/>
-  > **Hold Left Click (MB1):** Increase quickly (continuous increment) | Mobile: Hold Tap<br/>
-  > **Right Click (MB2):** Decrease by 1<br/>
-  > **Hold Right Click (MB2):** Decrease quickly (continuous decrement) | Mobile: Double Tap + Hold<br/>
+- **Incremental Progress:** Keep track of how many dungeon runs you've completed, how many times you've fought the Bane Lord, or other activities.
+  * **Left Click (MB1):** Increase by 1
+  * **Hold Left Click (MB1):** Continuous rapid increment *(Mobile: Hold Tap)*
+  * **Right Click (MB2):** Decrease by 1
+  * **Hold Right Click (MB2):** Continuous rapid decrement *(Mobile: Double Tap + Hold)*
 - **Batch Actions:** "Select All" and "Deselect All" buttons for quick completion resets or bulk marking.
 - **Show/Hide Completed:** Toggle button to filter out finished tasks, improving focus on remaining work.
 - **Real-time counters** (e.g., "6 / 9 complete").
@@ -82,7 +82,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **Responsive Design:** Flexbox layout stacks sections vertically on mobile (<900px); tasks reflow from 2-column grid to full-width.
 - **Color-Coded UI:** Tasks use distinct backgrounds for quick visual grouping.
 - **Animations & Feedback:** Smooth transitions for task hovers, counter updates (fade/slide), and progress fills.
-- **Dynamic Page Title:** Updates to "Blue Protocol: Star Resonance Checklist (Day #X)" based on how many days have been since launch with a toggle for Global or SEA region; also shows progress percentages (e.g., "Daily 50% | Weekly 75%").
+- **Dynamic Page Title:** Updates to "Blue Protocol: Star Resonance Checklist (Day #X)" based on how many days it has been since launch with a toggle for Global or SEA region; also shows progress percentages (e.g., "Daily 50% | Weekly 75%").
 - **Current Server Time:** Toggles between Global and SEA time by clicking the server time display.
 - **Version Display:** Shows current version with a clickable link to releases and tooltip for last updated time.
 - **Accessibility Features:**
