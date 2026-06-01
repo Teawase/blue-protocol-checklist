@@ -102,7 +102,6 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 - **CSS3:** Flexbox, gradients, animations, dark theme.
 - **JavaScript (ES6+):** Vanilla JS with async/await, debouncing, and timezone handling. No frameworks.
 - **External:** Only **canvas-confetti** for celebrations and **marked** for markdown rendering.
-> Note: Some code in this project was generated with AI assistance and subsequently reviewed and refined by the developer.
 
 ## Contact
 - **Discord:** [@Teawase](https://discord.com/users/96620826689822720)
