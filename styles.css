@@ -53,7 +53,7 @@ body.custom-wallpaper {
 body.custom-wallpaper::before {
   background: transparent;
   backdrop-filter: none;
-  -webkit-backdrop-filter: non;
+  -webkit-backdrop-filter: none;
   background-image: none;
 }
 
@@ -526,17 +526,17 @@ h3 {
   z-index: 10;
 }
 
-.blue { --base1:#1f5faf; --base2:#2977d7; --hover1:#4590f9; }
-.brown { --base1:#3a1f17; --base2:#503425; --hover1:#6b493d; }
-.dark_purple { --base1:#4b2b55; --base2:#6a3e80; --hover1:#8a58a0; }
-.gold { --base1:#a3772e; --base2:#c59046; --hover1:#edd07c; }
-.green { --base1:#519b4a; --base2:#66b45f; --hover1:#87d17a; }
-.grey { --base1:#7c746f; --base2:#989077; --hover1:#b2ab8e; }
-.orange { --base1:#e07b00; --base2:#ff9400; --hover1:#ffb233; }
-.pearl { --base1:#d1c6c5; --base2:#d3cccc; --hover1:#d6d0cf; color:#333; }
-.purple { --base1:#4643a4; --base2: #595fb8; --hover1:#7a80ce; }
-.red { --base1:#b22222; --base2:#d93b3b; --hover1:#fa4e4e; }
-.yellow { --base1:#b9972c; --base2:#d2b430; --hover1:#e7c94f; }
+.blue { --base1:#1e4d8c; --base2:#2b6bbd; --hover1:#5494e8; }
+.brown { --base1:#47312b; --base2:#5e443c; --hover1:#7d6158; }
+.dark_purple { --base1:#3f284d; --base2:#573b6b; --hover1:#76558c; }
+.gold { --base1:#80622d; --base2:#bfa054; --hover1:#dec787; }
+.green { --base1:#316e3c; --base2:#469453; --hover1:#6bb878; }
+.grey { --base1:#575d63; --base2:#707880; --hover1:#8e97a1; }
+.orange { --base1:#c75300; --base2:#e06c16; --hover1:#f79245; }
+.pearl { --base1:#b9c3cc; --base2:#d1dae0; --hover1:#eaf0f4; color:#2c3e50; }
+.purple { --base1:#3e428c; --base2:#5459b3; --hover1:#757ace; }
+.red { --base1:#9c2424; --base2:#bf3636; --hover1:#e05858; }
+.yellow { --base1:#ab8a24; --base2:#cca93a; --hover1:#ebca5b; }
 
 .task.pearl:hover {
   color: #fff;

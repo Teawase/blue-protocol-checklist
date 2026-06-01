@@ -1,46 +1,41 @@
 (() => {
   // --- Main Tasks Data ---
   const dailyTaskData = [
-    { id: "daily_mystery_store", label: "🎁 Mystery Store (Moss/Burl/Meteorite Shards)", color: "grey", maxProgress: 1, optional: false },
-    { id: "daily_guild_checkin", label: "🏛️ Guild Check-In & Cargo (Guild & Cargo Administrators in Guild Center)", color: "orange", maxProgress: 1, optional: false },
-    { id: "daily_unstable_space_dungeon", label: "🌀 Unstable Space Dungeon | Clear", color: "purple", maxProgress: 2, optional: false },
-    { id: "daily_commissions", label: "📋 Bureau Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
+    { id: "daily_mystery_store", label: "🎁 Mystery Store (Buy what you want)", color: "grey", maxProgress: 1, optional: true },
+    { id: "daily_guild_checkin", label: "🏛️ Guild Check-In & Cargo (Laura & Douglas in Guild Center)", color: "orange", maxProgress: 1, optional: false },
+	{ id: "daily_starland_quest", label: "✨ Starland (Complete the Daily Quest)", color: "blue", maxProgress: 1, optional: false },
+    { id: "daily_unstable_clear", label: "🌀 Unstable Space (Clear)", color: "purple", maxProgress: 2, optional: false },
+    { id: "daily_bureau_commissions", label: "📋 Bureau Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
     { id: "daily_homestead_commissions", label: "🏡 Homestead Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
     { id: "daily_world_boss_keys", label: "🔑 World Boss Keys | Can skip up to 2 days (6 Keys)", color: "brown", maxProgress: 2, optional: false },
     { id: "daily_elite_boss_keys", label: "🗝️ Elite Boss Keys | Can skip up to 2 days (6 Keys)", color: "brown", maxProgress: 2, optional: false },
     { id: "daily_focus", label: "⭐ Life Skill Focus | Can skip up to 4 days (2000 Focus)", color: "yellow", maxProgress: 1, optional: false },
-    { id: "daily_season_activity_goals", label: "🏆 Season Pass Activity (Earn 500 Activity Merits)", color: "yellow", maxProgress: 1, optional: false }
+    { id: "daily_season_pass_activity", label: "🏆 Season Pass Activity (Earn 500 Activity Merits)", color: "yellow", maxProgress: 1, optional: false }
   ];
 
   const weeklyTaskData = [
-    { id: "weekly_pioneer_rewards", label: "🏅 Pioneer Awards (Pioneer NPC in town)", color: "yellow", maxProgress: 1, optional: false },
-    { id: "weekly_reclaim_hub", label: "⏰ Reclaim Hub (If you missed something last week)", color: "grey", maxProgress: 1, optional: false },
-    { id: "weekly_guild_activity_rewards", label: "👑 Guild Activity Rewards (Reach 7000/7000 Points)", color: "orange", maxProgress: 1, optional: false },
-    { id: "weekly_guild_hunt_extended", label: "🏹 Guild Hunt (-Friday- | -Saturday- | -Sunday-)", color: "orange", maxProgress: 3, optional: false },
-    { id: "weekly_guild_dance", label: "💃 Guild Dance (-Friday-)", color: "orange", maxProgress: 1, optional: false },
-    { id: "weekly_world_boss_crusade_points", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3, optional: false },
-	{ id: "weekly_clear_dungeons_normal", label: "🗡️ Dungeons (N/H) | Clear for Reforge Stones Lv.120", color: "purple", maxProgress: 20, optional: true },
-    { id: "weekly_clear_dungeons_master", label: "🗡️ Dungeons (M1-5) | Clear for Reforge Stones Lv.140", color: "purple", maxProgress: 20, optional: true },
-    { id: "weekly_clear_dungeons_master+", label: "🗡️ Dungeons (M6-20) | Clear for Reforge Stones Lv.160", color: "purple", maxProgress: 20, optional: false },
-    { id: "weekly_fight_bane_lord", label: "😈 Fight the Mischievous Nappo | -Random Dungeon Encounter-", color: "brown", maxProgress: 5, optional: false },
-    { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Resets every 2 weeks) > Check Timer ^", color: "pearl", maxProgress: 1, optional: false },
-	{ id: "weekly_seasonpass_store", label: "💰 Season Pass Store (The entire store if possible)", color: "grey", maxProgress: 1, optional: false },
-    { id: "weekly_guild_store", label: "🔰 Guild Store (Focus Potions, Supply Chests, Moss/Burl/Meteorite Shards)", color: "grey", maxProgress: 1, optional: false },
-    { id: "weekly_honor_store", label: "⚜️ Honor Store (Spend 10000 Honor Points)", color: "grey", maxProgress: 1, optional: false },
+    { id: "weekly_pioneer_awards", label: "🏅 Pioneer Awards (Stella at the Pioneer Bureau)", color: "yellow", maxProgress: 1, optional: false },
+    { id: "weekly_reclaim_hub", label: "⏰ Reclaim Hub (Claim missed rewards from last week)", color: "gold", maxProgress: 1, optional: false },
+	{ id: "weekly_starland_quests", label: "✨ Starland (Complete the Weekly Quests)", color: "blue", maxProgress: 1, optional: false },
+    { id: "weekly_guild_activity", label: "👑 Guild Activity Rewards (Reach 7000/7000 Activity Merits & Claim Rewards)", color: "orange", maxProgress: 1, optional: false },
+    { id: "weekly_guild_hunt", label: "🏹 Guild Hunt (Clear x2)", color: "orange", maxProgress: 3, optional: false },
+    { id: "weekly_guild_dance", label: "💃 Guild Dance (Participate)", color: "orange", maxProgress: 1, optional: false },
+    { id: "weekly_world_boss_crusade", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3, optional: false },
+    { id: "weekly_dungeon_encounter", label: "🐷 Fight the Squeaky Boarlet (Random Dungeon Encounter)", color: "brown", maxProgress: 5, optional: true },	
+    { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Clear the last floor available)", color: "pearl", maxProgress: 1, optional: false },
+	{ id: "weekly_season_store_elite", label: "🛒 Season Hub -Echoes of Ember Elite Store- (Buy Reforge Stones & Select Boxes)", color: "grey", maxProgress: 1, optional: false },
+	{ id: "weekly_season_store", label: "📦 Season Hub -Echoes of Ember Store- (Buy what you want)", color: "grey", maxProgress: 1, optional: true },
+    { id: "weekly_guild_store", label: "🔰 Guild Store (Buy Focus Potions, Supply Chests, Moss/Burl/Meteorite Shards)", color: "grey", maxProgress: 1, optional: false },
+    { id: "weekly_honor_store", label: "⚜️ Honor Store (Earn & Spend 10000 Honor Points)", color: "grey", maxProgress: 1, optional: false },
     { id: "weekly_friendship_store", label: "🤝 Friendship Store (Earn 2000 Friendship Points)", color: "grey", maxProgress: 1, optional: false },	
-	{ id: "weekly_orb_store", label: "🔴 Orb Store (Cheer-Up Treats)", color: "grey", maxProgress: 1, optional: true },
-    { id: "weekly_event_store", label: "🎉 Event Store (If available)", color: "grey", maxProgress: 1, optional: true },
-    { id: "weekly_gear_exchange_store", label: "🔄 Gear Exchange Store (Luno Pouch, Reforge Stones, Alloy Shards)", color: "grey", maxProgress: 1, optional: true },
-	{ id: "weekly_module_exchange", label: "🔧 Module Exchange (x100 Perfect Components)", color: "grey", maxProgress: 1, optional: true },
-    { id: "weekly_sigil_store", label: "🔮 Sigil Exchange Store (x10 Dreambloom Sigil Random Packs)", color: "grey", maxProgress: 1, optional: true },	
-    { id: "weekly_reputation_store", label: '📈 Regional Reputation Stores (Will Wish Coins, "Revive" Candies)', color: "grey", maxProgress: 1, optional: true },
-	{ id: "weekly_phantom_factors", label: "🧬️ Phantom Factors (Farm 100 phantom factors from cocoons)", color: "brown", maxProgress: 1, optional: true },
-	{ id: "weekly_dragons_easy", label: "🐉 Dragon Raids -Easy- (16140+ Ability Score)", color: "blue", maxProgress: 3, optional: true },
-	{ id: "weekly_dragons_hard", label: "🐉 Dragon Raids -Hard- (20670+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: true },
-	{ id: "weekly_dragons_nightmare", label: "🐉 Dragon Raids -Nightmare- (27790+ Ability Score)", color: "gold", maxProgress: 3, optional: false },
-	{ id: "weekly_dreambloomraids_easy", label: "🌸 Dreambloom Raids -Easy- (1480+ Illusion Strength)", color: "blue", maxProgress: 3, optional: false },
-	{ id: "weekly_dreambloomraids_hard", label: "🌸 Dreambloom Raids -Hard- (2050+ Illusion Strength)", color: "dark_purple", maxProgress: 3, optional: false },
-	{ id: "weekly_dreambloomraids_nightmare", label: "🌸 Dreambloom Raids -Nightmare- (2260+ Illusion Strength)", color: "gold", maxProgress: 3, optional: false }
+    { id: "weekly_event_store", label: "🎉 Event Store (If available)", color: "grey", maxProgress: 1, optional: false },
+	{ id: "weekly_orb_store", label: "🔴 Orb Store (Buy what you want)", color: "grey", maxProgress: 1, optional: true },
+    { id: "weekly_gear_exchange_store", label: "🔄 Gear Exchange Store (Buy Luno Pouches & Reforge Stones)", color: "grey", maxProgress: 1, optional: false },
+	{ id: "weekly_module_exchange", label: "🔧 Module Exchange (Buy Excellent Modules)", color: "grey", maxProgress: 1, optional: true },
+    { id: "weekly_sigil_store", label: "🔮 Sigil Exchange Store (Buy x10 Echoes of Ember Sigil Chests)", color: "grey", maxProgress: 1, optional: false },	
+    { id: "weekly_reputation_store", label: '📈 Regional Reputation Stores (Buy Will Wish Coins)', color: "grey", maxProgress: 1, optional: false },	
+	{ id: "weekly_dragon_raids", label: "🐉 Dragon Shackles Raids (12710+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
+	{ id: "weekly_dreambloom_raids", label: "🌸 Dreambloom Ruins Raids (35220+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false }
   ];
 
   const HOLD_INTERVAL_MS = 150;
@@ -608,11 +603,23 @@
     const current = getCount(task.id, section);
 
   let html = `<label>${task.label}`;
-  if (max > 1) html += ` <span class="progress-badge">${current}/${max}</span>`;
-  if (task.optional) {
-    html += ` <span style="font-size:0.75rem; font-weight:700; color:#a0c4ff; background:rgba(80,106,255,0.25); border:1px solid rgba(160,196,255,0.5); padding:4px 11px; border-radius:999px; margin-left:12px; letter-spacing:0.5px; box-shadow:0 2px 8px rgba(80,106,255,0.3);">OPTIONAL</span>`;
-  }
-  html += '</label>';
+    if (max > 1) html += ` <span class="progress-badge">${current}/${max}</span>`;
+  
+    if (task.id === "weekly_stimen_vaults") {
+      html += ` <span id="inline_stimen_timer" class="inline-task-timer" style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-left:10px; background:rgba(0,0,0,0.4); padding:3px 6px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); transition:all 0.3s ease;">Loading...</span>`;
+    } else if (task.id === "weekly_guild_hunt") {
+      html += ` <span id="inline_hunt_timer" class="inline-task-timer" style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-left:10px; background:rgba(0,0,0,0.4); padding:3px 6px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); transition:all 0.3s ease;">Loading...</span>`;
+    } else if (task.id === "weekly_guild_dance") {
+      html += ` <span id="inline_dance_timer" class="inline-task-timer" style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-left:10px; background:rgba(0,0,0,0.4); padding:3px 6px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); transition:all 0.3s ease;">Loading...</span>`;
+    } else if (task.id === "weekly_world_boss_crusade") {
+      html += ` <span id="inline_crusade_timer" class="inline-task-timer" style="font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-left:10px; background:rgba(0,0,0,0.4); padding:3px 6px; border-radius:8px; border:1px solid rgba(255,255,255,0.15); transition:all 0.3s ease;">Loading...</span>`;
+    }
+
+    if (task.optional) {
+      html += ` <span style="font-size:0.75rem; font-weight:700; color:#a0c4ff; background:rgba(80,106,255,0.25); border:1px solid rgba(160,196,255,0.5); padding:4px 11px; border-radius:999px; margin-left:12px; letter-spacing:0.5px; box-shadow:0 2px 8px rgba(80,106,255,0.3);">OPTIONAL</span>`;
+    }
+  
+    html += '</label>';
 
     div.innerHTML = html;
     div.classList.toggle('completed', current === max);
@@ -1796,7 +1803,7 @@
       day = Math.floor((now - globalLaunch) / 86400000) + 1;
       prefix = 'Global';
     }
-    pageTitle.textContent = `Blue Protocol: Star Resonance Checklist (${prefix} Day #${day})`;
+    pageTitle.textContent = `Blue Protocol: Star Resonance Checklist [S3] (${prefix} Day #${day})`;
   };
 
   const saveDayCountMode = () => {
@@ -1858,7 +1865,15 @@
       }, 2200);
     };
 
-    showToast(`✅ Switched to ${dayCountMode === 'sea' ? 'SEA' : 'Global'}!`);
+  showToast(`✅ Switched to ${dayCountMode === 'sea' ? 'SEA' : 'Global'}!`);
+
+    if (typeof renderTasks === 'function') {
+      renderTasks();
+    }
+
+    if (typeof updateAllTimers === 'function') {
+      updateAllTimers(true);
+    }
   };
 
   pageTitle.addEventListener('click', (e) => {
@@ -2052,7 +2067,7 @@
     new EventTimer('wb_crusade_timer', 'world-boss', '⚔️ World Boss'),
     new EventTimer('weekly_reset_timer', 'weekly-reset', '⏳ Weekly Reset'),
     new EventTimer('guild_hunt_timer', 'guild-hunt', '🏹 Guild Hunt'),
-    new EventTimer('guild_dance_timer', 'guild-dance', '🎉 Guild Dance'),
+    new EventTimer('guild_dance_timer', 'guild-dance', '💃 Guild Dance'),
     new EventTimer('stimen_vaults_timer', 'stimen-vaults', '💎 Stimen Vaults')
   ];
 
@@ -2082,6 +2097,54 @@
     timers.forEach(t => {
       t.computeStateAndUpdate();
     });
+
+    const inlineTargets = [
+      { elementId: 'inline_stimen_timer', configId: 'stimen-vaults' },
+      { elementId: 'inline_hunt_timer',   configId: 'guild-hunt' },
+      { elementId: 'inline_dance_timer',  configId: 'guild-dance' },
+      { elementId: 'inline_crusade_timer',configId: 'world-boss' }
+    ];
+
+    let missingElementsDetected = false;
+
+    inlineTargets.forEach(targetItem => {
+      const el = $(targetItem.elementId);
+      if (el) {
+        const region = getRegion();
+        const cfg = EVENT_CONFIGS.find(c => c.id === targetItem.configId);
+        if (cfg) {
+          const nextStart = calculateNextEventTime(cfg, region);
+          const currentEnd = calculateCurrentEventEnd(cfg, region);
+          const active = isEventActive(cfg, region);
+          const targetTime = active && currentEnd ? currentEnd : nextStart;
+          
+          const now = new Date();
+          let diff = Math.max(0, targetTime - now);
+          if (diff <= 0) {
+            const forcedNext = calculateNextEventTime(cfg, region);
+            diff = Math.max(0, forcedNext - now);
+          }
+          
+          const display = formatTimeSmart(diff);
+          
+          el.textContent = active 
+            ? `Ends in (${display})` 
+            : `Starts in (${display})`;
+
+          el.style.color = '#00ffcc'; 
+          el.style.borderColor = 'rgba(0, 255, 204, 0.4)';
+          el.style.textShadow = '0 0 6px rgba(0, 255, 204, 0.6)';
+        }
+      } else {
+        missingElementsDetected = true;
+      }
+    });
+
+    if (missingElementsDetected) {
+      if (typeof renderTasks === 'function') {
+        renderTasks();
+      }
+    }
 
     if (recentlyChanged.size > 0) {
       setTimeout(() => {

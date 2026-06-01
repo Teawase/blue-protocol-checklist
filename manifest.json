@@ -1,7 +1,7 @@
 {
   "name": "Blue Protocol: Star Resonance Checklist",
   "short_name": "BP Checklist",
-  "description": "Blue Protocol: Star Resonance Checklist – updated for Season 3 – track daily and weekly tasks or create custom ones with this responsive, offline-friendly, web-based checklist.",
+  "description": "Blue Protocol: Star Resonance Checklist – updated for Season 3 – track daily and weekly tasks or create custom ones with this responsive, web-based checklist.",
   "start_url": "/",
   "display": "standalone",
   "display_override": ["window-controls-overlay"],
@@ -29,18 +29,18 @@
 
   "screenshots": [
     {
-      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/privacynotice.png",
-      "sizes": "1920x1080",
-      "type": "image/png",
-      "platform": "wide",
-      "label": "Privacy Notice"
-    },
-    {
-      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/mainpage.png",
+      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/mainpage-v2.png",
       "sizes": "1920x1080",
       "type": "image/png",
       "platform": "wide",
       "label": "Main Page"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/custombackground.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "platform": "wide",
+      "label": "Custom Background"
     },
     {
       "src": "https://raw.githubusercontent.com/Teawase/blue-protocol-checklist/main/Previews/customcategory.png",
