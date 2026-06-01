@@ -105,9 +105,9 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 
 ## Contact
 - **Discord:** [@Teawase](https://discord.com/users/96620826689822720)
-- **Guild (Global):** [Tempestare](https://discord.com/invite/tempesto) (ID: 1649)
-- **In-game UID (Global):** #225964
-<img width="1920" height="1080" alt="ProfilePhoto" src="https://github.com/user-attachments/assets/4b3dfe94-6950-4550-9d94-c5b4e33adaf7" />
+- **In-game UID (Global) - [Asteria Server]:** #225964
+- **Guild (Global) - [Asteria Server]:** [Tempestare](https://discord.com/invite/tempesto) (ID: 1649)
+<img width="1920" height="1080" alt="20260601090425_109_109656" src="https://github.com/user-attachments/assets/f24f9d00-9d79-4a26-9554-7f03c9566cda" />
 
 <div align="center">
   
