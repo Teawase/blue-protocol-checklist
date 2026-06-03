@@ -1,16 +1,18 @@
 (() => {
   // --- Main Tasks Data ---
   const dailyTaskData = [
-    { id: "daily_mystery_store", label: "🎁 Mystery Store (Buy what you want)", color: "grey", maxProgress: 1, optional: true },
+    { id: "daily_mystery_store", label: "🎁 Mystery Store (Buy what you want) | +1 refresh with Season Pass", color: "gold", maxProgress: 1, optional: false },
     { id: "daily_guild_checkin", label: "🏛️ Guild Check-In & Cargo (Laura & Douglas in Guild Center)", color: "orange", maxProgress: 1, optional: false },
-	{ id: "daily_starland_quest", label: "✨ Starland (Complete the Daily Quest)", color: "blue", maxProgress: 1, optional: false },
+	{ id: "daily_starland_quest", label: "✨ Starland (Complete the Daily Quest/s)", color: "blue", maxProgress: 1, optional: false },
     { id: "daily_unstable_clear", label: "🌀 Unstable Space (Clear)", color: "purple", maxProgress: 2, optional: false },
     { id: "daily_bureau_commissions", label: "📋 Bureau Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
     { id: "daily_homestead_commissions", label: "🏡 Homestead Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
     { id: "daily_world_boss_keys", label: "🔑 World Boss Keys | Can skip up to 2 days (6 Keys)", color: "brown", maxProgress: 2, optional: false },
     { id: "daily_elite_boss_keys", label: "🗝️ Elite Boss Keys | Can skip up to 2 days (6 Keys)", color: "brown", maxProgress: 2, optional: false },
     { id: "daily_focus", label: "⭐ Life Skill Focus | Can skip up to 4 days (2000 Focus)", color: "yellow", maxProgress: 1, optional: false },
-    { id: "daily_season_pass_activity", label: "🏆 Season Pass Activity (Earn 500 Activity Merits)", color: "yellow", maxProgress: 1, optional: false }
+    { id: "daily_season_pass_activity", label: "🏆 Season Pass Activity (Earn 500 Activity Merits)", color: "yellow", maxProgress: 1, optional: false },
+	{ id: "daily_friendship_list", label: "🫂 Friendship List (Earn 200 Friendship List Points)", color: "grey", maxProgress: 1, optional: true },
+	{ id: "daily_musician_challenge", label: "🎵 Musician (Complete the Daily Challenge)", color: "grey", maxProgress: 1, optional: true }
   ];
 
   const weeklyTaskData = [
@@ -21,21 +23,22 @@
     { id: "weekly_guild_hunt", label: "🏹 Guild Hunt (Clear x2)", color: "orange", maxProgress: 3, optional: false },
     { id: "weekly_guild_dance", label: "💃 Guild Dance (Participate)", color: "orange", maxProgress: 1, optional: false },
     { id: "weekly_world_boss_crusade", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3, optional: false },
-    { id: "weekly_dungeon_encounter", label: "🐷 Fight the Squeaky Boarlet (Random Dungeon Encounter)", color: "brown", maxProgress: 5, optional: true },	
+    { id: "weekly_dungeon_encounter", label: "🐷 Fight the Squeaky Boarlet (Random Dungeon Encounter)", color: "grey", maxProgress: 5, optional: true },	
     { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Clear the last floor available)", color: "pearl", maxProgress: 1, optional: false },
-	{ id: "weekly_season_store_elite", label: "🛒 Season Hub -Echoes of Ember Elite Store- (Buy Reforge Stones & Select Boxes)", color: "grey", maxProgress: 1, optional: false },
+	{ id: "weekly_season_store_elite", label: "🛒 Season Hub -Echoes of Ember Elite Store- (Buy Reforge Stones & Select Boxes)", color: "gold", maxProgress: 1, optional: false },
 	{ id: "weekly_season_store", label: "📦 Season Hub -Echoes of Ember Store- (Buy what you want)", color: "grey", maxProgress: 1, optional: true },
-    { id: "weekly_guild_store", label: "🔰 Guild Store (Buy Focus Potions, Supply Chests, Moss/Burl/Meteorite Shards)", color: "grey", maxProgress: 1, optional: false },
-    { id: "weekly_honor_store", label: "⚜️ Honor Store (Earn & Spend 10000 Honor Points)", color: "grey", maxProgress: 1, optional: false },
-    { id: "weekly_friendship_store", label: "🤝 Friendship Store (Earn 2000 Friendship Points)", color: "grey", maxProgress: 1, optional: false },	
-    { id: "weekly_event_store", label: "🎉 Event Store (If available)", color: "grey", maxProgress: 1, optional: false },
+    { id: "weekly_guild_store", label: "🔰 Guild Store (Buy Focus Potions, Supply Chests, Moss/Burl/Meteorite Shards)", color: "gold", maxProgress: 1, optional: false },
+    { id: "weekly_honor_store", label: "⚜️ Honor Store (Earn & Spend 10000 Honor Points)", color: "gold", maxProgress: 1, optional: false },
+    { id: "weekly_friendship_store", label: "🤝 Friendship Store (Earn 2000 Friendship Points)", color: "gold", maxProgress: 1, optional: false },	
+    { id: "weekly_event_store", label: "🎉 Event Store (If available)", color: "gold", maxProgress: 1, optional: false },
 	{ id: "weekly_orb_store", label: "🔴 Orb Store (Buy what you want)", color: "grey", maxProgress: 1, optional: true },
-    { id: "weekly_gear_exchange_store", label: "🔄 Gear Exchange Store (Buy Luno Pouches & Reforge Stones)", color: "grey", maxProgress: 1, optional: false },
+    { id: "weekly_gear_exchange_store", label: "🔄 Gear Exchange Store (Buy Luno Pouches & Reforge Stones)", color: "gold", maxProgress: 1, optional: false },
 	{ id: "weekly_module_exchange", label: "🔧 Module Exchange (Buy Excellent Modules)", color: "grey", maxProgress: 1, optional: true },
-    { id: "weekly_sigil_store", label: "🔮 Sigil Exchange Store (Buy x10 Echoes of Ember Sigil Chests)", color: "grey", maxProgress: 1, optional: false },	
-    { id: "weekly_reputation_store", label: '📈 Regional Reputation Stores (Buy Will Wish Coins)', color: "grey", maxProgress: 1, optional: false },	
+    { id: "weekly_sigil_store", label: "🔮 Sigil Exchange Store (Buy x10 Echoes of Ember Sigil Chests)", color: "gold", maxProgress: 1, optional: false },	
+    { id: "weekly_reputation_store", label: '📈 Regional Reputation Stores (Buy Will Wish Coins)', color: "gold", maxProgress: 1, optional: false },
+	{ id: "weekly_dreambloom_raids", label: "🌸 Dreambloom Ruins Raids (35220+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
 	{ id: "weekly_dragon_raids", label: "🐉 Dragon Shackles Raids (12710+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
-	{ id: "weekly_dreambloom_raids", label: "🌸 Dreambloom Ruins Raids (35220+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false }
+    { id: "weekly_musician_challenges", label: "🎶 Musician (Complete the Weekly Challenges)", color: "grey", maxProgress: 1, optional: true }
   ];
 
   const HOLD_INTERVAL_MS = 150;
@@ -2870,84 +2873,6 @@
       updateRepoLastUpdated();
     }
   }
-
-  (() => {
-    const CACHE_KEY_NEW_VERSION = 'bp_new_version_check_cache';
-    const CACHE_DURATION_MS = 60 * 60 * 1000;
-
-  const checkNewVersion = async () => {
-    if (!versionEl.textContent || 
-        versionEl.textContent.includes('?') || 
-        versionEl.textContent.includes('Loading...') || 
-        versionEl.textContent.trim() === '') {
-      console.log("[VersionCheck] Skipped: No valid version displayed yet");
-      return;
-    }
-
-    const currentVersion = versionEl.textContent.trim();
-
-    const cached = localStorage.getItem('bp_new_version_check_cache');
-    if (cached) {
-      try {
-        const { newVersion, timestamp } = JSON.parse(cached);
-        if (Date.now() - timestamp < CACHE_DURATION_MS) {
-          if (newVersion !== currentVersion) {
-            if (confirm(`New version available: ${newVersion}\nReload page to update?`)) {
-              location.reload(true);
-            }
-          }
-          return;
-        }
-      } catch {
-      }
-    }
-
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-      const r = await fetch('https://api.github.com/repos/Teawase/blue-protocol-checklist/releases/latest?t=' + Date.now(), {
-        cache: "no-store",
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-
-      if (!r.ok) {
-        console.warn("GitHub fetch failed:", r.status);
-        return;
-      }
-
-      const d = await r.json();
-      let latestTag = d.tag_name.trim();
-
-      const normalize = (v) => v.startsWith('v') ? v : 'v' + v;
-      const normalizedCurrent = normalize(currentVersion);
-      const normalizedLatest = normalize(latestTag);
-
-      localStorage.setItem('bp_new_version_check_cache', JSON.stringify({
-        newVersion: normalizedLatest,
-        timestamp: Date.now()
-      }));
-
-      console.log("[VersionCheck] Cache updated with:", normalizedLatest);
-
-      if (normalizedLatest !== normalizedCurrent) {
-        if (confirm(`New version available: ${normalizedLatest}\nReload page to update?`)) {
-          location.reload(true);
-        }
-      }
-
-    } catch (e) {
-      console.warn("Version check failed (safe):", e.message);
-    }
-  };
-
-    setTimeout(checkNewVersion, 6000);
-
-    setInterval(checkNewVersion, 60 * 60 * 1000);
-
-    window.checkNewVersion = checkNewVersion;
-  })();
 
     loadProfiles();
     cleanupOrphanedKeys();
