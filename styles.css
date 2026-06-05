@@ -43,9 +43,6 @@ body::before {
 
 body.custom-wallpaper {
   background: #000 center / cover no-repeat fixed;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  will-change: transform;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }
@@ -58,12 +55,14 @@ body.custom-wallpaper::before {
 }
 
 body.custom-wallpaper::after {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: #000000;
+  opacity: calc(1 - var(--bg-opacity, 1));
+  z-index: -1; 
   pointer-events: none;
-  z-index: -2;
+  transition: opacity 0.05s linear;
 }
 
 #page-title {

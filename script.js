@@ -1650,6 +1650,43 @@
     window.updateBackupBadge = updateBadgeForCurrentProfile;
   })(); 
 
+  document.getElementById('generateSyncCodeBtn')?.addEventListener('click', () => {
+    const funnyPrefixes = [
+      'Chonky', 'Glitchy', 'Wobbly', 'Sneaky', 'Derpy', 'Funky', 'Spicy', 'Giggly', 'Fluffy', 'Turbo', 
+      'Goofy', 'Sassy', 'Clumsy', 'Zesty', 'Loopy', 'Crispy', 'Soggy', 'Greasy', 'Bouncy', 'Crabby', 
+      'Dorky', 'Wonky', 'Cheesy', 'Silly', 'Chubby', 'Sketchy', 'Shady', 'Gassy', 'Floppy', 'Bumpy', 
+      'Squishy', 'Screechy', 'Jumpy', 'Moldy', 'Salty', 'Ditzy', 'Juicy', 'Whiny', 'Gullible', 'Sleepy',
+      'Crusty', 'Spooky', 'Stinky', 'Doofus', 'Beefy', 'Juiced', 'Broke', 'Hyped',
+      'Snoozy', 'Grumpy', 'Rowdy', 'Greedy', 'Lazy', 'Brainless', 'Grungy', 'Slippery',
+      'Cranky', 'Twitchy', 'Fidgety', 'Nutty', 'Psycho', 'Boujee', 'Gremlin', 'Trashy',
+      'Wack', 'Dazed', 'Saucy', 'Cheeky', 'Rusty', 'Lumpy'
+    ];
+    const funnyNouns = [
+      'Potato', 'Noodle', 'Capybara', 'Pigeon', 'Blob', 'Waffle', 'Pickle', 'Banana', 'Taco', 
+      'Nugget', 'Hamster', 'Gremlin', 'Toof', 'Burrito', 'Donut', 'Muffin', 'Seagull', 'Racoon', 'Possum', 
+      'Ferret', 'Manatee', 'Otter', 'Cactus', 'Meatball', 'Eggroll', 'Turnip', 'Garlic', 'Onion', 'Broccoli', 
+      'Couch', 'Spoon', 'Sock', 'Toaster', 'Pancake', 'Biscuit', 'Chicken', 'Alpaca', 'Walrus', 'Shrimp',
+      'Glitch', 'Goober', 'Dingus', 'Dumpling', 'Croissant', 'Bean', 'Chinchilla', 'Platypus', 'Sloth',
+      'Toad', 'McNugget', 'Avocado', 'Cheeto', 'Dorito', 'Mayonnaise', 'Bacon', 'Sausage', 'Wombat', 'Badger',
+      'Meerkat', 'Pufferfish', 'Jellyfish', 'Gnome', 'Roomba', 'Spork',
+      'Broom', 'Yogurt', 'Hotdog', 'Marshmallow', 'Cupcake', 'Brick'
+    ];
+
+    const randomPrefix = funnyPrefixes[Math.floor(Math.random() * funnyPrefixes.length)];
+    const randomNoun = funnyNouns[Math.floor(Math.random() * funnyNouns.length)];
+
+    const randomNumber = Math.floor(1000 + Math.random() * 9000);
+
+    const funnyCode = `${randomPrefix}${randomNoun}${randomNumber}`;
+    
+    const syncInput = document.getElementById('syncCodeInput');
+    if (syncInput) {
+      syncInput.value = funnyCode;
+      
+      syncInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+  });
+
   // --- Filters & Buttons --- 
   toggleDailyBtn && (toggleDailyBtn.onclick = () => {
     hideCompletedState.daily = !hideCompletedState.daily;
@@ -2543,8 +2580,12 @@
     const apply = document.getElementById('apply-wallpaper');
     const reset = document.getElementById('reset-wallpaper');
     const close = document.getElementById('close-wallpaper-modal');
+    
+    const bgOpacitySlider = document.getElementById('bg-opacity');
+    const bgOpacityVal = document.getElementById('bg-opacity-val');
 
     const KEY = 'custom_wallpaper';
+    const OPACITY_KEY = 'custom-bg-opacity';
     let url = localStorage.getItem(KEY);
 
     const applyWallpaper = (newUrl) => {
@@ -2560,6 +2601,20 @@
 
     if (url) {
       applyWallpaper(url);
+    }
+
+    if (bgOpacitySlider && bgOpacityVal) {
+      const savedOpacity = localStorage.getItem(OPACITY_KEY) || '100';
+      bgOpacitySlider.value = savedOpacity;
+      bgOpacityVal.textContent = `${savedOpacity}%`;
+      document.body.style.setProperty('--bg-opacity', savedOpacity / 100);
+
+      bgOpacitySlider.addEventListener('input', (e) => {
+        const val = e.target.value;
+        bgOpacityVal.textContent = `${val}%`;
+        document.body.style.setProperty('--bg-opacity', val / 100);
+        localStorage.setItem(OPACITY_KEY, val);
+      });
     }
 
     const updatePreview = (imageUrl) => {
@@ -2585,6 +2640,13 @@
     btn.onclick = () => {
       input.value = url || '';
       updatePreview(url || '');
+      
+      if (bgOpacitySlider && bgOpacityVal) {
+        const savedOpacity = localStorage.getItem(OPACITY_KEY) || '100';
+        bgOpacitySlider.value = savedOpacity;
+        bgOpacityVal.textContent = `${savedOpacity}%`;
+      }
+
       modal.style.display = 'flex';
       setTimeout(() => input.focus(), 50);
     };
@@ -2633,6 +2695,14 @@
       applyWallpaper(null);
       input.value = '';
       updatePreview('');
+      
+      if (bgOpacitySlider && bgOpacityVal) {
+        bgOpacitySlider.value = '100';
+        bgOpacityVal.textContent = '100%';
+        document.body.style.setProperty('--bg-opacity', '1');
+        localStorage.removeItem(OPACITY_KEY);
+      }
+
       modal.style.display = 'none';
     };
   }
