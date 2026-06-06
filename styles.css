@@ -738,14 +738,13 @@ button:active, .icon-btn:active, .resource-link:active { transform:scale(0.97); 
   position: relative;
   transition: transform 0.2s ease;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .event-timer .name {
   font-weight: 700;
   font-size: 0.95rem;
   margin-bottom: 2px;
-  cursor: pointer;
+  cursor: default;
   background: linear-gradient(90deg, #506aff, #809bff, #a0c4ff);
   -webkit-background-clip: text;
   background-clip: text;
