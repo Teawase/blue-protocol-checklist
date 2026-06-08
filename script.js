@@ -1136,8 +1136,26 @@
       progress.dataset.confettiDone = 'true';
       if (typeof confetti === 'function') {
         confetti({ particleCount: 250, spread: 360, origin: { x: 0.5, y: -0.5 } });
+      }
+      const autoBackupEnabled = localStorage.getItem('auto_cloud_backup') === 'true';
+      if (autoBackupEnabled) {
+        const code = localStorage.getItem('remembered_sync_code');
+        if (code && code.length >= 8) {
+          const safeCode = sanitizeFirebaseKey(code);
+          const deviceToken = getOrCreateDeviceToken();
+          const profilesData = localStorage.getItem('checklist_profiles');
+          if (profilesData) {
+            fetch(`${FIREBASE_DB_URL}sync_codes/${safeCode}.json`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ checklist_profiles: profilesData, last_updated: Date.now(), owner_token: deviceToken })
+            }).then(r => {
+              if (r.ok) showSyncStatus(`☁️ Auto-backup saved (${section} 100%)!`, '#50d2c2');
+            }).catch(() => {});
+          }
         }
       }
+    }
     } else {
       if (msg) msg.style.display = 'none';
       if (progress) progress.dataset.confettiDone = '';
@@ -1282,6 +1300,35 @@
       };
       li.appendChild(switchBtn);
 
+      const cloneBtn = document.createElement('button');
+      cloneBtn.textContent = 'Clone';
+      cloneBtn.title = 'Duplicate this profile (copies categories & tasks)';
+      cloneBtn.onclick = () => {
+        if (profiles.list.length >= 5) {
+          alert('Maximum of 5 profiles allowed. Delete one before cloning.');
+          return;
+        }
+        let cloneName = prompt(`Clone "${name}" as:`, `${name}_copy`);
+        if (!cloneName || !cloneName.trim()) return;
+        cloneName = cloneName.trim();
+        if (cloneName.length > 20) { alert('Name must be 20 characters or less.'); return; }
+        if (profiles.list.includes(cloneName)) { alert('A profile with that name already exists.'); return; }
+
+        const sourceData = profiles.data[name];
+        const cloned = {
+          weekly_tasks: {},
+          weekly_reset_date: null,
+          daily_tasks: null,
+          custom_categories: sourceData.custom_categories || null
+        };
+        profiles.list.push(cloneName);
+        profiles.data[cloneName] = cloned;
+        saveProfiles();
+        alert(`Profile "${cloneName}" created as a clone of "${name}".\nCustom categories were copied. Progress was reset.`);
+        profilesBtn.click();
+      };
+      li.appendChild(cloneBtn);
+
       if (profiles.list.length > 1) {
         const delBtn = document.createElement('button');
         delBtn.textContent = 'Delete';
@@ -1356,6 +1403,30 @@
   const cloudUploadBtn = $('cloudUploadBtn');
   const cloudDownloadBtn = $('cloudDownloadBtn');
   const syncStatus = $('syncStatus');
+  const rememberSyncCheckbox = $('rememberSyncCode');
+
+  const savedSyncCode = localStorage.getItem('remembered_sync_code');
+  if (savedSyncCode && syncCodeInput) {
+    syncCodeInput.value = savedSyncCode;
+    if (rememberSyncCheckbox) rememberSyncCheckbox.checked = true;
+  }
+
+  if (rememberSyncCheckbox) {
+    rememberSyncCheckbox.onchange = () => {
+      if (rememberSyncCheckbox.checked && syncCodeInput.value.trim()) {
+        localStorage.setItem('remembered_sync_code', syncCodeInput.value.trim());
+      } else {
+        localStorage.removeItem('remembered_sync_code');
+      }
+    };
+    if (syncCodeInput) {
+      syncCodeInput.addEventListener('input', () => {
+        if (rememberSyncCheckbox.checked) {
+          localStorage.setItem('remembered_sync_code', syncCodeInput.value.trim());
+        }
+      });
+    }
+  }
 
   const showSyncStatus = (msg, color = '#a0c4ff') => {
     if(!syncStatus) return;
@@ -1376,6 +1447,14 @@
     }
     return token;
   };
+
+  const autoCloudBackupCheckbox = $('autoCloudBackup');
+  if (autoCloudBackupCheckbox) {
+    autoCloudBackupCheckbox.checked = localStorage.getItem('auto_cloud_backup') === 'true';
+    autoCloudBackupCheckbox.onchange = () => {
+      localStorage.setItem('auto_cloud_backup', autoCloudBackupCheckbox.checked ? 'true' : 'false');
+    };
+  }
 
   if (cloudUploadBtn) {
     cloudUploadBtn.onclick = async () => {
@@ -1422,6 +1501,9 @@
 
         if (res.ok) {
           showSyncStatus('✅ Uploaded! You can update this slot anytime from this browser.', '#50d2c2');
+          if (rememberSyncCheckbox && rememberSyncCheckbox.checked) {
+            localStorage.setItem('remembered_sync_code', syncCodeInput.value.trim());
+          }
         } else {
           throw new Error(`Server status: ${res.status}`);
         }

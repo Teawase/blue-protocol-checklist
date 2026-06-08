@@ -220,24 +220,30 @@
         <p style="font-size: 0.8rem; color: #718096; margin-bottom: 12px; line-height: 1.3;">
           Enter a custom Sync Code (minimum 8 characters) to back up or sync your progress across devices!
         </p>
-        <div style="display: flex; gap: 10px; margin-bottom: 12px; width: 100%;">
-          <input type="text" id="syncCodeInput" placeholder="Enter a Sync Code..." autocomplete="off" 
-                 style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #111; color: #fff; font-family: monospace; font-size: 1rem; box-sizing: border-box;">
-          <button id="generateSyncCodeBtn" type="button"
-                  style="width: 120px; height: 45px; display: inline-flex; justify-content: center; align-items: center; padding: 0; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: #2a2a2a; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s ease;"
-                  onmouseover="this.style.background='#3a3a3a'; this.style.borderColor='rgba(255,255,255,0.2)';" 
-                  onmouseout="this.style.background='#2a2a2a'; this.style.borderColor='rgba(255,255,255,0.1)';">
-            🎲 Generate Random Code
-          </button>
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <button id="cloudUploadBtn" class="btn primary-btn" style="flex: 1; padding: 10px 14px; font-size: 0.85rem; font-weight: 600;">
-            ⬆️ Upload
-          </button>
-          <button id="cloudDownloadBtn" class="btn secondary-btn" style="flex: 1; padding: 10px 14px; font-size: 0.85rem; font-weight: 600; background: #ff9500; color: #000; border-color: #cc7a00;">
-            ⬇️ Download
-          </button>
-        </div>
+      <div style="display: flex; gap: 10px; margin-bottom: 12px; width: 100%;">
+        <input type="text" id="syncCodeInput" placeholder="Enter a Sync Code..." autocomplete="off" 
+               style="flex: 1; padding: 12px; border-radius: 10px; border: 1px solid #333; background: #111; color: #fff; font-family: monospace; font-size: 1rem; box-sizing: border-box;">
+        <button id="generateSyncCodeBtn" type="button"
+                style="width: 120px; height: 45px; display: inline-flex; justify-content: center; align-items: center; padding: 0; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); background: #2a2a2a; color: #fff; font-size: 0.85rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s ease;"
+                onmouseover="this.style.background='#3a3a3a'; this.style.borderColor='rgba(255,255,255,0.2)';" 
+                onmouseout="this.style.background='#2a2a2a'; this.style.borderColor='rgba(255,255,255,0.1)';">
+          🎲 Generate Random Code
+        </button>
+      </div>
+      <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin:0 auto 12px auto; width:fit-content; padding:10px; background:rgba(80,106,255,0.08); border-radius:8px; border:1px solid rgba(80,106,255,0.2);">
+        <input type="checkbox" id="rememberSyncCode" style="width:16px; height:16px; cursor:pointer; accent-color:#a0c4ff;">
+        <label for="rememberSyncCode" style="font-size:0.85rem; color:#a0aec0; cursor:pointer; user-select:none;">Remember Sync Code</label>
+        <input type="checkbox" id="autoCloudBackup" style="width:16px; height:16px; cursor:pointer; accent-color:#a0c4ff;">
+        <label for="autoCloudBackup" title="Automatically backs up your data to the cloud whenever a Daily or Weekly section is 100% completed." style="font-size:0.85rem; color:#a0aec0; cursor:pointer; user-select:none;">Auto-Sync Progress</label>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <button id="cloudUploadBtn" class="btn primary-btn" style="flex: 1; padding: 10px 14px; font-size: 0.85rem; font-weight: 600;">
+          ⬆️ Upload
+        </button>
+        <button id="cloudDownloadBtn" class="btn secondary-btn" style="flex: 1; padding: 10px 14px; font-size: 0.85rem; font-weight: 600; background: #ff9500; color: #000; border-color: #cc7a00;">
+          ⬇️ Download
+        </button>
+      </div>
         <div id="syncStatus" style="margin-top: 10px; font-size: 0.9rem; text-align: center; font-weight: bold; min-height: 20px; letter-spacing: 0.3px;"></div>
       </div>
       <div style="border-top: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px;"></div>
@@ -268,7 +274,7 @@
 
   <!-- Profiles Modal -->
   <div id="profiles-modal" class="modal" style="display: none;">
-    <div class="modal-content" style="max-width: 400px;">
+    <div class="modal-content" style="max-width: 600px;">
       <h2>Manage Profiles</h2>
       <p>Current profile: <strong id="current-profile-name"></strong></p>
       <ul id="profiles-list" style="list-style: none; padding: 0; margin: 10px 0; max-height: 300px; overflow-y: auto;"></ul>
