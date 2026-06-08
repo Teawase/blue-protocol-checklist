@@ -15,7 +15,7 @@ A simple, responsive web-based checklist for tracking daily and weekly tasks in 
 | 🖼️ Custom Backgrounds                  | Use your own images as website backgrounds (direct URL with validation and preview).               |
 | 🔍 Live Search                         | Real-time filtering of daily/weekly tasks.                                                         |
 | ⚡ Rapid Increment/Decrement Counters  | Left-click (or hold) to add increments · Right-click (or hold) to undo — fast and forgiving.       |
-| ☁️ Cloud Sync                          | Profiles and tasks can sync across devices using a unique sync code.                               |
+| ☁️ Cloud Sync + Auto-Sync              | Profiles and tasks can sync across devices using a unique sync code.                               |
 | 💾 Data Portability                    | One-click local export/import and backup/restore.                                                  |
 | 📱 Mobile UI Support                   | Responsive design with perfectly functioning timers and counters on every device.                  |
 | ⚡ Lightweight & Future-Proof          | Built with vanilla JavaScript and only two tiny dependencies.                                      |
