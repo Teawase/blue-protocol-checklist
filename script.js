@@ -2899,16 +2899,33 @@
       document.body.insertAdjacentHTML('beforeend', `
         <div id="welcomeTip" role="dialog" aria-labelledby="welcomeTitle" aria-modal="true">
           <div class="welcome-content">
-            <center><h3 id="welcomeTitle">Welcome to BPSR Checklist...</h3></center>
-            <p>
-              <center><h3>Desktop Controls:</h3></center>
-              <center><h2>• Left-Click or Hold → add (+1)</h2></center>
-              <center><h2>• Right-Click or Hold → remove (-1)</h2></center>
-              <center><h3>Mobile Controls:</h3></center>
-              <center><h2>• Tap or Hold → add (+1)</h2></center>
-              <center><h2>• Double Tap + Hold → remove (-1)</h2></center>
-            </p>
-            <button id="welcomeClose" aria-label="Close welcome tips">Got it!</button>
+            <h3 id="welcomeTitle">💡 Quick Controls</h3>
+          
+            <div class="welcome-platform-section">
+              <span class="platform-label">Desktop</span>
+              <div class="control-row">
+                <span class="control-gesture">🖱️ Left-Click / Hold</span>
+                <span class="control-pill pill-add">+1</span>
+              </div>
+              <div class="control-row">
+                <span class="control-gesture">️🖱️ Right-Click / Hold</span>
+                <span class="control-pill pill-sub">-1</span>
+              </div>
+            </div>
+
+            <div class="welcome-platform-section">
+              <span class="platform-label">Mobile</span>
+              <div class="control-row">
+                <span class="control-gesture">👆 Tap / Hold</span>
+                <span class="control-pill pill-add">+1</span>
+              </div>
+              <div class="control-row">
+                <span class="control-gesture">👆 Double Tap + Hold</span>
+                <span class="control-pill pill-sub">-1</span>
+              </div>
+            </div>
+
+            <button id="welcomeClose" aria-label="Close welcome tips">Got it, let's track!</button>
           </div>
         </div>
       `);
@@ -2931,7 +2948,9 @@
 
       closeBtn.onclick = closeTip;
 
-      tip.onclick = (e) => { if (e.target === tip) closeTip(); };
+      tip.onclick = (e) => { 
+        if (e.target === tip) closeTip(); 
+      };
 
       document.addEventListener('keydown', function escHandler(e) {
         if (e.key === 'Escape') {
