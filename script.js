@@ -1,5 +1,4 @@
 (() => {
-  // --- Main Tasks Data ---
   const dailyTaskData = [
     { id: "daily_mystery_store", label: "🎁 Mystery Store (Buy what you want) | +1 refresh with Season Pass", color: "gold", maxProgress: 1, optional: false },
     { id: "daily_guild_checkin", label: "🏛️ Guild Check-In & Cargo (Laura & Douglas in Guild Center)", color: "orange", maxProgress: 1, optional: false },
@@ -45,7 +44,6 @@
   const MAX_CATEGORIES = 10;
   const MAX_TASKS_PER_CATEGORY = 20;
 
-  // --- Utility ---
   const $ = id => document.getElementById(id);
 
   const diffSec = (future, now = parseNoronha()) => Math.max(0, Math.floor((future - now) / 1000));
@@ -131,7 +129,6 @@
     };
   };
 
-  // --- Profile System ---
   let profiles = {
     current: "default",
     list: ["default"],
@@ -188,7 +185,6 @@
 
   const getProfileData = () => profiles.data[profiles.current] || (profiles.data[profiles.current] = { weekly_tasks: {} });
 
-  // --- Custom Categories & Tasks ---
   let customCategories = {};
   let currentCategoryId = null;
   let currentTaskId = null;
@@ -383,7 +379,6 @@
     saveProfiles();
   };
 
-  // --- Storage ---
   const isInitialLoad = !sessionStorage.getItem('alreadyLoaded');
   sessionStorage.setItem('alreadyLoaded', 'true');
   const getDailyStorage = () => {
@@ -480,7 +475,6 @@
     if (changed) saveProfiles();
   };
 
-  // --- Task Interaction Logic ---
   let holdInterval = null;
 
   const startHoldIncrement = (el, section) => {
@@ -593,7 +587,6 @@
     }
   };
 
-  // --- Task Element Creation ---
   const createTaskElement = (task, section) => {
     const div = document.createElement('div');
     div.className = `task ${task.color} ${task.optional ? 'optional' : ''}`;
@@ -951,7 +944,6 @@
     return div;
   };
 
-  // --- Rendering & UI Updates ---
   const dailyContainer = $('daily_tasks_container');
   const weeklyContainer = $('weekly_tasks_container');
   const customCategoriesContainer = $('custom_categories_container');
@@ -1206,7 +1198,6 @@
     updateCounter(section); applyCompletedFilter(section);
   };
 
-  // --- DOM Elements & Event Listeners ---
   const toggleDailyBtn = $('toggleDaily');
   const toggleWeeklyBtn = $('toggleWeekly');
   const dailyFilterInput = $('daily_filter');
@@ -1251,7 +1242,6 @@
   const versionEl = $('version');
   const resetSiteDataBtn = $('resetSiteDataBtn');
 
-  // --- Profile UI ---
   const renderProfilesList = () => {
     profilesListEl.innerHTML = '';
     profiles.list.sort().forEach(name => {
@@ -1395,7 +1385,6 @@
     reloadCurrentProfileData();
   });
 
-  // --- Cloud Sync System ---
   const _0xdbUrlEncoded = 'aHR0cHM6Ly9icC1jaGVja2xpc3QtZGVmYXVsdC1ydGRiLmZpcmViYXNlaW8uY29tLw==';
   const FIREBASE_DB_URL = atob(_0xdbUrlEncoded);
 
@@ -1552,7 +1541,6 @@
     };
   }
 
-  // --- Manual Backup System ---
   const exportProgress = () => {
     if (!isStorageAllowed) return alert('Storage disabled');
     const pd = getProfileData();
@@ -1769,7 +1757,6 @@
     }
   });
 
-  // --- Filters & Buttons --- 
   toggleDailyBtn && (toggleDailyBtn.onclick = () => {
     hideCompletedState.daily = !hideCompletedState.daily;
     toggleDailyBtn.textContent = hideCompletedState.daily ? 'Show Completed' : 'Hide Completed';
@@ -1811,7 +1798,6 @@
     weeklyFilterInput.addEventListener('focus', () => weeklyFilterInput.select());
   }
 
-  // --- Custom Category Modals ---
   if (addCategoryBtn) addCategoryBtn.onclick = () => {
     newCategoryNameInput.value = '';
     addCategoryModal.style.display = 'flex';
@@ -1890,7 +1876,6 @@
     };
   }
 
-  // --- Reset Data ---
   resetSiteDataBtn && (resetSiteDataBtn.onclick = () => {
     const sure = confirm('Are you sure you want to reset ALL site data? (localStorage)\nThis action is irreversible.');
     if (!sure) return;
@@ -1899,7 +1884,6 @@
     location.reload();
   });
 
-  // --- Switching (Global/SEA) ---
   const pageTitle = document.getElementById('page-title');
   let dayCountMode = localStorage.getItem('dayCountMode') || 'global';
   const getRegion = () => dayCountMode === 'sea' ? 'SEA' : 'NA';
@@ -2368,7 +2352,6 @@
     document.title = `Daily ${dailyPct}% • Weekly ${weeklyPct}% • BPSR Checklist ✔️`;
   }, 30000);
 
-  // --- GDPR & Version Check ---
   const IPAPI_CACHE_KEY = 'ipapi_cache';
   const IPAPI_CACHE_EXPIRY_MS = 24 * 60 * 60 * 1000;
   const gdprBlocker = document.getElementById('gdpr-blocker');
@@ -2494,7 +2477,6 @@
     }
   };
 
-  // --- News Modal ---
   const loadChangelogs = async () => {
     const releasesContent = document.getElementById('releases-content');
     const commitsContent = document.getElementById('commits-content');
@@ -2653,7 +2635,6 @@
   importExportModal && (importExportModal.onclick = (e) => { if (e.target === importExportModal) importExportModal.style.display = 'none'; });
   profilesModal && (profilesModal.onclick = (e) => { if (e.target === profilesModal) profilesModal.style.display = 'none'; });
 
-  // --- Custom Backgrounds ---
   {
     const modal = document.getElementById('wallpaper-modal');
     const btn = document.getElementById('wallpaperBtn');
@@ -2789,7 +2770,6 @@
     };
   }
 
-  // --- Profile Portraits ---
   (() => {
     const PORTRAIT_KEY = 'bp_portrait_';
 
@@ -2857,7 +2837,6 @@
     setTimeout(injectPortraits, 100);
   })();
 
-  // --- Back to Top Button ---
   const backToTopBtn = $('backToTop');
 
   const toggleBackToTop = () => {
@@ -2877,7 +2856,6 @@
     toggleBackToTop();
   }
 
-  // --- WelcomeTips ---
   const showWelcomeTips = () => {
     if (!isStorageAllowed || localStorage.getItem('seenTips')) return;
 
@@ -2961,7 +2939,6 @@
     }, 2500);
   };
 
-  // --- Init ---
   const init = async () => {
     document.addEventListener('contextmenu', e => e.preventDefault());
     updateTitle();
