@@ -18,6 +18,7 @@
     { id: "weekly_pioneer_awards", label: "🏅 Pioneer Awards (Stella at the Pioneer Bureau)", color: "yellow", maxProgress: 1, optional: false },
     { id: "weekly_reclaim_hub", label: "⏰ Reclaim Hub (Claim missed rewards from last week)", color: "gold", maxProgress: 1, optional: false },
 	{ id: "weekly_starland_quests", label: "✨ Starland (Complete the Weekly Quests)", color: "blue", maxProgress: 1, optional: false },
+	{ id: "weekly_illusion_essence", label: "🪞 Illusion-Shroud Woods (Reach the Illusion-Shroud Essence cap)", color: "grey", maxProgress: 1, optional: true },
     { id: "weekly_guild_activity", label: "👑 Guild Activity Rewards (Reach 7000/7000 Activity Merits & Claim Rewards)", color: "orange", maxProgress: 1, optional: false },
     { id: "weekly_guild_hunt", label: "🏹 Guild Hunt (Clear x2)", color: "orange", maxProgress: 3, optional: false },
     { id: "weekly_guild_dance", label: "💃 Guild Dance (Participate)", color: "orange", maxProgress: 1, optional: false },
