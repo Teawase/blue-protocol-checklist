@@ -523,8 +523,8 @@ button:hover,
 }
 
 .task:hover {
-  transform: translateY(-1px) scale(1.002);
-  background: linear-gradient(135deg, var(--hover2, #38383c), var(--hover1, #424246));
+  transform: translateY(-1px) scale(1.006);
+  background-image: linear-gradient(135deg, var(--hover2, #38383c), var(--hover1, #424246));
   box-shadow: 0 8px 20px rgba(80, 106, 255, 0.35);
   border-color: rgba(80, 106, 255, 0.45);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
