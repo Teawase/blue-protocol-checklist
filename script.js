@@ -25,8 +25,8 @@
     { id: "weekly_world_boss_crusade", label: "⚔️ World Boss Crusade (Earn 1200 Points)", color: "brown", maxProgress: 3, optional: false },
     { id: "weekly_dungeon_encounter", label: "🐷 Fight the Squeaky Boarlet (Random Dungeon Encounter)", color: "grey", maxProgress: 5, optional: true },	
     { id: "weekly_stimen_vaults", label: "💎 Stimen Vaults (Clear the last floor available)", color: "pearl", maxProgress: 1, optional: false },
-	{ id: "weekly_season_store_elite", label: "🛒 Season Hub -Echoes of Ember Elite Store- (Buy Reforge Stones & Select Boxes)", color: "gold", maxProgress: 1, optional: false },
-	{ id: "weekly_season_store", label: "📦 Season Hub -Echoes of Ember Store- (Buy what you want)", color: "grey", maxProgress: 1, optional: true },
+	{ id: "weekly_season_store_elite", label: "🛒 -Echoes of Ember Elite Store- (Buy Reforge Stones, Alloy & Select Boxes)", color: "gold", maxProgress: 1, optional: false },
+	{ id: "weekly_season_store", label: "📦 -Echoes of Ember Store- (Buy what you want)", color: "grey", maxProgress: 1, optional: true },
     { id: "weekly_guild_store", label: "🔰 Guild Store (Buy Focus Potions, Supply Chests, Moss/Burl/Meteorite Shards)", color: "gold", maxProgress: 1, optional: false },
     { id: "weekly_honor_store", label: "⚜️ Honor Store (Earn & Spend 10000 Honor Points)", color: "gold", maxProgress: 1, optional: false },
     { id: "weekly_friendship_store", label: "🤝 Friendship Store (Earn 2000 Friendship Points)", color: "gold", maxProgress: 1, optional: false },	
@@ -37,6 +37,7 @@
     { id: "weekly_sigil_store", label: "🔮 Sigil Exchange Store (Buy x10 Echoes of Ember Sigil Chests)", color: "gold", maxProgress: 1, optional: false },	
     { id: "weekly_reputation_store", label: '📈 Regional Reputation Stores (Buy Will Wish Coins)', color: "gold", maxProgress: 1, optional: false },
 	{ id: "weekly_s2_raids", label: "🛡️ Dragon Shackles or Dreambloom Raids (35220+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
+	{ id: "weekly_s3_raids_easy", label: "🌀 Frogotten Illusions Raids (1970+ Illusion Score | 47650+ Ability Score)", color: "dark_purple", maxProgress: 1, optional: false },
     { id: "weekly_musician_challenges", label: "🎶 Musician (Complete the Weekly Challenges)", color: "grey", maxProgress: 1, optional: true }
   ];
 
