@@ -2,7 +2,7 @@
   const dailyTaskData = [
     { id: "daily_mystery_store", label: "🎁 Mystery Store (Buy what you want) | +1 refresh with Season Pass", color: "gold", maxProgress: 1, optional: false },
     { id: "daily_guild_checkin", label: "🏛️ Guild Check-In & Cargo (Laura & Douglas in Guild Center)", color: "orange", maxProgress: 1, optional: false },
-	{ id: "daily_starland_quest", label: "✨ Starland (Complete the Daily Quest/s)", color: "blue", maxProgress: 1, optional: false },
+  //	{ id: "daily_starland_quest", label: "✨ Starland (Complete the Daily Quest/s)", color: "blue", maxProgress: 1, optional: false },
     { id: "daily_unstable_clear", label: "🌀 Unstable Space (Clear)", color: "purple", maxProgress: 2, optional: false },
     { id: "daily_bureau_commissions", label: "📋 Bureau Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
     { id: "daily_homestead_commissions", label: "🏡 Homestead Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
