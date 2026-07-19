@@ -2072,7 +2072,7 @@
       id: 'stimen-vaults',
       schedule: {
         NA: { days: [1], hour: 4, minute: 0, durationHours: 3, intervalWeeks: 2, referenceDate: '2025-10-27', inverted: true },
-        SEA: { days: [0], hour: 19, minute: 0, durationHours: 3, intervalWeeks: 2, referenceDate: '2025-12-15', inverted: true }
+        SEA: { days: [0], hour: 22, minute: 0, durationHours: 3, intervalWeeks: 2, referenceDate: '2025-12-22', inverted: true }
       }
     }
   ];
