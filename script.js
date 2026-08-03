@@ -2,7 +2,7 @@
   const dailyTaskData = [
     { id: "daily_mystery_store", label: "🎁 Mystery Store (Buy what you want) | +1 refresh with Season Pass", color: "gold", maxProgress: 1, optional: false },
     { id: "daily_guild_checkin", label: "🏛️ Guild Check-In & Cargo (Laura & Douglas in Guild Center)", color: "orange", maxProgress: 1, optional: false },
-  //	{ id: "daily_starland_quest", label: "✨ Starland (Complete the Daily Quest/s)", color: "blue", maxProgress: 1, optional: false },
+//	{ id: "daily_starland_quest", label: "✨ Starland (Complete the Daily Quest/s)", color: "blue", maxProgress: 1, optional: false },
     { id: "daily_unstable_clear", label: "🌀 Unstable Space (Clear)", color: "purple", maxProgress: 2, optional: false },
     { id: "daily_bureau_commissions", label: "📋 Bureau Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
     { id: "daily_homestead_commissions", label: "🏡 Homestead Commissions | Can skip up to 2 days (9 Commissions)", color: "green", maxProgress: 3, optional: false },
@@ -39,6 +39,7 @@
 	{ id: "weekly_s1_s2_raids", label: "🛡️ [S1-S2] Dragon Shackles or Dreambloom Raids (35220+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
 	{ id: "weekly_s3_raids_easy", label: "🌀 [S3] Illusions Raids -Easy- (1970+ Illusion Score | 47650+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
 	{ id: "weekly_s3_raids_hard", label: "🌀 [S3] Illusions Raids -Hard- (2910+ Illusion Score | 56110+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
+	{ id: "weekly_s3_raids_hard", label: "🌀 [S3] Illusions Raids -Nightmare- (3220+ Illusion Score | 58320+ Ability Score)", color: "dark_purple", maxProgress: 1, optional: false },
     { id: "weekly_musician_challenges", label: "🎶 Musician (Complete the Weekly Challenges)", color: "grey", maxProgress: 1, optional: true }
   ];
 
