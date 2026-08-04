@@ -382,7 +382,7 @@
     saveProfiles();
   };
 
-  const isInitialLoad = !sessionStorage.getItem('alreadyLoaded');
+  let isInitialLoad = !sessionStorage.getItem('alreadyLoaded');
   sessionStorage.setItem('alreadyLoaded', 'true');
   const getDailyStorage = () => {
     const pd = getProfileData();
