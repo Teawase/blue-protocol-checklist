@@ -39,7 +39,7 @@
 	{ id: "weekly_s1_s2_raids", label: "🛡️ [S1-S2] Dragon Shackles or Dreambloom Raids (35220+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
 	{ id: "weekly_s3_raids_easy", label: "🌀 [S3] Illusions Raids -Easy- (1970+ Illusion Score | 47650+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
 	{ id: "weekly_s3_raids_hard", label: "🌀 [S3] Illusions Raids -Hard- (2910+ Illusion Score | 56110+ Ability Score)", color: "dark_purple", maxProgress: 3, optional: false },
-	{ id: "weekly_s3_raids_hard", label: "🌀 [S3] Illusions Raids -Nightmare- (3220+ Illusion Score | 58320+ Ability Score)", color: "dark_purple", maxProgress: 1, optional: false },
+	{ id: "weekly_s3_raids_nightmare", label: "🌀 [S3] Illusions Raids -Nightmare- (3220+ Illusion Score | 58320+ Ability Score)", color: "dark_purple", maxProgress: 1, optional: false },
     { id: "weekly_musician_challenges", label: "🎶 Musician (Complete the Weekly Challenges)", color: "grey", maxProgress: 1, optional: true }
   ];
 
